@@ -1,0 +1,7 @@
+﻿Show rows:
+<select ng-options="size for size in pager.sizes" ng-model="pager.size" ng-change="pager.update()"></select>
+Go to:
+<input type="number" min="1" max="{{pager.maxIndex}}" ng-model="pager.index" ng-change="pager.update()" />
+{{pager.skip+1}} - {{pager.skip+pager.size < pager.itemCount ? pager.skip+pager.size : pager.itemCount}} of {{pager.itemCount}}
+<button class="btn btn-xs" ng-click="pager.previous()" ng-disabled="pager.index<=1">&lt;</button>
+<button class="btn btn-xs" ng-click="pager.next()" ng-disabled="pager.index>=pager.maxIndex">&gt;</button>

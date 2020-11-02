@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+	<title>AdK Tagger</title>
+	<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <link rel="icon" href="/img/favicon.png" type="image/png"/>
+
+  <!--INJECT CSS FILES-->
+  <!-- inject:css -->
+
+  
+
+  <link rel="stylesheet" href="/css/bootstrap.min.css">
+
+  
+
+  <link rel="stylesheet" href="/css/styleguide.css">
+
+  
+
+  <link rel="stylesheet" href="/css/tagger.css">
+
+  
+
+  <link rel="stylesheet" href="/css/font-awesome.min.css">
+
+  
+
+  <link rel="stylesheet" href="/css/ng-tags-input.css">
+
+  
+
+  <link rel="stylesheet" href="/css/report.css">
+
+  
+
+  <link rel="stylesheet" href="/css/audit.css">
+
+  
+
+  <link rel="stylesheet" href="/css/textAngular.css">
+
+  
+
+  <link rel="stylesheet" href="/css/dpoc.css">
+
+  
+
+  <link rel="stylesheet" href="/css/colorpicker.min.css">
+
+  
+
+  <link rel="stylesheet" href="/js/Vendor/video/video-js.css">
+
+  
+
+  <link rel="stylesheet" href="/css/nv.d3.min.css">
+
+  
+
+  <link rel="stylesheet" href="/js/vendor/leaflet/leaflet.css">
+
+  
+
+  <link rel="stylesheet" href="/css/markets.css">
+
+  
+
+  <!-- endinject-->
+
+	<!--<link href="http://vjs.zencdn.net/4.2.2/video-js.css" rel="stylesheet">-->
+</head>
+
+<body ng-app="app" ng-controller="auth" ng-cloak>
+	<header id="main-header" class="tagger" ng-if="authenticated">
+		<div class="app-revision" ng-if="appRevision">
+			Revision: <span class="revision-number">{{appRevision}}</span>
+		</div>
+		<ul class="site-nav">
+			<li>{{ user.name ? user.name : user.email }}</li>
+			<li><a ng-href="#/account">Account</a></li>
+			<li><a ng-click="logout()">Log Out</a></li>
+		</ul>
+		<img class="header-logo" src="/img/{{logo}}" alt="" />
+		<!--<span class="header-subtitle">/Ad Tagger</span>-->
+	</header>
+
+	<div ng-if="authenticated" id="page-wrap" class="container-fluid">
+		<navigation></navigation>
+		<div id="content-wrap">
+			<div ng-view></div>
+		</div>
+	</div>
+
+	<script type="text/ng-template" id="datePicker.html">
+		<div class="input-group date" ng-class="{'align-right': alignRight}">
+			<input type="text" class="form-control" datepicker-popup="dd-MM-yyyy" ng-model="date" ng-change="datePicked()" is-open="isOpened" disabled-datepicker-options="dateOptions" ng-required="true" close-text="Close" />
+			<span class="input-group-btn">
+				<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+			</span>
+		</div>
+	</script>
+
+
+	<div id="overlay" ng-show="loading > 0">
+		<progressbar id="loading" class="progress-striped active" max="1" value="1" type="danger"><i>Loading...</i></progressbar>
+	</div>
+	<script src='https://vjs.zencdn.net/7.6.0/video.js'></script>
+    <!-- inject:js -->
+	<script src="/js/Vendor/angular/angular.js"></script>
+	<script src="/js/Vendor/ui-bootstrap-tpls-0.13.4.js"></script>
+	<script src="/js/Vendor/angular/angular-route.min.js"></script>
+	<script src="/js/Vendor/angular/angular-sanitize.min.js"></script>
+	<script src="/js/Vendor/angular/angular-cookies.min.js"></script>
+	<script src="/js/Vendor/textAngular/textAngularSetup.js"></script>
+	<script src="/js/Vendor/textAngular/textAngular.js"></script>
+	<script src="/js/Vendor/textAngular/textAngular-sanitize.js"></script>
+	<script src="/js/Vendor/textAngular/textAngular-rangy.min.js"></script>
+	<script src="/js/Vendor/angular/angular-vs-repeat.min.js"></script>
+	<script src="/js/Vendor/ng-file-upload/ng-file-upload-shim.min.js"></script>
+	<script src="/js/Vendor/ng-file-upload/ng-file-upload.min.js"></script>
+	<script src="/js/Vendor/lodash.js"></script>
+	<script src="/js/Vendor/soundmanager2/soundmanager2-jsmin.js"></script>
+	<script src="/js/Vendor/moment-with-locales.min.js"></script>
+	<script src="/js/Vendor/ng-tags-input.js"></script>
+	<script src="/js/Vendor/datePickerDecorator.js"></script>
+	<script src="/js/Vendor/d3.min.js"></script>
+	<script src="/js/Vendor/nv.d3.js"></script>
+	<script src="/js/Vendor/angular-nvd3.js"></script>
+	<script src="/js/Vendor/ZeroClipboard.min.js"></script>
+	<script src="/js/Vendor/leaflet/leaflet.js"></script>
+	<script src="/js/Vendor/leaflet/angular-leaflet-directive.js"></script>
+	<script src="/js/Vendor/vjs-video.min.js"></script>
+	<script src="/js/app.js"></script>
+	<script src="/js/filters.js"></script>
+	<script src="/js/tagger.js"></script>
+	<script src="/js/fsGrid.js"></script>
+	<script src="/js/Services/appSettings.js"></script>
+	<script src="/js/Services/baseChartConfig.js"></script>
+	<script src="/js/Services/brandvertiser.js"></script>
+	<script src="/js/Services/cachedApiCalls.js"></script>
+	<script src="/js/Services/channelThresholdService.js"></script>
+	<script src="/js/Services/confirmModal.js"></script>
+	<script src="/js/Services/cookieService.js"></script>
+	<script src="/js/Services/d3ChartLabels.js"></script>
+	<script src="/js/Services/fsGrid.js"></script>
+	<script src="/js/Services/infoModal.js"></script>
+	<script src="/js/Services/localStorage.js"></script>
+	<script src="/js/Services/myChannels.js"></script>
+	<script src="/js/Services/paged.js"></script>
+	<script src="/js/Services/pager.js"></script>
+	<script src="/js/Services/service.js"></script>
+	<script src="/js/Services/soundmanager.js"></script>
+	<script src="/js/Services/spotLIbraryService.js"></script>
+	<script src="/js/Services/userSettings.js"></script>
+	<script src="/js/Services/valueFormatter.js"></script>
+	<script src="/js/Services/yesnoModal.js"></script>
+	<script src="/js/_Directives/ajaxInlineIndicator.js"></script>
+	<script src="/js/_Directives/alertMessage.js"></script>
+	<script src="/js/_Directives/autogrow.js"></script>
+	<script src="/js/_Directives/bootstrap-colorpicker-module.min.js"></script>
+	<script src="/js/_Directives/clickAnywhereButHere.js"></script>
+	<script src="/js/_Directives/customDate.js"></script>
+	<script src="/js/_Directives/focusMe.js"></script>
+	<script src="/js/_Directives/playerWidget.js"></script>
+	<script src="/js/_Directives/sortIcon.js"></script>
+	<script src="/js/common.js"></script>
+	<script src="/Modules/Account/accountCtrl.js"></script>
+	<script src="/Modules/Channels/channelsCtrl.js"></script>
+	<script src="/Modules/dpoc/dpocCapture.js"></script>
+	<script src="/Modules/dpoc/dpocCaptureChannel.js"></script>
+	<script src="/Modules/dpoc/dpocCtrl.js"></script>
+	<script src="/Modules/dpoc/dpocDuplicatesCtrl.js"></script>
+	<script src="/Modules/dpoc/dpocHarvesting.js"></script>
+	<script src="/Modules/dpoc/dpocHashingCtrl.js"></script>
+	<script src="/Modules/dpoc/dpocNotPromotedCtrl.js"></script>
+	<script src="/Modules/Feeds/addFeed.js"></script>
+	<script src="/Modules/Feeds/clientFeeds.js"></script>
+	<script src="/Modules/Feeds/clientsContactsCtrl.js"></script>
+	<script src="/Modules/Feeds/createFeedCtrl.js"></script>
+	<script src="/Modules/Feeds/editFeedCtrl.js"></script>
+	<script src="/Modules/Feeds/editFeedFilterGroupCtrl.js"></script>
+	<script src="/Modules/Feeds/feedCheckNewMatches.js"></script>
+	<script src="/Modules/Feeds/feedListCtrl.js"></script>
+	<script src="/Modules/Feeds/feedResultsCtrl.js"></script>
+	<script src="/Modules/Feeds/filterGroupsCtrl.js"></script>
+	<script src="/Modules/Feeds/playback.js"></script>
+	<script src="/Modules/Feeds/userFeedCtrl.js"></script>
+	<script src="/Modules/Feeds/userFeedReports.js"></script>
+	<script src="/Modules/Feeds/userFeedResultsCtrl.js"></script>
+	<script src="/Modules/Feeds/userFeedsCtrl.js"></script>
+	<script src="/Modules/Markets/marketsCtrl.js"></script>
+	<script src="/Modules/EmailComposer/emailComposer.js"></script>
+	<script src="/Modules/MatchAnalyzer/matchAnalyzerCtrl.js"></script>
+	<script src="/Modules/MatchAnalyzer/matchesRendererDirective.js"></script>
+	<script src="/Modules/MediaHouse/1debounce.js"></script>
+	<script src="/Modules/MediaHouse/CompetitorsComponent.js"></script>
+	<script src="/Modules/MediaHouse/KeyAccountsComponent.js"></script>
+	<script src="/Modules/MediaHouse/mediaHouse.js"></script>
+	<script src="/Modules/MediaHouse/mediaHouseCtrl.js"></script>
+	<script src="/Modules/MediaHouse/MediaLandscapeComponent.js"></script>
+	<script src="/Modules/Navigation/navigation.js"></script>
+	<script src="/Modules/Monitor/captureChannelCtrl.js"></script>
+	<script src="/Modules/Monitor/captureCtrl.js"></script>
+	<script src="/Modules/Monitor/coverageCtrl.js"></script>
+	<script src="/Modules/Monitor/duplicatesCtrl.js"></script>
+	<script src="/Modules/Monitor/harvestingCtrl.js"></script>
+	<script src="/Modules/Monitor/hashesCtrl.js"></script>
+	<script src="/Modules/Monitor/monitorCtrl.js"></script>
+	<script src="/Modules/Monitor/promotionCtrl.js"></script>
+	<script src="/Modules/PriceDesigner/priceDesignerCtrl.js"></script>
+	<script src="/Modules/PriceDesigner 2/priceDesigner2ChannelCtrl.js"></script>
+	<script src="/Modules/PriceDesigner 2/priceDesigner2Service.js"></script>
+	<script src="/Modules/PriceDesigner1.1/priceDesigner11ChannelCtrl.js"></script>
+	<script src="/Modules/PriceDesigner1.1/priceDesigner11Ctrl.js"></script>
+	<script src="/Modules/PriceDesigner1.1/priceDesigner11Service.js"></script>
+	<script src="/Modules/Rights/rightsCtrl.js"></script>
+	<script src="/Modules/Security/auth.js"></script>
+	<script src="/Modules/Security/security.js"></script>
+	<script src="/Modules/Settings/adKSettings.js"></script>
+	<script src="/Modules/Settings/auditSettings.js"></script>
+	<script src="/Modules/Settings/dokazniceSettings.js"></script>
+	<script src="/Modules/Settings/feedSettings.js"></script>
+	<script src="/Modules/Settings/HTMLSettingService.js"></script>
+	<script src="/Modules/Settings/settingsController.js"></script>
+	<script src="/Modules/Settings/settingsCtrl.js"></script>
+	<script src="/Modules/SpotLibrary/spotLibraryCtrl.js"></script>
+	<script src="/Modules/SpotLibrary/spotListCtrl.js"></script>
+	<script src="/Modules/SpotUpload/spotUploadCtrl.js"></script>
+	<script src="/Modules/Transcript/countries.js"></script>
+	<script src="/Modules/WebPlayer/CalendarComponent.js"></script>
+	<script src="/Modules/WebPlayer/ChannelSelect.js"></script>
+	<script src="/Modules/WebPlayer/DailyClockComponent.js"></script>
+	<script src="/Modules/WebPlayer/MediaControlsComponent.js"></script>
+	<script src="/Modules/WebPlayer/TimeLine.js"></script>
+	<script src="/Modules/WebPlayer/waveFormDirective.js"></script>
+	<script src="/Modules/WebPlayer/webPlayerCtrl.js"></script>
+	<script src="/Modules/WebPlayer/webPlayerFactory.js"></script>
+	<script src="/Modules/_Directives/grid.js"></script>
+	<script src="/Reports/reports.js"></script>
+	<script src="/Reports/ActivityByDaypart/activityByDaypart.js"></script>
+	<script src="/Reports/AdBlocks/adBlocks.js"></script>
+	<script src="/Reports/AdvertisingActivityTrend/advertisingActivityTrend.js"></script>
+	<script src="/Reports/AdvertisingLogsByBrand/advertisingLogsByBrand.js"></script>
+	<script src="/Reports/AdvertisingSummary/advertisingSummary.js"></script>
+	<script src="/Reports/AsRunLog/asRunLog.js"></script>
+	<script src="/Reports/BrandActivityByMediaHouse/brandActivityByMediaHouse.js"></script>
+	<script src="/Reports/BrandActivityByWeekday/brandActivityByWeekday.js"></script>
+	<script src="/Reports/AuditLog/auditDetails.js"></script>
+	<script src="/Reports/AuditLog/auditLog.js"></script>
+	<script src="/Reports/AuditLog/auditLogAutocomplete.js"></script>
+	<script src="/Reports/AuditLog/auditReportTable.js"></script>
+	<script src="/Reports/AuditLog/auditService.js"></script>
+	<script src="/Reports/AuditLog/quickAudit.js"></script>
+	<script src="/Reports/Brandvertiser/brandvertiser.js"></script>
+	<script src="/Reports/Clutter/clutter.js"></script>
+	<script src="/Reports/CompetitorProximity/competitorProximity.js"></script>
+	<script src="/Reports/InvestmentTrend/investmentTrend.js"></script>
+	<script src="/Reports/KeyAccountActivity/keyAccountActivity.js"></script>
+	<script src="/Reports/Market12MonthTrend/market12MonthTrend.js"></script>
+	<script src="/Reports/MarketOverview/marketOverview.js"></script>
+	<script src="/Reports/RankedAdvertisers/rankedAdvertisers.js"></script>
+	<script src="/Reports/SalesLeads/salesLeads.js"></script>
+	<script src="/Reports/ShareByBrandOrAdvertiser/shareByBrandOrAdvertiser.js"></script>
+	<script src="/Reports/ShareOfAdvertisingActivity/shareOfAdvertisingActivity.js"></script>
+	<script src="/Reports/ShareOfBusiness/ShareOfBusiness.js"></script>
+	<script src="/Reports/TopChart/topChart.js"></script>
+	<script src="/Reports/_Directives/channelThresholdSlideIn.js"></script>
+	<script src="/Reports/_Directives/chartTooltip.js"></script>
+	<script src="/Reports/_Directives/reportAdBreakDurationFilter.js"></script>
+	<script src="/Reports/_Directives/reportAdvertiserFilter.js"></script>
+	<script src="/Reports/_Directives/reportBrandFilter.js"></script>
+	<script src="/Reports/_Directives/reportBrandOrAdvertiserFilter.js"></script>
+	<script src="/Reports/_Directives/reportBrandOrChannelFilter.js"></script>
+	<script src="/Reports/_Directives/reportCategoryFilter.js"></script>
+	<script src="/Reports/_Directives/reportChannelFilter.js"></script>
+	<script src="/Reports/_Directives/reportChannelIncludingFilter.js"></script>
+	<script src="/Reports/_Directives/reportChannelOrDateFilter.js"></script>
+	<script src="/Reports/_Directives/reportCustomDateFilter.js"></script>
+	<script src="/Reports/_Directives/reportCustomPeriodFilter.js"></script>
+	<script src="/Reports/_Directives/reportDateRangeFilter.js"></script>
+	<script src="/Reports/_Directives/reportDayOfWeekFilter.js"></script>
+	<script src="/Reports/_Directives/reportDayPartFilter.js"></script>
+	<script src="/Reports/_Directives/reportDisplayTypeFilter.js"></script>
+	<script src="/Reports/_Directives/reportFilterBase.js"></script>
+	<script src="/Reports/_Directives/reportIndustryFilter.js"></script>
+	<script src="/Reports/_Directives/reportLimitFilter.js"></script>
+	<script src="/Reports/_Directives/reportMarketFilter.js"></script>
+	<script src="/Reports/_Directives/reportMediaFilter.js"></script>
+	<script src="/Reports/_Directives/reportMessage.js"></script>
+	<script src="/Reports/_Directives/reportNotes.js"></script>
+	<script src="/Reports/_Directives/reportPeriodByFilter.js"></script>
+	<script src="/Reports/_Directives/reportShowFilter.js"></script>
+	<script src="/Reports/_Directives/reportSpentFilter.js"></script>
+	<script src="/Reports/_Directives/reportTimeSpanFilter.js"></script>
+	<script src="/Reports/_Directives/reportToggleValueFilter.js"></script>
+	<script src="/Reports/_Directives/truncateToLimitFilter.js"></script>
+	<!-- endinject -->
+	</body>
+
+</html>

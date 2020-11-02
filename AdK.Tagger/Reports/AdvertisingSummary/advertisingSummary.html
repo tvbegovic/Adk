@@ -1,0 +1,61 @@
+﻿<div ng-controller="advertisingSummaryCtrl">
+    <div class="row" ng-show="channelsLoaded">
+        <div class="col-sm-12">
+            <div ng-show="haveChannels">
+                <div class="report-filters">
+                    <div class="filter-row main">
+                        <div class="date-wrapper-filter">
+                            <report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()" period-start="serverData.PeriodStart"
+                                period-end="serverData.PeriodEnd"></report-custom-period-filter>
+						</div>
+                        <report-channel-including-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-including-filter>
+                        <report-brand-or-channel-filter on-init="onDirectivesInit()" on-change="load()"></report-brand-or-channel-filter>
+                        <report-notes note-id="advertising_summary" ng-if="user.isAdmin" />
+                    </div>
+                </div>
+                <div class="report-data">
+                    <div ng-hide="loading || message.show">
+                        <table class="report-table table table-consensed table-striped table-hover table-bordered">
+                            <thead>
+                                <th class="text" ng-if="current.groupBy.Id === 'Brand' || current.groupBy.Id === 'Advertiser'">
+                                    <span ng-if="current.groupBy.Id === 'Advertiser'">Advertiser</span>
+                                    <span ng-if="current.groupBy.Id === 'Brand'">Brand</span>
+                                </th>
+                                <th class="text">Channel</th>
+                                <th class="text" ng-if="current.groupBy.Id === 'Channel'">Brand</th>
+                                <th class="number" ng-click="sortBy(sort.Count)">Count <sort-icon ascending="sort.Direction == 'ASC'" show="sort.Current === sort.Count" /> </th>
+                                <th class="number" ng-click="sortBy(sort.Duration)">Air-Time <sort-icon ascending="sort.Direction == 'ASC'" show="sort.Current === sort.Duration" /> </th>
+                                <th class="number" ng-click="sortBy(sort.Spend)">Spend <sort-icon ascending="sort.Direction == 'ASC'" show="sort.Current === sort.Spend" /> </th>
+                            </thead>
+                            <tbody ng-repeat="channel in advertisingSummary | orderBy:groupComparator | skip:pager.skip | take:pager.size" class="table-bordered">
+                                <tr ng-repeat="row in channel.AdvertisingSummaryDetailsData | orderBy:rowComparator">
+                                    <td class="text" style="border-bottom: none; background:white;" ng-if="$index == 0">{{row.GroupName}}</td>
+                                    <td class="text" style="border: none; background:white;" ng-if="$index != 0"></td>
+                                    <td class="text">{{row.DetailName | truncateToLimitFilter:true:90}}</td>
+                                    <td class="number">{{row.Count | toLocalString}}</td>
+                                    <td class="number">{{row.Duration | secondsToTimeFilter}}</td>
+                                    <td class="number">{{row.Spend | toLocalString}}</td>
+                                </tr>
+                                <tr>
+                                    <td class="text" style="border: none; background:white;"></td>
+                                    <td class="text">{{channel.Total.DetailName | truncateToLimitFilter:true:90}}</td>
+                                    <td class="number">{{channel.Total.Count | toLocalString}}</td>
+                                    <td class="number">{{channel.Total.Duration | secondsToTimeFilter}}</td>
+                                    <td class="number">{{channel.Total.Spend | toLocalString}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        <div class="pager">
+                            <table-pager manager="pager"></table-pager>
+                        </div>
+                    </div>
+                </div>
+
+                <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+            </div>
+
+            <report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+        </div>
+    </div>
+</div>

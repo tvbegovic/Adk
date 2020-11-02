@@ -1,0 +1,84 @@
+﻿<div class="channels rows-spaced" ng-controller="channelsCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="nr-grid table table-condensed fs-grid">
+                <thead>
+                    <tr>
+                        <th class="col-channel-name">
+                            <div class="col-label" ng-click="setSort('StationName')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'StationName'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                Channel Name
+                            </div>
+                        </th>
+                        <th class="col-country">
+                            <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.Country == ''}" ng-click="setFocus('countryFilter')"></i>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <input type="text" focus-on="countryFilter" ng-model="filter.Country" typeahead-on-select="getChannelsWithDuration()" typeahead="item for item in getItems('Country', $viewValue)"
+                                               typeahead-append-to-body="true" ng-model-options="{debounce: 1000}" ng-change="getChannelsWithDuration()" />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-label" ng-click="setSort('Country')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'Country'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                Country
+                            </div>
+                        </th>
+                        <th class="col-city">
+                            <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.City == ''}" ng-click="setFocus('cityFilter')"></i>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <input type="text" focus-on="cityFilter" ng-model="filter.City" typeahead-on-select="getChannelsWithDuration()" typeahead="item for item in getItems('City', $viewValue)"
+                                               typeahead-append-to-body="true" ng-model-options="{debounce: 1000}" ng-change="getChannelsWithDuration()" />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-label" ng-click="setSort('City')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'City'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                City
+                            </div>
+                        </th>
+                        <th class="col-days">
+                            <div class="col-label text-right" ng-click="setSort('Days90')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'Days90'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                90 days
+                            </div>
+                        </th>
+                        <th class="col-days">
+                            <div class="col-label text-right" ng-click="setSort('Days30')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'Days30'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                30 days
+                            </div>
+                        </th>
+                        <th class="col-days text-right">
+                            <div class="col-label" ng-click="setSort('Days7')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'Days7'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                7 days
+                            </div>
+                        </th>
+                        <th class="col-days text-right">
+                            <div class="col-label" ng-click="setSort('Yesterday')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'Yesterday'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                Yesterday
+                            </div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="channel in channels">
+                        <td class="{{channel.Days30Color}}">{{channel.StationName}}</td>
+                        <td class="{{channel.Days30Color}}">{{channel.Country}}</td>
+                        <td class="{{channel.Days30Color}}">{{channel.City}}</td>
+                        <td class="text-right {{channel.Days90Color}}" title="{{channel.Days90Duration | sToDuration}}&#13;out of&#13;90 days">{{channel.Days90 | number:2}}%</td>
+                        <td class="text-right {{channel.Days30Color}}" title="{{channel.Days30Duration | sToDuration}}&#13;out of&#13;30 days">{{channel.Days30 | number:2}}%</td>
+                        <td class="text-right {{channel.Days7Color}}" title="{{channel.Days7Duration | sToDuration}}&#13;out of&#13;7 days">{{channel.Days7 | number:2}}%</td>
+                        <td class="text-right {{channel.YesterdayColor}}" title="{{channel.YesterdayDuration | sToDuration}}&#13;out of&#13;24h">{{channel.Yesterday | number:2}}%</td>
+                    </tr>
+                </tbody>
+            </table>
+            <table-pager manager="pager"></table-pager>
+        </div>
+    </div>
+</div>

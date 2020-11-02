@@ -1,0 +1,67 @@
+<div class="rows-spaced">
+    <div ng-if="!showGroupForm.show">
+        <div class="col-sm-12">
+            <h3> {{ title }} </h3>
+            <hr />
+        </div>
+        <div class="col-sm-12">
+            <alert-message type="Error" ng-if="showError"></alert-message>
+        </div>
+        <div class="row">
+			<div class="col-sm-6">
+				<form class="form-horizontal">
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Name</label>
+						<div class="col-sm-6">
+							<input type="text" class="form-control" ng-model="feed.client" />
+						</div>
+						<label class="checkbox-inline">
+							<input type="checkbox" ng-model="feed.includeMp3"> Include Mp3
+						</label>						
+					</div>
+					<div class="form-group">
+						<label class="col-sm-2 control-label">Expiration date</label>
+						<div class="col-sm-6">
+							<p class="input-group">
+								<input type="text" class="form-control" datepicker-popup ng-model="feed.ExpirationDate"
+									   is-open="status.opened" close-text="Close" />
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="open($event)"><i class="glyphicon glyphicon-calendar"></i></button>
+								</span>
+								<span class="input-group-btn">
+									<button type="button" class="btn btn-default" ng-click="expire()">Expire</button>
+								</span>
+							</p>
+						</div>
+					</div>
+				</form>
+					
+					
+			</div>			            
+        </div>
+        <div class="col-sm-12 form-group">
+            <a class="btn btn-primary" ng-href="{{backLink}}">Back to Alert List</a>
+            <a class="btn btn-primary" ng-click="save()">Save Alert</a>
+        </div>
+        <div ng-if="showGroups">
+            <div class="col-sm-12">
+                <h3> Filters </h3>
+                <hr />
+            </div>
+            <div class="col-sm-12 form-group">
+                <filter-groups feed="feed" edit-group="createOrUpdateGroup" delete-group="deleteFilterGroup"></filter-groups>
+            </div>
+            <!--<div class="col-sm-12 form-group">
+                <a class="btn btn-primary" ng-click="preview()" ng-if="!showPreview">Show Preview</a>
+                <a class="btn btn-primary" ng-click="preview()" ng-if="showPreview">Hide Preview</a>
+            </div>-->
+        </div>
+    </div>
+    <div ng-if="showGroupForm.show">
+        <edit-feed-filter-group data-filter-group-id="{{groupToEdit.Id}}" data-client-name="{{feed.client}}" data-feed-filter-id="{{feed.id}}" data-exclude="{{groupToEdit.Exclude}}" data-is-visible="showGroupForm.show" data-on-group-save="onGroupSave"></edit-feed-filter-group>
+    </div>
+    <hr />
+    <div ng-if="showPreview">
+        <feed-results data-feed-filter-id="{{ feed.id }}" data-client-name="{{feed.client}}" is-preview="true"></feed-results>
+    </div>
+</div>

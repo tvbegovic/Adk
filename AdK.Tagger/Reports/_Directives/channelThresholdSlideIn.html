@@ -1,0 +1,32 @@
+<style>
+	.partials-slide-in .threshold-input:disabled {
+		background-color: white;
+	}
+</style>
+
+<div class="partials-slide-in" ng-class="{extended: show}">
+	<h4> Channels Thresholds (50 - 100) update </h4>
+	<p>Duration percentage threshold per channel, applied on this document only.</p>
+
+	<table class="">
+		<tr ng-repeat="channel in channels">
+			<td class="text-right" style="padding: 5px 0;"> {{channel.Name}}
+		</td>
+		<td style="padding: 5px 0;" >
+				<input type="number" ng-disabled="!editMode" ng-model="channel.MatchThreshold" min="50" max="100" class="form-control threshold-input" > %
+		</td>
+		</tr>
+	</table>
+
+
+	<div style="margin-bottom: 45px;" ng-show="showError">
+		<alert-message type="Error" text="Problem has occured while updating please try again."> </alert-message>
+	</div>
+
+	<div class="update-threshold">
+		<ajax-inline-indicator show-spinner="inProgress" show-success="successUpdate"></ajax-inline-indicator>
+
+		<i class="fa fa-check" ng-show="showThresholdUpdatedStatus" style="color: green;"></i>
+		<button class="btn btn-primary" ng-click="saveAuditChannelThreshold()" ng-if="editMode">Update</button>
+	</div>
+</div>

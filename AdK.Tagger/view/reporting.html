@@ -1,0 +1,281 @@
+﻿<div>
+	<div class="row" style="padding-top: 10px;"></div>
+	<!-- saved reports --><div class="row" style="padding-bottom: 10px;">
+		<div class="col-sm-12">
+			<div class="btn-group" dropdown>
+				<button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>Load a Saved Report <span class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu">
+					<li ng-repeat="reporter in PredefinedReporters" ng-click="setReporter(reporter)"><a href="#">{{reporter.Title}}</a></li>
+					<li class="divider"></li>
+
+					<li>
+						<a class="form-group">
+							<input type="text" ng-model="newReporterName" placeholder="Name for this Report" />
+							<button type="button" class="btn btn-primary btn-sm" ng-click="saveCurrentReporter()" ng-disabled="newReporterName===''">Save</button>
+						</a>
+					</li>
+					<li class="divider"></li>
+
+					<li ng-repeat="namedReporter in MyReporters">
+						<a ng-click="setReporter(namedReporter.Reporter)">
+							<span ng-click="deleteReporter($index)" class="glyphicon glyphicon-remove" title="Delete this saved Report"></span>
+							{{namedReporter.Name}}
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+	<!-- filters --><div class="panel panel-info">
+		<div class="row">
+			<div class="col-xs-12 col-sm-12">
+				<div class="panel-heading">Filter</div>
+			</div>
+		</div>
+		<div class="row">
+			<!-- time range selection --><div class="col-xs-12 col-sm-6">
+				<form role="form">
+					<div class="btn-toolbar" role="toolbar">
+						<div class="form-group btn-group">
+							<label class="btn btn-primary" ng-model="common.range.kind" btn-radio="'month'">By Month</label>
+							<label class="btn btn-primary" ng-model="common.range.kind" btn-radio="'week'">By Week</label>
+						</div>
+						<div class="form-group btn-group">
+							<label class="btn btn-primary" ng-model="common.range.interpolation" btn-radio="0">Single</label>
+							<label class="btn btn-primary" ng-model="common.range.interpolation" btn-radio="1">Compare</label>
+							<label class="btn btn-primary" ng-model="common.range.interpolation" btn-radio="2">Interpolate</label>
+						</div>
+					</div>
+					<select class="form-control" ng-model="common.range.first" ng-options="range.Name for range in (common.range.kind == 'week' ? common.weeks : common.months)"></select>
+					<select class="form-control" ng-model="common.range.second" ng-options="range.Name for range in (common.range.kind == 'week' ? common.weeks : common.months)" ng-show="common.range.interpolation != 0"></select>
+				</form>
+			</div>
+			<!-- industry selection --><div class="col-xs-12 col-sm-6">
+				<button type="button" class="btn btn-primary" ng-click="selectIndustries()">Select Industries</button>
+				{{selectedIndustries()}}
+				<script type="text/ng-template" id="tplIndustrySelector.html">
+					<div class="modal-header">
+						<h3 class="modal-title">Select Industries</h3>
+					</div>
+					<div class="modal-body">
+						<div>
+							<label><input type="checkbox" ng-model="industrySelect.all">Select all</label>
+							<label class="btn btn-danger btn-sm" ng-click="unselectAll()" ng-show="!industrySelect.all">Unselect all</label>
+						</div>
+						<div class="checkbox" ng-repeat="industry in industries | orderBy: 'Name'" ng-show="!industrySelect.all">
+							<label>
+								<input type="checkbox" value="{{industry.Id}}" ng-model="industry.Selected">{{industry.Name}}
+							</label>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button class="btn btn-primary" ng-click="ok()">Close</button>
+					</div>
+				</script>
+
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<!-- criteria --><div class="panel panel-info col-xs-12 col-md-4">
+			<div class="panel-heading">Criteria</div>
+			<table class="table table-condensed">
+				<thead>
+					<tr><th>Criteria</th><th>Select</th></tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="(criteriumId, criterium) in criteria" ng-show="!criterium.Disabled && !criterium.Selected">
+						<td>{{criterium.Name}}</td>
+						<td><input type="checkbox" ng-model="criterium.Selected" ng-disabled="criterium.Disabled" ng-change="criteriumToggled(criterium)" /></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="panel panel-info col-xs-12 col-md-4">
+			<div class="panel-heading">Criteria selected</div>
+			<table class="table table-condensed">
+				<thead>
+					<tr><th>Criteria</th><th>Remove</th><th>Group by</th><th>Order by</th></tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="criterium in criteria | orderBy:'Order'" ng-show="criterium.Selected">
+						<td>{{criterium.Name}}</td>
+						<td><input type="checkbox" ng-model="criterium.Selected" ng-disabled="criterium.Disabled" ng-change="criteriumToggled(criterium)" /></td>
+						<td><input type="checkbox" ng-model="criterium.GroupBy" ng-disabled="!criterium.Selected" /></td>
+						<td>
+							<span ng-class="{inactive: criterium.OrderDescending !== false}" ng-click="orderByCriteria(criterium.Id, false)" class="glyphicon glyphicon-chevron-up" title="Order by increasing value"></span>
+							<span ng-class="{inactive: criterium.OrderDescending !== true}" ng-click="orderByCriteria(criterium.Id, true)" class="glyphicon glyphicon-chevron-down" title="Order by decreasing value"></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="checkbox">
+				<label>
+					<input type="checkbox" ng-model="reporter.Pivot" ng-disabled="!hasEnoughCriteriaForPivot || common.range.interpolation != 0" /> Pivot
+				</label>
+			</div>
+		</div>
+		<!-- values --><div class="panel panel-info col-xs-12 col-md-4">
+			<div class="panel-heading">Values to display</div>
+			<table class="table table-condensed">
+				<thead>
+					<tr><th>Value</th><th>Select</th><th>Order by</th></tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="value in values">
+						<td>{{value.Name}}</td>
+						<td><input type="checkbox" ng-model="value.Selected" /></td>
+						<td>
+							<span ng-class="{inactive: reporter.OrderingValue !== value.Id || reporter.OrderDescending}" ng-click="orderByValue(value.Id, false)" class="glyphicon glyphicon-chevron-up"></span>
+							<span ng-class="{inactive: reporter.OrderingValue !== value.Id || !reporter.OrderDescending}" ng-click="orderByValue(value.Id, true)" class="glyphicon glyphicon-chevron-down"></span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<button class="btn btn-primary" ng-click="generateReport()" ng-disabled="!canGenerate()">Generate Custom Report</button>
+	<div class="row" ng-show="report != null">
+		<div class="col-sm-12">
+			<!-- result table --><table class="table table-bordered table-hover table-condensed" ng-class="hiddenColumns" ng-if="!report.Reporter.Pivot && report.Reporter.Interpolation === 0">
+				<thead>
+					<tr>
+						<th ng-repeat-start="crit in reporter.Criteria" ng-if="false"></th>
+						<th ng-repeat="info in crit.Informative">
+							<span ng-click="hideColumn($event)" class="glyphicon glyphicon-remove" title="Hide this column"></span>
+							{{criteria[info].Name}}
+						</th>
+						<th ng-repeat-end>
+							<span ng-click="hideCriteria(crit.Criteria)" ng-show="!isSingleCriteria()" class="glyphicon glyphicon-remove" title="Hide this column"></span>
+							{{criteria[crit.Criteria].Name}}
+							<span ng-class="{inactive: criteria[crit.Criteria].OrderDescending !== false}" ng-click="orderByCriteria(crit.Criteria, false, true)" class="glyphicon glyphicon-chevron-up" title="Order by increasing value"></span>
+							<span ng-class="{inactive: criteria[crit.Criteria].OrderDescending !== true}" ng-click="orderByCriteria(crit.Criteria, true, true)" class="glyphicon glyphicon-chevron-down" title="Order by decreasing value"></span>
+						</th>
+
+						<th ng-repeat="valueId in report.ValueEnums">
+							<span ng-click="values[valueId].Selected=false" ng-show="report.ValueEnums.length > 1" class="glyphicon glyphicon-remove" title="Hide this column"></span>
+							{{values[valueId].Name}}
+							<span ng-class="{inactive: reporter.OrderingValue !== valueId || reporter.OrderDescending}" ng-click="orderByValue(valueId, false, true)" class="glyphicon glyphicon-chevron-up" title="Order by increasing value"></span>
+							<span ng-class="{inactive: reporter.OrderingValue !== valueId || !reporter.OrderDescending}" ng-click="orderByValue(valueId, true, true)" class="glyphicon glyphicon-chevron-down" title="Order by decreasing value"></span>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat-start="row in report.Rows" ng-class="{success: row.SubRows.length}">
+						<td ng-repeat="info in row.InformativeValues track by $index" ng-click="drillDownInformative(0, $index, info)">{{info}}</td>
+						<td ng-click="drillDownCriteria(0, row.Title)">{{row.Title}}</td>
+
+						<td ng-repeat="criteriaName in rowCriteriaLists[0]">{{criteriaName}}</td>
+
+						<td ng-repeat="value in row.Values track by $index" align="right">{{value}}</td>
+					</tr>
+					<tr ng-repeat-start="subrow in row.SubRows" ng-class="{info: subrow.SubRows.length}">
+						<td class="remind" ng-repeat="remind in remindList([row]) track by $index">{{remind}}</td>
+
+						<td ng-repeat="info in subrow.InformativeValues track by $index" ng-click="drillDownInformative(1, $index, info)">{{info}}</td>
+						<td ng-click="drillDownCriteria(1, subrow.Title)">{{subrow.Title}}</td>
+
+						<td ng-repeat="criteriaName in rowCriteriaLists[1]">{{criteriaName}}</td>
+
+						<td ng-repeat="value in subrow.Values track by $index" align="right">{{value}}</td>
+					</tr>
+					<tr ng-repeat-start="subsubrow in subrow.SubRows" ng-class="{warning: subsubrow.SubRows.length}">
+						<td class="remind" ng-repeat="remind in remindList([row, subrow]) track by $index">{{remind}}</td>
+
+						<td ng-repeat="info in subsubrow.InformativeValues track by $index" ng-click="drillDownInformative(2, $index, info)">{{info}}</td>
+						<td ng-click="drillDownCriteria(2, subsubrow.Title)">{{subsubrow.Title}}</td>
+
+						<td ng-repeat="criteriaName in rowCriteriaLists[2]">{{criteriaName}}</td>
+
+						<td ng-repeat="value in subsubrow.Values track by $index" align="right">{{value}}</td>
+					</tr>
+					<tr ng-repeat-start="subsubsubrow in subsubrow.SubRows">
+						<td class="remind" ng-repeat="remind in remindList([row, subrow, subsubrow]) track by $index">{{remind}}</td>
+
+						<td ng-repeat="info in subsubsubrow.InformativeValues track by $index" ng-click="drillDownInformative(3, $index, info)">{{info}}</td>
+						<td ng-click="drillDownCriteria(3, subsubsubrow.Title)">{{subsubsubrow.Title}}</td>
+
+						<td ng-repeat="criteriaName in rowCriteriaLists[3]">{{criteriaName}}</td>
+
+						<td ng-repeat="value in subsubsubrow.Values track by $index" align="right">{{value}}</td>
+					</tr>
+					<tr ng-repeat-end></tr>
+					<tr ng-repeat-end></tr>
+					<tr ng-repeat-end></tr>
+					<tr ng-repeat-end></tr>
+				</tbody>
+			</table>
+			<!-- pivot result table --><table class="table table-bordered table-hover table-condensed" ng-if="report.Reporter.Pivot || report.Reporter.Interpolation !== 0">
+				<thead>
+					<tr>
+						<th ng-repeat-start="crit in reporter.Criteria | skip:(report.Reporter.Pivot?-1:0)" ng-if="false"></th>
+						<th ng-repeat="info in crit.Informative">{{criteria[info].Name}}</th>
+						<th ng-repeat-end>{{criteria[crit.Criteria].Name}}</th>
+
+						<th ng-repeat="pivotTitle in report.PivotTitles">{{pivotTitle}}</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat-start="row in report.Rows" ng-class="{success: row.SubRows.length}">
+						<td ng-repeat="info in row.InformativeValues">{{info}}</td>
+						<td>{{row.Title}}</td>
+
+						<td ng-repeat="criteriaName in rowCriteriaLists[0]">{{criteriaName}}</td>
+
+						<td ng-repeat="iCol in [] | range:report.PivotTitles.length" align="right"><span ng-repeat="value in row.PivotValues[iCol]">{{value}} </span></td>
+					</tr>
+					<tr ng-repeat-start="subrow in row.SubRows" ng-class="{info: subrow.SubRows.length}">
+						<td class="remind" ng-repeat="remind in remindList([row]) track by $index">{{remind}}</td>
+
+						<td ng-repeat="info in subrow.InformativeValues">{{info}}</td>
+						<td>{{subrow.Title}}</td>
+
+						<td ng-repeat="criteriaName in rowCriteriaLists[1]">{{criteriaName}}</td>
+
+						<td ng-repeat="iCol in [] | range:report.PivotTitles.length" align="right"><span ng-repeat="value in subrow.PivotValues[iCol]">{{value}} </span></td>
+					</tr>
+					<tr ng-repeat-start="subsubrow in subrow.SubRows" ng-class="{info: subsubrow.SubRows.length}">
+						<td class="remind" ng-repeat="remind in remindList([row, subrow]) track by $index">{{remind}}</td>
+
+						<td ng-repeat="info in subsubrow.InformativeValues">{{info}}</td>
+						<td>{{subsubrow.Title}}</td>
+
+						<td ng-repeat="criteriaName in rowCriteriaLists[2]">{{criteriaName}}</td>
+
+						<td ng-repeat="iCol in [] | range:report.PivotTitles.length" align="right"><span ng-repeat="value in subsubrow.PivotValues[iCol]">{{value}} </span></td>
+					</tr>
+					<tr ng-repeat-end></tr>
+					<tr ng-repeat-end></tr>
+					<tr ng-repeat-end></tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="drillDownContent.html">
+	<div class="modal-header">
+		<h3 class="modal-title">Drill Down</h3>
+	</div>
+	<div class="modal-body">
+		<div ng-show="!drillDown.mode">
+			<button type="button" class="btn btn-primary btn-sm btn-block" ng-click="drillDown.mode='drilldown'" ng-show="drillDown.SubCriteria.length + (drillDown.OtherCriteria?1:0)>=2">Drill Down</button>
+			<button type="button" class="btn btn-primary btn-sm btn-block" ng-click="drillDown.mode='showads'" ng-show="canShowAds()">Show Ads</button>
+		</div>
+		<div ng-show="drillDown.mode == 'drilldown'">
+			Drill Down for {{drillDown.Criteria.Name}}: {{drillDown.SelectedCriteriaFilter.Name}}
+			<span ng-show="drillDown.OtherCriteria">by {{drillDown.OtherCriteria.Name}}</span>
+			<div ng-show="drillDown.SubCriteria.length">
+				<p>Include the following details:</p>
+				<div><label ng-repeat="subCriterium in drillDown.SubCriteria"><input type="checkbox" ng-model="subCriterium.Selected" />{{subCriterium.Name}}</label></div>
+			</div>
+		</div>
+		<div ng-show="drillDown.mode == 'showads'">
+			Show Ads for {{drillDown.Criteria.Name}}: {{drillDown.SelectedCriteriaFilter.Name}}
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button class="btn btn-primary" ng-click="ok()" ng-disabled="!drillDown.mode">OK</button>
+		<button class="btn btn-warning" ng-click="cancel()">Cancel</button>
+	</div>
+</script>

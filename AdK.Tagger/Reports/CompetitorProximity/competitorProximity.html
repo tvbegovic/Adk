@@ -1,0 +1,52 @@
+﻿<div ng-controller="competitorProximityReportCtrl">
+    <div class="row" ng-show="channelsLoaded">
+        <div class="col-sm-12">
+            <div ng-show="haveChannels">
+                <div class="report-filters">
+                    <div class="filter-row main">
+                        <div class="date-wrapper-filter">
+                            <report-custom-date-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()"></report-custom-date-filter>
+						</div>
+                        <report-channel-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-filter>
+                        <report-brand-filter on-change="brandFilterChange"></report-brand-filter>
+                        <report-notes note-id="competitor_proximity" ng-if="user.isAdmin" />
+                    </div>
+                </div>
+
+                <div class="report-data" ng-hide="loading || message.show">
+                    <div class="allow-overflow">
+                        <table ng-repeat="adBlock in AdBlocks" class="report-table table table-striped table-hover table-bordered">
+                            <caption>{{adBlock.HeaderString}}</caption>
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Time</th>
+                                    <th class="text-center">Advertiser</th>
+                                    <th class="text-center">Brand</th>
+                                    <th class="text-center">Spot</th>
+                                    <th class="text-center">Air-Time</th>
+                                    <th class="text-center">Industry</th>
+                                    <th class="text-center">Category</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="ad in adBlock.Ads" ng-class="{'focus-row': ad.IsFocusBrand, 'competitor-row': ad.IsCompetitorCategory}">
+                                    <td class="text-right">{{ad.StartString}}</td>
+                                    <td class="text">{{ad.Advertiser}}</td>
+                                    <td class="text">{{ad.Brand}}</td>
+                                    <td class="text">{{ad.SpotTitle}}</td>
+                                    <td class="text-right">{{ad.DurationString}}</td>
+                                    <td class="text">{{ad.Industry}}</td>
+                                    <td class="text">{{ad.Category}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+            </div>
+            <report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+        </div>
+    </div>
+</div>

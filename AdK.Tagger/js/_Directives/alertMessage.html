@@ -1,0 +1,10 @@
+<div ng-if="type === 'Error'" class="alert alert-danger big-icon">
+  <i class="fa fa-frown-o" aria-hidden="true"></i>
+	<span ng-if="text">{{text}}</span>
+	<span ng-if="!text">Unexpected error occurred while processing your request. Please try again
+  or contact administrator.</span>
+</div>
+
+<div ng-if="template === 'Info'" class="alert alert-info big-icon">
+ <i class="fa fa-info-circle" aria-hidden="true"></i> {{text}}
+</div>

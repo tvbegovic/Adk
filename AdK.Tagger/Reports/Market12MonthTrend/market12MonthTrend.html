@@ -1,0 +1,33 @@
+﻿<div ng-controller="market12MonthTrendCtrl">
+    <div class="row" ng-if="channels">
+        <div class="col-sm-12" ng-show="channels.length">
+            <div class="report-filters">
+                <div class="filter-row main">
+                    <report-market-filter on-init="onDirectivesInit()" on-change="load()"></report-market-filter>
+                    <report-show-filter on-init="onDirectivesInit()" on-change="load()"></report-show-filter>
+                    <label>Show</label>
+                    <div class="filter-box">
+                        <div class="btn-group">
+                            <label class="btn btn-primary" ng-model="show" btn-radio="0" ng-change="refreshChart(0)">
+                                Monthly
+                            </label>
+                            <label class="btn btn-primary" ng-model="show" btn-radio="1" ng-change="refreshChart(1)">
+                                Daily
+                            </label>
+                        </div>
+                    </div>
+                    <report-notes note-id="market_12_month_trend" ng-if="user.isAdmin" />
+                </div>
+            </div>
+            <div class="report-data">
+                <div ng-hide="message.show" style="max-width: 1200px; padding: 20px">
+                    <nvd3 options="lineChartOptions" data="marketOverviewTrendList" api="api" />
+                </div>
+            </div>
+
+            <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+        </div>
+        <report-message ng-hide="channels.length" template="NoMediaHouse"></report-message>
+    </div>
+</div>

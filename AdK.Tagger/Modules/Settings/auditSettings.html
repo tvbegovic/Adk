@@ -1,0 +1,22 @@
+<div>
+
+	<alert-message type="Error" ng-if="showError"></alert-message>
+
+	<h3>Notification for scanned spots: </h3>
+	<div style="padding: 10px;">
+		<button class="btn btn-primary" ng-click="editSpotScanNotificationEmail()">Edit content</button>
+		<label style="margin-left: 20px;">
+			<input type="checkbox" ng-model="auditSettings.SendMailOnSpotScan" ng-click="saveSettings()">
+			Send notification e-mail
+		</label>
+	</div>
+ <div class="control-group">
+				<div class="control-label" style="margin: 10px 0;">Mock recipient
+					<span class="small">(all mails will be send to this addres instead of original address. for multiple emails seperate them with ; if empty email will be send to original address.)</span>
+				</div>
+        <div class="controls form-inline">
+            <input type="text" style="width: 500px;" ng-model="auditSettings.SpotScanMailMockReciver">
+						<button class="btn btn-primary" ng-click="saveSettings()">Update mock recipient</button>
+        </div>
+    </div>
+</div>

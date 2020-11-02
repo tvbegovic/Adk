@@ -1,0 +1,58 @@
+﻿<div class="rows-spaced">
+	<h1>Dashboard</h1>
+	<div class="row" ng-if="dash.transcript && (user.isAdmin || user.granted['transcript']) && earningByMonth">
+		<div class="col-sm-12" ng-if="earningByMonth">
+			<label>Transcript earning by month</label>
+
+			<table class="table table-condensed fs-grid">
+				<thead>
+					<tr>
+						<th class="text-center">Month</th>
+						<th class="text-center">Work time</th>
+						<th class="text-center">Transcribed time</th>
+						<!--<th class="text-center">Earning</th>-->
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="stat in earningByMonth">
+						<td class="text-center">{{stat.Month}}</td>
+						<td class="text-center">{{stat.EditTime | duration}}</td>
+						<td class="text-center">{{stat.SongDuration | duration}}</td>
+						<!--<td class="text-right">{{stat.Earning | number:2}}</td>-->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row" ng-if="dash.transcript && (user.isAdmin || user.granted['transcript']) && earningByWeek">
+		<div class="col-sm-12" ng-if="earningByWeek">
+			<label>Transcript earning by week</label>
+
+			<table class="table table-condensed fs-grid">
+				<thead>
+					<tr>
+						<th class="text-center">Week</th>
+						<th class="text-center">Work time</th>
+						<th class="text-center">Transcribed time</th>
+						<!--<th class="text-center">Earning</th>-->
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="stat in earningByWeek">
+						<td class="text-center">{{stat.Period}}</td>
+						<td class="text-center">{{stat.EditTime | duration}}</td>
+						<td class="text-center">{{stat.SongDuration | duration}}</td>
+						<!--<td class="text-right">{{stat.Earning | number:2}}</td>-->
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-3" ng-if="dash.transcript && (user.isAdmin || user.granted['transcript'])">Transcript Queue {{dash.transcript.queueLength}}</div>
+		<!--<div class="col-sm-9" ng-if="dash.transcript && (user.isAdmin || user.granted['transcript'])">
+			My Transcript Performance (lower is better)
+			<linechart ng-if="dash.transcript.performanceChart" data="dash.transcript.performanceChart" options="options" width="600" height="200"></linechart>
+		</div>-->
+	</div>
+</div>

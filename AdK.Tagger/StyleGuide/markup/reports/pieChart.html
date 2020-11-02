@@ -1,0 +1,135 @@
+<div ng-controller="pieChartCtrl">
+  <h2 class="sg-h2 title">Pie Chart</h2>
+
+  <div class="alert alert-warning">
+    Pie chart is generally not used in reports. Consider using bar charts instead.
+  </div>
+
+  <h3>General styles</h3>
+  <ul>
+    <li>Options should inherit from <b>baseChartConfig.getPieChartOptions()</b> service</li>
+    <li>Pie charts should be fixed size. No scaling based on screen size.</li>
+    <li>wrapp normal size pie chart(pie chart that have size inherited from baseChartConfig) with div element that have <b>"small-chart-wrapper"</b> class</li>
+    <li>Label above chart shoud have class <b>"chart-label"</b> to be consistent</li>
+  </ul>
+
+  <br><br>
+
+  <!--EXAMPLE 1-->
+  <h3>Pie chart basic</h3>
+  <br><br>
+  <div class="small-chart-wrapper">
+    <label class="chart-label">Test chart</label>
+    <nvd3 options="chartOptions" data="data"></nvd3>
+  </div>
+
+  <p>Source:</p>
+  <div class="sg-sub-section">
+    <div class="sg-source sg-source-active">
+      <pre class="line-numbers">
+        <code class="language-markup">
+          <span class="token tag"><span class="token punctuation">&lt;</span>div class="small-chart-wrapper"</span><span class="token punctuation">&gt;</span>
+            <span class="token tag"><span class="token punctuation">&lt;</span>label class="chart-label"</span><span class="token punctuation">&gt;</span>
+              Test chart
+            <span class="token tag"><span class="token punctuation">&lt;</span>/label</span><span class="token punctuation">&gt;</span>
+            <span class="token tag"><span class="token punctuation">&lt;</span>nvd3 options="chartOptions" data="data"</span><span class="token punctuation">&gt;</span><span class="token punctuation">&lt;/nvd3&gt;</span>
+          <span class="token tag"><span class="token punctuation">&lt;</span>/div</span><span class="token punctuation">&gt;</span>
+
+          &lt;script&gt;
+            //Pie chart should inherit from BaseChartConfig.getPieChartOptions
+            // If we display only percent we should pass percentGraph: true as settings
+            //Extend base settings with data we want.
+            $scope.chartOptions = _.merge(BaseChartConfig.getPieChartOptions({ percentGraph: true }),
+              {
+                chart: {
+                  x: function(d) { return d.Name + ' ' + ValueFormatter.toPercentageString(d.Value); },
+                  y: function(d) { return $scope.roundWithDecimalPlaces(d.Value, 1); }
+                }
+              });
+          &lt;/script&gt;
+
+        </code>
+      </pre>
+    </div>
+  </div>
+
+  <br>
+
+  <!--EXAMPLE 2 PIE CHART PLACEHOLDER-->
+  <h3>Pie chart placeholder</h3>
+  <p> When there is no data to display in pie chart we should display pie chart placeholder </p>
+  <br><br>
+  <div class="pie-chart-placeholder">
+    <span>No Data</span>
+  </div>
+  <br><br>
+  <div class="alert alert-info">
+    <b>TODO:</b> Create directive for pie chart placeholder
+  </div>
+
+
+  <br><br><br>
+  <!--EXAMPLE 3 MULTIPLE PIE CHARTS ON PAGE-->
+  <h3>Multiple Pie charts on page</h3>
+  <ul>
+    <li>Max pie charts per row: 3</li>
+    <li> Pie chart should always be fixed size </li>
+    <li>On smaller screen sizes show 1 or 2 pie charts based on size of the screen</li>
+    <li>To ensure desired behaviour wrapp each pie-chart with div that have <b>"small-chart-wrapper"</b> class and wrapp all
+      pie charts with div that have <b> "floated-charts-wrapper"</b> class
+      <br><br>
+      <div class="sg-source sg-source-active">
+        <pre class="line-numbers">
+          <code class="language-markup">
+            <span class="token tag"><span class="token punctuation">&lt;</span>div class="row"</span><span class="token punctuation">&gt;</span>
+              <span class="token tag"><span class="token punctuation">&lt;</span>div class="floated-charts-wrapper"</span><span class="token punctuation">&gt;</span>
+                <span class="token tag"><span class="token punctuation">&lt;</span>div class="small-chart-wrapper"</span><span class="token punctuation">&gt;</span>
+                  <span class="token tag"><span class="token punctuation">&lt;</span>label class="chart-label"</span><span class="token punctuation">&gt;</span>
+                    chart 1
+                  <span class="token tag"><span class="token punctuation">&lt;</span>/label</span><span class="token punctuation">&gt;</span>
+                  <span class="token tag"><span class="token punctuation">&lt;</span>nvd3 options="chartOptions" data="data"</span><span class="token punctuation">&gt;</span><span class="token punctuation">&lt;/nvd3&gt;</span>
+                <span class="token tag"><span class="token punctuation">&lt;</span>/div</span><span class="token punctuation">&gt;</span>
+                <span class="token tag"><span class="token punctuation">&lt;</span>div class="small-chart-wrapper"</span><span class="token punctuation">&gt;</span>
+                  <span class="token tag"><span class="token punctuation">&lt;</span>label class="chart-label"</span><span class="token punctuation">&gt;</span>
+                    chart 2
+                  <span class="token tag"><span class="token punctuation">&lt;</span>/label</span><span class="token punctuation">&gt;</span>
+                  <span class="token tag"><span class="token punctuation">&lt;</span>nvd3 options="chartOptions" data="data"</span><span class="token punctuation">&gt;</span><span class="token punctuation">&lt;/nvd3&gt;</span>
+                <span class="token tag"><span class="token punctuation">&lt;</span>/div</span><span class="token punctuation">&gt;</span>
+                ..... // As many pie charts as we like
+              <span class="token tag"><span class="token punctuation">&lt;</span>/div</span><span class="token punctuation">&gt;</span>
+            <span class="token tag"><span class="token punctuation">&lt;</span>/div</span><span class="token punctuation">&gt;</span>
+
+          </code>
+        </pre>
+      </div>
+    </li>
+  </ul>
+
+  <div class="row">
+    <div class="floated-charts-wrapper">
+      <div class="small-chart-wrapper">
+        <label class="chart-label">chart 1</label>
+        <nvd3 options="chartOptions" data="data"></nvd3>
+      </div>
+      <div class="small-chart-wrapper">
+        <label class="chart-label">chart 2</label>
+        <div class="pie-chart-placeholder">
+          <span>No Data</span>
+        </div>
+      </div>
+      <div class="small-chart-wrapper">
+        <label class="chart-label">chart 3</label>
+        <nvd3 options="chartOptions" data="data"></nvd3>
+      </div>
+      <div class="small-chart-wrapper">
+        <label class="chart-label">chart 4</label>
+        <nvd3 options="chartOptions" data="data"></nvd3>
+      </div>
+      <div class="small-chart-wrapper">
+        <label class="chart-label">chart 5</label>
+        <nvd3 options="chartOptions" data="data"></nvd3>
+      </div>
+    </div>
+  </div>
+
+</div>

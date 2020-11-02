@@ -1,0 +1,82 @@
+angular.module('app')
+  .controller('competitorsCtrl', ['$scope', '$q', 'MediaHouses', 'fs', function($scope, $q, MediaHouses, fs) {
+    $scope.current = {
+      channel: null,
+      competitors: null
+    };
+    $q.all({
+      channels: MediaHouses.getChannels(),
+      myChannels: MediaHouses.getMyChannels(),
+      competitors: MediaHouses.getCompetitors()
+    }).then(function(res) {
+      $scope.channels = res.channels;
+      $scope.myChannels = res.myChannels;
+      $scope.competitors = res.competitors;
+
+      var channelGrid = new fs.Grid(res.channels);
+      new fs.Column(channelGrid, 'Channel Name', 'Name', new fs.FilterSubstring());
+      new fs.Column(channelGrid, 'City', 'City', new fs.FilterFromData(res.channels, 'City'));
+      new fs.Column(channelGrid, 'Country', 'Country', new fs.FilterFromData(res.channels, 'Country'));
+      new fs.Column(channelGrid, 'Media', 'MediaType', new fs.FilterFromData(res.channels, 'MediaType'));
+      $scope.channelGrid = channelGrid;
+
+      $scope.orderByChannelGrid = function(channel) {
+        return $scope.channelGrid.orderKey(channel);
+      };
+
+      var competitorGrid = new fs.Grid(res.channels);
+      new fs.Column(competitorGrid, 'Channel Name', 'Name', new fs.FilterSubstring());
+      new fs.Column(competitorGrid, 'City', 'City', new fs.FilterFromData(res.channels, 'City'));
+      new fs.Column(competitorGrid, 'Country', 'Country', new fs.FilterFromData(res.channels, 'Country'));
+      new fs.Column(competitorGrid, 'Media', 'MediaType', new fs.FilterFromData(res.channels, 'MediaType'));
+      $scope.competitorGrid = competitorGrid;
+
+      $scope.orderByCompetitorGrid = function(channel) {
+        return $scope.competitorGrid.orderKey(channel);
+      };
+
+      if (res.myChannels.length)
+        $scope.myChannelChanged(res.myChannels[0]);
+    });
+
+    $scope.myChannelChanged = function(channel) {
+      $scope.current.channel = channel;
+    };
+    $scope.addCompetitor = function() {
+      var competitor = {
+        MyChannelId: $scope.current.channel.Id,
+        OtherChannelId: $scope.current.otherChannel.Id
+      };
+      $scope.competitors.push(competitor);
+      MediaHouses.addCompetitor(competitor);
+      $scope.current.otherChannel = null;
+    };
+    $scope.removeCompetitor = function() {
+      var competitor = {
+        MyChannelId: $scope.current.channel.Id,
+        OtherChannelId: $scope.current.competitor.Id
+      };
+      _.remove($scope.competitors, function(competitor) { return isCompetitorChannel(competitor, $scope.current.competitor); });
+      MediaHouses.removeCompetitor(competitor);
+      $scope.current.competitor = null;
+    };
+    function isCompetitorChannel(competitor, channel) {
+      var is =
+        competitor.MyChannelId === $scope.current.channel.Id &&
+        competitor.OtherChannelId === channel.Id;
+      return is;
+    }
+    $scope.isCompetitor = function(channel) {
+      if (!$scope.current.channel || channel.Id === $scope.current.channel.Id)
+        return false;
+      var match = function(competitor) {
+        return isCompetitorChannel(competitor, channel);
+      };
+      return _.some($scope.competitors, match);
+    };
+    $scope.isntCompetitor = function(channel) {
+      if (!$scope.current.channel || channel.Id === $scope.current.channel.Id)
+        return false;
+      return !$scope.isCompetitor(channel);
+    };
+  }])

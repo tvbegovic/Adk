@@ -1,0 +1,434 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="http://tempuri.org/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="http://tempuri.org/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="http://tempuri.org/">
+      <s:element name="HelloWorld">
+        <s:complexType />
+      </s:element>
+      <s:element name="HelloWorldResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="HelloWorldResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="Login">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="LoginResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="LoginResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddSample">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="AudioData" type="s:base64Binary" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddSampleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddSampleResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddSampleFromURL">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="URL" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AddSampleFromURLResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AddSampleFromURLResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSampleStatus">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SampleID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetSampleStatusResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetSampleStatusResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMatchesForSampleEx">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SampleID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMatchesForSampleExResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMatchesForSampleExResult" type="tns:ArrayOfMatch" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfMatch">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Match" nillable="true" type="tns:Match" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Match">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="1" name="SampleID" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Periods" type="tns:ArrayOfMatchPeriod" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfMatchPeriod">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="MatchPeriod" nillable="true" type="tns:MatchPeriod" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="MatchPeriod">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="SourceStart" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="SourceEnd" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="DestinationStart" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="DestinationEnd" type="s:double" />
+          <s:element minOccurs="1" maxOccurs="1" name="BER" type="s:double" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="GetMatchesForSample">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApiKey" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="SampleID" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="GetMatchesForSampleResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="GetMatchesForSampleResult" type="tns:ArrayOfString" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfString">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="string" nillable="true" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="CreateUser">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="Username" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="Password" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="CreateUserResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="CreateUserResult" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MatchingComplete">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ApiKey" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="MatchingCompleteResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="MatchingCompleteResult" type="s:boolean" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="HelloWorldSoapIn">
+    <wsdl:part name="parameters" element="tns:HelloWorld" />
+  </wsdl:message>
+  <wsdl:message name="HelloWorldSoapOut">
+    <wsdl:part name="parameters" element="tns:HelloWorldResponse" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapIn">
+    <wsdl:part name="parameters" element="tns:Login" />
+  </wsdl:message>
+  <wsdl:message name="LoginSoapOut">
+    <wsdl:part name="parameters" element="tns:LoginResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddSampleSoapIn">
+    <wsdl:part name="parameters" element="tns:AddSample" />
+  </wsdl:message>
+  <wsdl:message name="AddSampleSoapOut">
+    <wsdl:part name="parameters" element="tns:AddSampleResponse" />
+  </wsdl:message>
+  <wsdl:message name="AddSampleFromURLSoapIn">
+    <wsdl:part name="parameters" element="tns:AddSampleFromURL" />
+  </wsdl:message>
+  <wsdl:message name="AddSampleFromURLSoapOut">
+    <wsdl:part name="parameters" element="tns:AddSampleFromURLResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetSampleStatusSoapIn">
+    <wsdl:part name="parameters" element="tns:GetSampleStatus" />
+  </wsdl:message>
+  <wsdl:message name="GetSampleStatusSoapOut">
+    <wsdl:part name="parameters" element="tns:GetSampleStatusResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMatchesForSampleExSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMatchesForSampleEx" />
+  </wsdl:message>
+  <wsdl:message name="GetMatchesForSampleExSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMatchesForSampleExResponse" />
+  </wsdl:message>
+  <wsdl:message name="GetMatchesForSampleSoapIn">
+    <wsdl:part name="parameters" element="tns:GetMatchesForSample" />
+  </wsdl:message>
+  <wsdl:message name="GetMatchesForSampleSoapOut">
+    <wsdl:part name="parameters" element="tns:GetMatchesForSampleResponse" />
+  </wsdl:message>
+  <wsdl:message name="CreateUserSoapIn">
+    <wsdl:part name="parameters" element="tns:CreateUser" />
+  </wsdl:message>
+  <wsdl:message name="CreateUserSoapOut">
+    <wsdl:part name="parameters" element="tns:CreateUserResponse" />
+  </wsdl:message>
+  <wsdl:message name="MatchingCompleteSoapIn">
+    <wsdl:part name="parameters" element="tns:MatchingComplete" />
+  </wsdl:message>
+  <wsdl:message name="MatchingCompleteSoapOut">
+    <wsdl:part name="parameters" element="tns:MatchingCompleteResponse" />
+  </wsdl:message>
+  <wsdl:portType name="ServiceProviderSoap">
+    <wsdl:operation name="HelloWorld">
+      <wsdl:input message="tns:HelloWorldSoapIn" />
+      <wsdl:output message="tns:HelloWorldSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <wsdl:input message="tns:LoginSoapIn" />
+      <wsdl:output message="tns:LoginSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddSample">
+      <wsdl:input message="tns:AddSampleSoapIn" />
+      <wsdl:output message="tns:AddSampleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AddSampleFromURL">
+      <wsdl:input message="tns:AddSampleFromURLSoapIn" />
+      <wsdl:output message="tns:AddSampleFromURLSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleStatus">
+      <wsdl:input message="tns:GetSampleStatusSoapIn" />
+      <wsdl:output message="tns:GetSampleStatusSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMatchesForSampleEx">
+      <wsdl:input message="tns:GetMatchesForSampleExSoapIn" />
+      <wsdl:output message="tns:GetMatchesForSampleExSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="GetMatchesForSample">
+      <wsdl:input message="tns:GetMatchesForSampleSoapIn" />
+      <wsdl:output message="tns:GetMatchesForSampleSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <wsdl:input message="tns:CreateUserSoapIn" />
+      <wsdl:output message="tns:CreateUserSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="MatchingComplete">
+      <wsdl:input message="tns:MatchingCompleteSoapIn" />
+      <wsdl:output message="tns:MatchingCompleteSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="ServiceProviderSoap" type="tns:ServiceProviderSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap:operation soapAction="http://tempuri.org/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap:operation soapAction="http://tempuri.org/Login" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddSample">
+      <soap:operation soapAction="http://tempuri.org/AddSample" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddSampleFromURL">
+      <soap:operation soapAction="http://tempuri.org/AddSampleFromURL" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleStatus">
+      <soap:operation soapAction="http://tempuri.org/GetSampleStatus" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMatchesForSampleEx">
+      <soap:operation soapAction="http://tempuri.org/GetMatchesForSampleEx" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMatchesForSample">
+      <soap:operation soapAction="http://tempuri.org/GetMatchesForSample" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <soap:operation soapAction="http://tempuri.org/CreateUser" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MatchingComplete">
+      <soap:operation soapAction="http://tempuri.org/MatchingComplete" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="ServiceProviderSoap12" type="tns:ServiceProviderSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="HelloWorld">
+      <soap12:operation soapAction="http://tempuri.org/HelloWorld" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="Login">
+      <soap12:operation soapAction="http://tempuri.org/Login" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddSample">
+      <soap12:operation soapAction="http://tempuri.org/AddSample" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AddSampleFromURL">
+      <soap12:operation soapAction="http://tempuri.org/AddSampleFromURL" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetSampleStatus">
+      <soap12:operation soapAction="http://tempuri.org/GetSampleStatus" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMatchesForSampleEx">
+      <soap12:operation soapAction="http://tempuri.org/GetMatchesForSampleEx" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="GetMatchesForSample">
+      <soap12:operation soapAction="http://tempuri.org/GetMatchesForSample" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="CreateUser">
+      <soap12:operation soapAction="http://tempuri.org/CreateUser" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="MatchingComplete">
+      <soap12:operation soapAction="http://tempuri.org/MatchingComplete" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="ServiceProvider">
+    <wsdl:port name="ServiceProviderSoap" binding="tns:ServiceProviderSoap">
+      <soap:address location="http://access2.streamsink.com/PlayKontrol.Provider/ServiceProvider.asmx" />
+    </wsdl:port>
+    <wsdl:port name="ServiceProviderSoap12" binding="tns:ServiceProviderSoap12">
+      <soap12:address location="http://access2.streamsink.com/PlayKontrol.Provider/ServiceProvider.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

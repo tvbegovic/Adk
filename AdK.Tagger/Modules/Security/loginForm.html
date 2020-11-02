@@ -1,0 +1,97 @@
+<div ng-if="!authenticated" class="container container-fluid">
+	<h2 ng-if="mode.sign === 'in'">Log in</h2>
+	<div class="row" ng-if="mode.sign === 'in'">
+		<div class="col-sm-6">
+			<div class="pull-right">Don't have account yet? <button class="btn btn-default" ng-click="signup()">Sign Up</button></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-6" ng-if="mode.sign === 'in'">
+			<alert type="danger" ng-if="authFailed">Authentication failed</alert>
+			<form role="form">
+				<div class="form-group">
+					<label>Email address</label>
+					<input type="email" class="form-control" ng-model="user.email" ng-required="true" placeholder="Enter email">
+				</div>
+				<div class="form-group">
+					<label>Password</label>
+					<input type="password" class="form-control" ng-model="user.password" ng-required="true" placeholder="Password">
+				</div>
+								
+				<div class="text-right">
+					<span class="pull-left">
+						<a class="btn" ng-click="lostPassword()">Forgot your password?</a>
+						<!--<button type="button" class="btn btn-default" ng-click="validationLink()" ng-disabled="!user.email">Send validation link</button>-->
+					</span>
+					<button type="submit" class="btn btn-primary" ng-click="authenticate()">Submit</button>
+				</div>
+			</form>
+		</div>
+
+
+		<div class="col-sm-6" ng-if="mode.sign === 'passwordRecovery'">
+			<h2>Change password </h2>
+			<form class="form" name="forms.changepassform">
+				<alert type="danger" ng-if="passwordValidated === false">Invalid password validation link.</alert>
+				<alert type="danger" ng-if="passwordsdontmatch">Passwords don't match</alert>
+				<div class="form-group">
+					<label>New password</label>
+					<input type="password" class="form-control" ng-model="user.password" required placeholder="New password">
+				</div>
+				<div class="form-group">
+					<label>Repeat new password</label>
+					<input type="password" class="form-control" ng-model="user.password2" required placeholder="Repeat new password">
+				</div>
+				<div class="text-right">
+					<button type="submit" class="btn btn-primary" ng-click="changePassword()">Change password</button>
+				</div>
+			</form>
+		</div>
+		<script type="text/ng-template" id="SignupModal.html">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Sign up</h4>
+				</div>
+				<div class="modal-body">
+					<alert type="success" ng-if="validationMailSent">A validation e-mail has been sent to {{ user.email }}. Please click the link to activate your account.</alert>
+					<alert type="danger" ng-show="userExist">User account already exists.</alert>
+					<form novalidate class="form" role="form" ng-if="!validationMailSent" name="forms.signupform">
+						<div class="form-group">
+							<label>Email address</label>
+							<input type="email" class="form-control" ng-model="user.email" required placeholder="Enter email">
+						</div>
+						<div class="form-group">
+							<label>Password</label>
+							<input type="password" class="form-control" ng-model="user.password" required placeholder="Password">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button ng-if="!validationMailSent" type="submit" class="btn btn-primary" ng-click="createAccount()">Sign Up</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="cancel()">Close</button>
+				</div>
+			</div>
+		</script>
+		<script type="text/ng-template" id="ForgotPassModal.html">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h4 class="modal-title">Forgotten password</h4>
+					<div>Enter your email below and we'll send you a link with instructions.</div>
+				</div>
+				<div class="modal-body">
+					<alert type="success" ng-if="linkSent">An e-mail with the password recovery link has been sent to {{ user.email }}.</alert>
+					<form class="form" ng-if="!linkSent" role="form" name="forms.forgotpassform">
+						<div class="form-group">
+							<label>Email address</label>
+							<input type="email" class="form-control" ng-model="user.email" ng-required="true" placeholder="Enter email">
+						</div>
+					</form>
+				</div>
+				<div class="modal-footer">
+					<button type="submit" ng-if="!linkSent" class="btn btn-primary" ng-disabled="forms.forgotpassform.$invalid" ng-click="sendLink()">Submit</button>
+					<button type="button" class="btn btn-secondary" data-dismiss="modal" ng-click="cancel()">Close</button>
+				</div>
+			</div>
+		</script>
+	</div>
+</div>

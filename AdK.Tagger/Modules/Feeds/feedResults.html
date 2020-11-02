@@ -1,0 +1,236 @@
+<div class="rows-spaced" ng-show="isVisible">
+    <div class="col-sm-12" ng-cloak>
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 ng-hide="isPreview">
+                    <button class="btn btn-primary inline" ng-if="backButton && ($parent.user || showBackButton)" ng-click="backButton()">{{backButtonText}}</button>
+                    {{clientName}} Ad Alert
+                </h3>
+                <h3 ng-show="isPreview">Preview</h3>
+                <hr />
+            </div>
+            <div ng-if="!(isPreview || !IsClientFeed || reportId.length > 0)" class="col-sm-12">Last email sent: <span ng-if="feedFilter.LastEmailSent == 'Never'">Never</span><span ng-if="feedFilter.LastEmailSent != 'Never'">{{feedFilter.LastEmailSent | userDate}}, {{feedFilter.LastEmailSent | date: 'HH:mm:ss'}}</span></div>
+        </div>
+        <div class="row form-horizontal" ng-show="!(isPreview || reportId.length > 0)">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="report-filters">
+                            <div class="filter-row main">
+                                <div class="filter-box">
+                                    <label class="filter-label">Show new ads since</label>
+                                    <div class="date-wrapper-filter" style="display:inline-block; float:none">
+                                        <custom-date class="report-period-picker" custom-date-model="customDate" on-init="onDirectivesInit()" on-change="getFeed()" min-date="minDate"></custom-date>
+                                    </div>
+									<div class="btn-group">
+										<timepicker class="timepicker" ng-model="customDate" ng-model-options="{debounce: 1000}" show-meridian="false" template-url="/js/_directives/timepicker.html" ></timepicker>
+										</div>                                    
+									<!--<div class="btn-group" role="group">
+                                        <div class="btn-group" dropdown>
+                                            <button class="btn btn-default dropdown-toggle" dropdown-toggle style="width:70px !important; border-radius: 4px !important; height:30px;">
+                                                <div class="dropdown-selected" style="width:40px !important">{{selectedHourPart.hours | padZero:2}}:{{selectedHourPart.minutes | padZero:2}}</div> <span class="caret"></span>
+                                            </button>
+                                            <ul class="dropdown-menu" role="menu" style="min-width:80px !important">
+                                                <li role="menuitem" ng-repeat="value in hourParts">
+                                                    <a ng-click="changeSelectedHourPart(value)">{{value.hours | padZero:2}}:{{value.minutes | padZero:2}}</a>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                   </div>-->
+									
+                                </div>
+
+								<!--<button type="button" class="btn btn-default" ng-click="showResults()">Show</button>-->
+                                <button type="submit" class="btn btn-default" ng-click="setNowAsTimeStamp()" ng-if="IsClientFeed">Set NOW as timestamp</button>
+                                <button type="submit" class="btn btn-default" ng-disabled="shouldDisableExcelButton()" ng-click="exportToExcel()">Export to Excel</button>
+                                <button type="submit" class="btn btn-default" ng-disabled="shouldDisableSendMailButton()" ng-click="sendEmail()" ng-if="IsClientFeed">Send e-mail</button>
+
+                                <div class="filter-row clearfix">
+                                    <input type="text" ng-model="filter.adTranscript" on-enter="getFeed()"
+                                           style="height:30px; width: 710px; padding: 0 5px 0 5px; border: 1px solid #ccc; border-radius: 4px; "
+                                           placeholder="Search ad title" />
+                                    <button class="btn btn-primary inline" ng-click="getFeed()">Search</button>
+                                </div>
+
+                                <!--<div class="filter-row clearfix" ng-show="feedFilter.IncludeMp3">
+                                    <player-widget player="player"></player-widget>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="nr-grid table table-condensed fs-grid feed-results">
+                    <thead>
+                        <tr>
+                            <!--<th class="col-advertiser-brand">
+                                <div ng-hide="isPreview" class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                    <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.advertiserBrand == ''}" ng-click="setFocus('advertiserBrandFilter')"></i>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <input type="text" focus-on="advertiserBrandFilter" ng-model="filter.advertiserBrand" ng-model-options="{debounce: 1000}" ng-change="getFeed()" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-label" ng-click="setSort(keyChain.advertiserBrand)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.advertiserBrand" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    Advertiser<br />Brand
+                                </div>
+                            </th>-->
+                            <!--<th class="">
+                                <div ng-hide="isPreview" class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                    <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.advertiser == ''}" ng-click="setFocus('advertiserFilter')"></i>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <input type="text" focus-on="advertiserFilter" ng-model="filter.advertiser" ng-model-options="{debounce: 1000}" ng-change="getFeed()" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-label" ng-click="setSort(keyChain.advertiser)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.advertiser" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    Advertiser
+                                </div>
+                            </th>-->
+                            <th class="col-advertiser-brand">
+                                <div ng-hide="isPreview" class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                    <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.brand == ''}" ng-click="setFocus('brandFilter')"></i>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <input type="text" focus-on="brandFilter" ng-model="filter.brand" ng-model-options="{debounce: 1000}" ng-change="getFeed()" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-label" ng-click="setSort(keyChain.brand)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.brand" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    Brand
+                                </div>
+                            </th>
+                            <!--<th class="col-ad-transcript">
+                                Ad Transcript
+                            </th>-->
+                            <th class="col-ad-transcript">
+                                Ad Title
+                            </th>
+                            <th class="col-region-market">
+                                <div ng-hide="isPreview" class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                    <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.regionMarket == ''}" ng-click="setFocus('regionMarketFilter')"></i>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <input type="text" focus-on="regionMarketFilter" ng-model="filter.regionMarket" ng-model-options="{debounce: 1000}" ng-change="getFeed()" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-label" ng-click="setSort(keyChain.regionMarket)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.regionMarket" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    <!--Country<br />-->Market
+                                </div>
+                            </th>
+                            <th class="col-industry-category">
+                                Industry<br />Category
+                            </th>
+                            <th class="col-channel">
+                                <div ng-hide="isPreview" class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                    <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.channel == ''}" ng-click="setFocus('channelFilter')"></i>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <input type="text" focus-on="channelFilter" ng-model="filter.channel" ng-model-options="{debounce: 1000}" ng-change="getFeed()" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-label" ng-click="setSort(keyChain.channel)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.channel" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    Channel
+                                </div>
+                            </th>
+                            <th class="col-created">
+                                <div class="col-label" ng-click="setSort(keyChain.firstAiring)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.firstAiring" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    First Airing
+                                </div>
+                            </th>
+                            <th class="col-play">
+                                Play
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="feed in feedList track by $index">
+                        <tr ng-mouseenter="setActive(feed,true)" ng-mouseleave="setActive(feed,false)">
+                            <td rowspan="{{feed.Channels.length + 1}}" title="{{feed.BrandName}}">
+								<span ng-style="{'text-decoration': (feed.SongExcluded && !reportId ? 'line-through' : 'none')}">{{feed.BrandName}}</span>
+                            </td>
+                            <!--<td class="wrap-text" rowspan="{{feed.Channels.length + 1}}" title="{{feed.AdTranscript}}">
+                                {{feed.AdTranscript}}
+                            </td>-->
+                            <td class="wrap-text" rowspan="{{feed.Channels.length + 1}}" title="{{feed.SongTitle}}">
+								<div style="position: relative">
+									<div style="position:absolute;margin: auto;border:2px solid white;top:0;bottom:0;height:30px" ng-show="active.SongId == feed.SongId && IsClientFeed && !reportId && !isPreview" >
+										<button class="btn btn-xs btn-info" ng-show="feed.SongExcluded" ng-click="include(feed)">
+											<i class="glyphicon glyphicon-repeat"></i>
+										</button>
+
+										<button class="btn btn-xs btn-danger" ng-show="!feed.SongExcluded" ng-click="exclude(feed)">
+											<i class="glyphicon glyphicon-remove"></i>
+										</button>
+									</div>
+									<div ng-style="{'text-decoration': (feed.SongExcluded && !reportId ? 'line-through' : 'none')}">{{feed.SongTitle}}</div>
+								</div>
+                            </td>
+                            <td rowspan="{{feed.Channels.length + 1}}" ng-attr-title="{{feed.Regions}}">
+								<span ng-style="{'text-decoration': (feed.SongExcluded && !reportId ? 'line-through' : 'none')}"> {{feed.Regions}}<!--<br />--></span>
+                                <!--<span>{{feed.Markets}}</span>-->
+                            </td>
+                            <td rowspan="{{feed.Channels.length + 1}}" title="{{feed.IndustryName}}&#013;{{feed.CategoryName}}">
+								<span ng-style="{'text-decoration': (feed.SongExcluded && !reportId ? 'line-through' : 'none')}">{{feed.IndustryName}}<br />{{feed.CategoryName}}</span>
+                            </td>
+                            <td colspan="3" style="height:0; padding: 0"></td>
+                        </tr>
+                        <tr ng-repeat="channel in feed.Channels track by $index" ng-mouseenter="setActive(feed,true)" ng-mouseleave="setActive(feed,false)">
+                            <td title="{{channel.Name}}">
+                                <span ng-style="{'text-decoration': (feed.SongExcluded && !reportId ? 'line-through' : 'none')}">{{channel.Name}}</span> 
+                            </td>
+                            <td title="{{channel.FirstAiring | userDate}} &#64; {{channel.FirstAiring | date: 'HH:mm:ss'}}">
+								<span ng-style="{'text-decoration': (feed.SongExcluded && !reportId ? 'line-through' : 'none')}">
+									{{channel.FirstAiring | userDate}} &#64; {{channel.FirstAiring | date: 'HH:mm:ss'}}
+								</span>                                
+                            </td>
+                            <td ng-if="$first" rowspan="{{feed.Channels.length}}">
+                                <button type="button" class="btn btn-xs btn-info" ng-click="openPlayback(feed)">
+                                    <i class="glyphicon glyphicon-play"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table-pager manager="pager" ng-hide="isPreview"></table-pager>
+            </div>
+        </div>
+
+    </div>
+</div>
+<script type="text/ng-template" id="tplNewAds.html">
+	<div class="modal-header">
+		<h3 class="modal-title">New ads found</h3>
+	</div>
+	<form name="form" novalidate>
+		<div class="modal-body">
+			<div>
+				Since {{params.timeOfCheck | date:'dd.MM.yyyy HH:mm'}} there were {{params.ads.length}} new ads for this feed.<br />
+
+				Do you want to review those ads or send the report out with the ads seen on the screen?<br />
+				<br />
+				Click "Send email" to send the report out as it is, and review the new ads later.<br />
+				Click "Review" to delay sending report and review the new ads first.<br />
+				Click "Cancel" to do neither.
+			</div>
+
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="send()">Send email</button>
+			<button class="btn btn-default" ng-click="review()">Review</button>
+			<button class="btn btn-default" ng-click="cancel()" type="button" data-dismiss="modal">Cancel</button>
+		</div>
+	</form>
+</script>

@@ -1,0 +1,217 @@
+/****************
+** MARKETS PAGE
+****************/
+
+.markets-page .glyphicon-check {
+  font-size: 16px;
+}
+
+.markets-page input::-ms-clear {
+  display: none;
+}
+
+.markets-table {
+  display: inline-block;
+}
+
+.markets-table .header {
+  /*Space to display scroolbar of the header*/
+  margin-right: 20px;
+  margin-top: 20px;
+  font-weight: bold;
+}
+
+.markets-page .add-market-group {
+  max-width: 400px;
+  float: right;
+  position: relative;
+  top: 15px;
+}
+
+.markets-table .column {
+  float: left;
+  width: 250px;
+  padding: 8px;
+  position: relative;
+}
+
+.markets-table .header .column:not(:last-child) {
+  border-right: 1px solid #ddd;
+}
+
+.markets-table .header {
+  position: relative;
+}
+
+.markets-table .body .table-row {
+  position: relative;
+  border-bottom: 1px solid #ddd;
+}
+
+.markets-table .body .table-row, .markets-table .body .table-row .column {
+  background: white;
+}
+
+.markets-table .body .table-row:nth-child(2n+2), .markets-table .body .table-row:nth-child(2n+2) .column {
+  background-color: #f9f9f9;
+}
+
+.markets-table .body .table-row:hover, .markets-table .body .table-row:hover .column {
+  background-color: #f5f5f5;
+}
+
+.markets-table .column.control {
+  padding: 0;
+  background: white;
+}
+
+.markets-table .column.control > div {
+  float: left;
+  width: 50%;
+}
+
+.markets-table .column.control, .markets-table .column.channel {
+  width: 300px;
+}
+
+.markets-table .column.channel.placeholder, .markets-table .column.control.placeholder {
+  visibility: hidden;
+  min-height: 10px;
+}
+
+.markets-table .column.channel.fixed, .markets-table .column.control.fixed {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9;
+  border-right: 1px solid #ddd;
+}
+
+.markets-table .column.control input,
+.markets-table .column.control i {
+  float: left;
+}
+
+.markets-table .column.control input {
+  width: 80%;
+  height: 37px;
+  padding: 0 10px;
+  font-weight: normal;
+}
+
+.markets-table .column.control i {
+  width: 20%;
+  top: 0;
+  text-indent: 2px;
+  float: right;
+  line-height: 34px;
+}
+
+.markets-table .column.control i {
+  text-align: center;
+  border: 1px solid #ddd;
+  background: #eee;
+  line-height: 35px;
+  color: darkgrey;
+}
+
+.markets-table .column.control .add-market {
+  border-right: none;
+}
+
+.markets-table .column.control i:hover {
+  background: #ddd;
+}
+
+.markets-table .column.control .filter-market.active {
+  color: brown;
+}
+
+
+.markets-table .column.control .add-market.active {
+  color: darkgreen;
+}
+
+.markets-table .header {
+  border-bottom: 2px solid #ddd;
+}
+
+.markets-table input {
+  width: 100%;
+  border: none;
+  outline: none;
+}
+
+.markets-table input[disabled] {
+  background: white;
+  cursor: pointer;
+}
+
+.markets-table .column.market input {
+  text-align: center;
+  padding: 0 17px;
+}
+
+.markets-table .edit-market {
+  color: #ddd;
+  position: absolute;
+  right: 5px;
+  top: 10px;
+}
+
+.header .column.market:hover .edit-market {
+  color: darkgray;
+}
+
+.markets-table .save-changes {
+  color: green;
+  position: absolute;
+  right: 25px;
+  top: 11px;
+}
+
+.markets-table .delete-market {
+  color: red;
+}
+
+.markets-table .save-market {
+  color: darkgreen;
+}
+
+.markets-table .cancel-market-update {
+  color: darkgray;
+}
+
+.markets-table .edit-controls {
+  position: absolute;
+  right: -1px;
+  top: 36px;
+  z-index: 1;
+  font-size: 0;
+  transition: max-height 0.3s;
+  max-height: 99px;
+}
+
+.markets-table .edit-controls.collaps {
+  max-height: 0;
+  overflow: hidden;
+}
+
+.markets-table .edit-controls i {
+  border: 1px solid #ddd;
+  background: #eee;
+  padding: 5px;
+  font-size: 12px;
+}
+
+.markets-table .edit-controls i:hover {
+  background: #ddd;
+}
+
+.toggle-markets-visibility-modal .market-name {
+  margin-left: 5px;
+}
+
+.toggle-markets-visibility-modal li {
+  padding: 2px 0;
+}

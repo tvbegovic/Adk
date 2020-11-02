@@ -1,0 +1,77 @@
+<div class="rows-spaced">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="pull-right">
+				<label>Session Stats</label>
+				<div ng-if="submits.length">
+					<div>Samples: {{submits.length}}</div>
+					<div>Time worked: {{submitsEditTime.asMinutes() | number:0}} minutes</div>
+					<div>Ratio: {{submitsRatio | number:1}}</div>
+				</div>
+				<div>Queue length: {{queueLength}}</div>
+			</div>
+			<h2>Transcripter <span ng-if="isTraining">Training</span><span ng-if="isReview">Review</span></h2>
+			<alert type="warning" ng-if="queueLength === 0 && !isTraining && !isReview">There is no more sample in the queue for transcription.</alert>
+			<alert type="warning" ng-if="queueLength === 0 && isTraining">You have completed all the training samples. You can <a ng-click="restartTraining()">clear and restart your training</a>.</alert>
+			<alert type="warning" ng-if="queueLength === 0 && isReview">There is no more transcription in the queue for review.</alert>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-4" ng-if="song">
+			<span class="pull-left">
+				<button type="button" class="btn btn-xs btn-info" ng-click="pause()">
+					<i class="glyphicon glyphicon-play" ng-if="isPaused"></i>
+					<i class="glyphicon glyphicon-pause" ng-if="!isPaused"></i>
+				</button>
+				&nbsp;
+			</span>
+			<span class="pull-right seconds">{{position/1000 | number:1}}</span>
+			<div class="progress">
+				<div class="progress-bar progress-bar-success" ng-style="{width: ((part.TimeStart / song.Duration)*100) + '%'}" ng-if="part.TimeStart > 0"></div>
+				<div class="progress-bar progress-bar-warning" ng-style="{width: (((position - part.TimeStart) / song.Duration)*100) + '%'}" ng-if="position - part.TimeStart > 0"></div>
+				<div class="progress-bar progress-bar-danger" ng-style="{width: (((part.TimeEnd - position) / song.Duration)*100) + '%'}" ng-if="part.TimeEnd - position > 0"></div>
+			</div>
+		</div>
+	</div>
+	<div class="row" ng-if="!isTraining">
+		<div class="col-sm-2">Brand</div>
+		<div class="col-sm-10">{{song.Brand}}</div>
+	</div>
+	<div class="row" ng-if="!isTraining">
+		<div class="col-sm-2">MIS AD Title</div>
+		<div class="col-sm-10">{{song.SongTitle}}</div>
+	</div>
+	<div class="row" ng-if="!isTraining">
+		<div class="col-sm-2">Duration</div>
+		<div class="col-sm-10"><span ng-if="song">{{song.Duration/1000 | number:2}}</span> s</div>
+	</div>
+	<div class="row" ng-if="!isTraining">
+		<div class="col-sm-2">Country</div>
+		<div class="col-sm-10">
+			<span ng-if="song">{{song.Domain}}</span>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12" ng-if="song">
+			<div ng-repeat="p in song.Parts" ng-if="$index < iPart">{{p.Text}}</div>
+			<span class="dropdown" dropdown is-open="markers.isopen">
+				<input type="text" class="form-control" ng-model="part.Text" ng-keydown="onKeyDown($event)" ng-keyup="onKeyUp($event)" focus-on="text" />
+				<ul class="dropdown-menu">
+					<li ng-repeat="marker in markers.filteredValues" ng-class="{active: $index === markers.active}"><a ng-click="insertMarker($index)">{{marker}}</a></li>
+				</ul>
+			</span>
+			<div ng-repeat="p in song.Parts" ng-if="$index > iPart">{{p.Text}}</div>
+		</div>
+	</div>
+	<div ng-if="submits.length">
+		<h3>Last Transcripts</h3>
+		<div class="list-group">
+			<div class="list-group-item" ng-repeat="submitted in submits | reverse">
+				<div><i class="glyphicon glyphicon-copy" ui-zeroclip zeroclip-model="submitted.ClipboardText"></i> {{submitted.Text}}</div>
+				<div>Sample: {{submitted.SongDuration.asSeconds() | number:1}}s</div>
+				<div>Transcript: {{submitted.TranscriptDuration.asSeconds() | number:1}}s</div>
+				<div>Performance: {{submitted.Performance | number:1}}</div>
+			</div>
+		</div>
+	</div>
+</div>

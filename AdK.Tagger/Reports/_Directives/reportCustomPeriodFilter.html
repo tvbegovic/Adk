@@ -1,0 +1,42 @@
+<div class="filter-box">
+    <div class="btn-group" role="group">
+        <div class="btn-group period-selector" dropdown>
+            <button class="btn btn-default dropdown-toggle with-sub" dropdown-toggle ng-class="{'with-custom-picker': selectedValue.PeriodKind == 'CustomRange'}">
+                <div class="dropdown-selected">
+                    {{selectedValue.Name}}
+                </div>
+                <div class="caret-wrapper">
+                    <span class="caret"></span>
+                </div>
+                <div class="subtitle" ng-if="periodStart && periodEnd" ng-class="{'single-date' : !compare || !previousStart || !previousEnd }">
+                    {{periodStart}} - {{periodEnd}}<br />
+                    <div ng-if="compare && previousStart && previousEnd">{{previousStart}} - {{previousEnd}}</div>
+                </div>
+            </button>
+            <button type="button" class="btn btn-default custom-picker-button" ng-click="toggleDatePicker()" ng-show="selectedValue.PeriodKind == 'CustomRange'">
+                <i class="glyphicon glyphicon-calendar"></i>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li role="menuitem" ng-repeat="value in dropDownValues"><a ng-click="changeValue(value)">
+                    {{value.Name}}</a> </li>
+            </ul>
+        </div>
+    </div>
+</div>
+<div class="filter-box period-date-picker" ng-show="openDateRangePicker">
+    <div>
+        <label>From</label>
+        <div datepicker ng-model="dateFrom" class="well well-sm" style="margin-bottom: 5px;" max="dateOptions.maxDate">
+        </div>
+    </div>
+    <div>
+        <label>To</label>
+        <div datepicker ng-model="dateTo" class="well well-sm" style="margin-bottom: 5px;" max="dateOptions.maxDate">
+        </div>
+    </div>
+    <div class="col-md-12">
+        <button class="btn btn-default pull-right" ng-click="closeDatePicker()">
+            Close
+        </button>
+    </div>
+</div>

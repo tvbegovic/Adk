@@ -1,0 +1,65 @@
+﻿<div>
+	<div class="row">
+		<div class="col-sm-6">
+			<h2>Transcripter Statistics</h2>
+		</div>
+		<date-picker class="col-sm-2" date="filter.dateStart" date-picked="datesChanged()" style="margin-top: 20px"></date-picker>
+		<date-picker class="col-sm-2" date="filter.dateEnd" date-picked="datesChanged()" style="margin-top: 20px"></date-picker>
+	</div>
+	<div class="row" ng-if="stats && !selectedUser">
+		<div class="col-sm-12">
+			<table class="table table-condensed table-bordered table-hover fs-grid">
+				<thead>
+					<tr>
+						<th ng-repeat="column in statsGrid.columns">
+							<fs-header column="column"></fs-header>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="stat in stats | orderBy:orderByStatsGrid:!statsGrid.sort.ascending" ng-click="getUserStatistics(stat)">
+						<td ng-repeat="column in statsGrid.columns" align="{{$index>=2?'right':''}}">{{column.display(stat)}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row" ng-if="selectedUser && !selectedUser.date">
+		<div class="col-sm-12">
+			<label>{{selectedUser.Name || selectedUser.Email}} <i class="glyphicon glyphicon-remove" ng-click="cancelUser()"></i></label>
+			<table class="table table-condensed table-bordered table-hover fs-grid">
+				<thead>
+					<tr>
+						<th ng-repeat="column in statsDateGrid.columns">
+							<fs-header column="column"></fs-header>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="stat in selectedUser.stats | orderBy:orderByStatsDateGrid:!statsDateGrid.sort.ascending" ng-click="getUserDateStatistics(stat)">
+						<td ng-repeat="column in statsDateGrid.columns" align="right">{{column.display(stat)}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row" ng-if="selectedUser.date">
+		<div class="col-sm-12">
+			<label>{{selectedUser.Name || selectedUser.Email}} - {{selectedUser.date.Day.format('DD.MM.YYYY')}} <i class="glyphicon glyphicon-remove" ng-click="cancelDate()"></i></label>
+			<table class="table table-condensed table-bordered table-hover fs-grid fs-grid-auto-layout">
+				<thead>
+					<tr>
+						<th ng-repeat="column in statsUserGrid.columns">
+							<fs-header column="column"></fs-header>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="stat in selectedUser.date.stats | orderBy:orderByStatsUserGrid:!statsUserGrid.sort.ascending">
+						<td ng-repeat="column in statsUserGrid.columns" align="{{$index<4?'right':''}}">{{column.display(stat)}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

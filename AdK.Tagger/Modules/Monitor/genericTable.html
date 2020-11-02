@@ -1,0 +1,17 @@
+﻿<table class="table table-bordered table-condensed table-striped" style="width:auto">
+    <thead>
+        <tr>
+            <th ng-repeat="key in notSorted(tabledata.rows[0]) | limitTo : notSorted(tabledata.rows[0]).length-1"
+                ng-if="key[0]!='h'">{{ key | noUnderscores}}</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="row in tabledata.rows" ng-click="go(row.h_clickpath)">
+            <td ng-repeat="key in notSorted(row) | limitTo : notSorted(row).length-1" 
+                ng-init="value=row[key]" 
+                ng-if="key[0]!='h'"
+                class="{{ align(tabledata.colTypes[$index])}}"
+                ng-class="{ 'dpoc-error': row.h_class=='danger', 'dpoc-warn': row.h_class=='warning' }">{{ value }}</td>
+        </tr>
+    </tbody>
+</table>

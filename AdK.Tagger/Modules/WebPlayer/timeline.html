@@ -1,0 +1,19 @@
+<div class="wp_video_timeline_holder" ng-ref="$ctrl.divHolder">
+	<div class="wp_video_timeline_thumbholder" ng-click="$ctrl.onTimelineClick($event)">
+		<div class="wp_video_timeline_thumb" ng-repeat="t in $ctrl.thumbs">
+			<div class="wp_video_timeline_header">
+				<div ng-style="$ctrl.getSeparatorStyle(t, $index)"></div>
+				<div ng-style="$ctrl.getHeaderStyle(t, $index)">{{t.headerText}}</div>
+			</div>
+			<div ng-style="$ctrl.getThumbStyle(t, $index)"></div>
+		</div>
+		<div class="wp_video_timeline_cursor" ng-style=$ctrl.getCursorStyle()></div>
+	</div>
+	<div class="wp_video_timeline_segmentholder">
+		<div class="wp_video_timeline_layer" ng-repeat="l in $ctrl.segmentLayers" id="layer_{{l}}" ng-style="$ctrl.getLayerStyle()"
+			 layer="{{l}}" ng-mousemove="$ctrl.layerMouseMove($event,l)" ng-click="$ctrl.layerClick($event, l)"
+			 ng-mousedown="$ctrl.layerMouseDown($event, l)" ng-mouseup="$ctrl.layerMouseUp($event, l)">
+			
+		</div>
+	</div>
+</div>

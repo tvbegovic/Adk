@@ -1,0 +1,134 @@
+﻿<div ng-controller="brandvertiserCtrl">
+	<div class="row" ng-show="channelsLoaded && brandvertiser.Id">
+		<div class="col-sm-12">
+			<label>{{brandvertiser.Name}}</label>
+			<div class="report-filters-2">
+                <report-channel-including-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-including-filter>
+                <report-toggle-value-filter on-init="onDirectivesInit()" on-change="load()"></report-toggle-value-filter>
+            </div>
+            <div class="report-additional-filters">
+                <label>
+					<input type="checkbox" ng-model="current.showPieCharts" ng-click="changePieChartDisplay()"> Show Pie Charts
+			    </label>
+            </div>
+		</div>
+	</div>
+    <div class="row" ng-show="channelsLoaded && brandvertiser.Id">
+        <report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()" 
+                            period-start="brandvertiser.PeriodStart" period-end="brandvertiser.PeriodEnd"
+                            compare="true" previous-start="brandvertiser.PreviousStart" previous-end="brandvertiser.PreviousEnd"></report-custom-period-filter>
+    </div>
+	<div class="row dashboard" ng-if="channels && brandvertiser.Id">
+		<div class="col-md-4">
+			<div class="bordered">
+				<div class="row">
+					<div class="col-sm-5">
+						<div ng-repeat="mediaTotal in brandvertiser.TotalByMedia">
+							<label>{{mediaTotal.Media}}</label>
+							<span class="pull-right">{{mediaTotal.Display}}</span>
+						</div>
+					</div>
+					<div class="col-sm-7">
+						<center><label>{{current.channel.Name}}</label><br /><label>{{brandvertiser.FocusTotal}}</label></center>
+						<div class="row">
+							<div class="col-sm-3 text-right">{{brandvertiser.ShareOfIncludeGroup | asPercent : 1 : 1}}</div>
+							<div class="col-sm-9">Share of {{current.include.Name}}</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 text-right">{{brandvertiser.ShareOfMediaGroup | asPercent : 1 : 1}}</div>
+							<div class="col-sm-9">Share of Media Group</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-3 text-right">{{brandvertiser.ShareOfAllMedia | asPercent : 1 : 2}}</div>
+							<div class="col-sm-9">Share of All Media</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="bordered">
+				<center><label>Competitive Position</label></center>
+				<table class="table">
+					<tr>
+						<th></th>
+						<th ng-repeat="share in brandvertiser.CompetitivePosition.UniverseShare" class="text-center">{{share.Media}}</th>
+					</tr>
+					<tr>
+						<th>Category Share</th>
+						<td ng-repeat="share in brandvertiser.CompetitivePosition.CategoryShare" class="text-center">{{share.Display}}</td>
+					</tr>
+					<tr>
+						<th title="{{brandvertiser.CompetitivePosition.Leader.Name}}">Gap with Leader <i class="glyphicon glyphicon-question-sign"></i></th>
+						<td ng-repeat="share in brandvertiser.CompetitivePosition.GapWithLeader" class="text-center">{{share.Display}}</td>
+					</tr>
+					<tr>
+						<th>Universe Share</th>
+						<td ng-repeat="share in brandvertiser.CompetitivePosition.UniverseShare" class="text-center">{{share.Display}}</td>
+					</tr>
+				</table>
+			</div>
+			<div class="bordered">
+				<center><label>Period to Period Shifts</label></center>
+				<table class="table table-bordered">
+					<tr>
+						<th>Media House</th>
+						<th class="text-center">Decrease/Increase</th>
+						<th class="text-center">Value</th>
+						<th class="text-center">% Change</th>
+					</tr>
+					<tr ng-repeat="channel in brandvertiser.Channels">
+						<td>{{channel.Name}}</td>
+						<td class="decrease-increase">
+							<div class="decrease">
+								<div ng-if="brandvertiser.Shifts.Percent[$index] != null && brandvertiser.Shifts.Percent[$index] < 0" style="width:{{-brandvertiser.Shifts.Percent[$index] | percentOf:maxShift }}"></div>
+							</div>
+							<div class="increase">
+								<div ng-if="brandvertiser.Shifts.Percent[$index] != null && brandvertiser.Shifts.Percent[$index] > 0" style="width:{{brandvertiser.Shifts.Percent[$index] | percentOf:maxShift }}"></div>
+							</div>
+						</td>
+						<td class="text-right">{{brandvertiser.Shifts.Values[$index]}}</td>
+						<td class="text-right">{{brandvertiser.Shifts.Percent[$index] * 100 | number:0}}</td>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="bordered">
+				<center><label>Media Mix</label></center>
+				<div class="row" ng-if="brandvertiser.MediaMix">
+					<div class="col-md-6">
+						<center>
+							<label>Current Quarter<br />{{brandvertiser.MediaMix.CurrentQuarter.Total}}</label>
+							<nvd3 options="chartOptions" data="currentQuarter.ByMedia"></nvd3>
+						</center>
+					</div>
+					<div class="col-md-6">
+						<center>
+							<label>Previous Quarter<br />{{brandvertiser.MediaMix.PreviousQuarter.Total}}</label>
+							<nvd3 options="chartOptions" data="previousQuarter.ByMedia"></nvd3>
+						</center>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<center>
+							<label>Year to Date<br />{{brandvertiser.MediaMix.YearToDate.Total}}</label>
+							<nvd3 options="chartOptions" data="yearToDate.ByMedia"></nvd3>
+						</center>
+					</div>
+					<div class="col-md-6">
+						<center>
+							<label>Last Year<br />{{brandvertiser.MediaMix.LastYear.Total}}</label>
+							<nvd3 options="chartOptions" data="lastYear.ByMedia"></nvd3>
+						</center>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-4">
+			<div class="bordered">
+				<center><label>Ads in Rotation</label></center>
+				<div ng-repeat="ad in adsInRotation track by $index" class="ellipsis">{{ad}}</div>
+			</div>
+		</div>
+	</div>
+</div>

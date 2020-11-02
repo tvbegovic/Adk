@@ -1,0 +1,63 @@
+<h2 class="sg-h2 title">Formating / Numbers</h2>
+
+<p>
+  We are using <b>ValueFormatter</b> service for converting value in right format to display. All value converting should
+  be done in this place.
+</p>
+
+<ul>
+  <li><b>Count:</b> No decimal places. thousend separator based on local (5,000 or 5.000) >> ValueFormatter.toLocalString(num,
+    excludeDecimalPalces)
+  </li>
+  <li><b>Spent:</b> Same as count there is no need to show money simbol (5,000 or 5.000) >> ValueFormatter.toLocalString(num,
+    excludeDecimalPalces)
+  </li>
+  <li>
+    <b>Duration:</b> hh:mm:ss format (33:20:40) >> ValueFormatter.convertSecondsToHourFormat(seconds)
+    <ul>
+      <li>Less then minute: 5, 45</li>
+      <li>Less then 10 minutes: 4:03, 4:45</li>
+      <li>Less then hour 22:56, 22:05 </li>
+      <li>Less then 10 hours: 9:53:12, 8:01:08</li>
+      <li>More then 10 hours: 234:25:44, 186:13:00, 186:00:02</li>
+    </ul>
+  </li>
+  <li> <b>Time in the day:</b> HH:mm:ss. Based on user settings this should be in 0-23 or AM/PM format.</li>
+  <li><b>Percentages:</b> One decimal place and with percentage symbol (33.3%) >> ValueFormatter.toPercentageString(d)
+  </li>
+</ul>
+
+<p>Example:</p>
+<div class="sg-sub-section">
+  <div class="sg-source sg-source-active">
+    <pre class="line-numbers">
+      <code class="language-markup">
+
+          <span class="token tag">&lt;script&gt;</span>
+            //for converting seconds to hour format use ValueFormatter.convertSecondsToHourFormat
+            <span class="token tag">var</span> seconds = 5000;
+            <span class="token tag">var</span> formatedSeconds = ValueFormatter.convertSecondsToHourFormat(seconds);
+
+            //To round number to one decimal place use ValueFormatter.roundWithDecimalPlaces
+            <span class="token tag">var</span> percentage = 55.3343;
+            <span class="token tag">var</span> oneDecimalPlacePercentage = ValueFormatter.toPercentageString(percentage);
+
+            //To local string
+            <span class="token tag">var</span> num = 5000;
+            <span class="token tag">var</span> localNumFormat = ValueFormatter.toLocalString(num, true);
+
+          <span class="token tag">&lt;script&gt;</span>
+        </code>
+    </pre>
+  </div>
+</div>
+<br><br>
+<h4>Available metods in ValueFormatter service:</h4>
+<ul>
+  <li>convertSecondsToHourFormat(seconds) >> convertSecondsToHourFormat(70) -> '00:01:10'</li>
+  <li>roundWithDecimalPlaces(num, decimalPlaces) >> roundWithDecimalPlaces(10.36, 1) -> 10.4 </li>
+  <li>toPercentageString(num) >> toPercentageString(10.36) -> '10.4%'</li>
+  <li>toLocalString(num, excludeDecimalPalces) >> roundServerNumberString(1200,6787, true) -> 1.201</li>
+  <li>roundServerNumberString(numString) >> roundServerNumberString('1200,6787') -> '1201'</li>
+  <li>convertPieChartDataToDiscreteBarData(piechartData, {sort:true})</li>
+</ul>

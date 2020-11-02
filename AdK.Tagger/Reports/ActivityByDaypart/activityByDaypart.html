@@ -1,0 +1,99 @@
+﻿<div ng-controller="activityByDaypartCtrl">
+    <div class="row" ng-show="channelsLoaded">
+        <div class="col-sm-12">
+            <div ng-show="haveChannels">
+                <div class="report-filters">
+                    <div class="filter-row main">
+                        <div class="date-wrapper-filter">
+                            <report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()" period-start="abd.PeriodStart"
+                                period-end="abd.PeriodEnd"></report-custom-period-filter>
+						</div>
+                        <report-channel-including-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-including-filter>
+                        <report-day-of-week-filter on-init="onDirectivesInit()" on-change="load()"></report-day-of-week-filter>
+                        <report-day-part-filter on-init="onDirectivesInit()" on-change="load()"></report-day-part-filter>
+                        <report-toggle-value-filter on-init="onDirectivesInit()" on-change="load()"></report-toggle-value-filter>
+                        <report-display-type-filter on-init="onDirectivesInit()" on-change="onDisplayTypeChange()"></report-display-type-filter>
+                        <report-notes note-id="activity_by_daypart" ng-if="user.isAdmin" />
+                    </div>
+                </div>
+                <div class="report-data">
+                    <div class="btn-group pull-right view-data-toggle">
+                        <label class="btn view-data-icon" ng-model="displayTable" btn-radio="false" ng-click="showChart()">
+                             <img src="img/chart_icon.gif"></img>
+                        </label>
+                        <label class="btn view-data-icon" ng-model="displayTable" btn-radio="true" ng-click="showTable()">
+                            <img src="img/table_icon.png"></img>
+                        </label>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div class="horizontal-barchart-graph" ng-if="!displayTable" ng-hide="message.show">
+                        <nvd3 options="nvd3Options" data="activityByDaypart"></nvd3>
+                    </div>
+                    <div class="activity-daypart-table" ng-if="displayTable && tableData.ChartData.length" ng-hide="message.show">
+                        <table class="report-table table table-striped table-hover table-bordered">
+                            <tr>
+                                <th colspan="2"></th>
+                                <th ng-repeat="ch in tableData.ChartData[0].values">{{  ch.ChannelName }}</th>
+                                <th>TOTAL</th>
+                            </tr>
+                             <tbody ng-repeat="dayPart in tableData.ChartData">
+                                <tr>
+                                    <td ng-class="{'number': current.dayPart.Id == 'AllDay'}" rowspan="3">{{ dayPart.key }}</td>
+                                    <td>Count</td>
+                                    <td class="number" ng-repeat="value in dayPart.values">
+                                        {{ getValue(value.Count, 0) }}
+                                    </td>
+                                    <td class="number"> {{ getTotalCount(dayPart) }} </td>
+                                </tr>
+                                <tr>
+                                    <td>Air-Time</td>
+                                    <td class="number" ng-repeat="value in dayPart.values">
+                                        {{ getValue(value.Duration, 1) }}
+                                    </td>
+                                    <td class="number"> {{ getTotalDuration(dayPart) }} </td>
+                                </tr>
+                                <tr>
+                                    <td>Spend</td>
+                                    <td class="number" ng-repeat="value in dayPart.values">
+                                        {{ getValue(value.Spend, 2) }}
+                                    </td>
+                                    <td class="number"> {{ getTotalSpend(dayPart) }} </td>
+                                </tr>
+                            </tbody>
+                            <tbody class="font-bold">
+                                <tr>
+                                    <td rowspan="3">TOTAL</td>
+                                    <td>Count</td>
+                                    <td class="number" ng-repeat="value in total.values">
+                                        {{ getValue(value.Count, 0) }}
+                                    </td>
+                                    <td class="number"> {{ getValue(total.totalCount, 0) }} </td>
+                                </tr>
+                                <tr>
+                                    <td>Air-Time</td>
+                                    <td class="number" ng-repeat="value in total.values">
+                                        {{ getValue(value.Duration, 1) }}
+                                    </td>
+                                    <td class="number"> {{ getValue(total.totalDuration, 1) }} </td>
+                                </tr>
+                                <tr>
+                                    <td>Spend</td>
+                                    <td class="number" ng-repeat="value in total.values">
+                                        {{ getValue(value.Spend, 2) }}
+                                    </td>
+                                    <td class="number"> {{ getValue(total.totalSpend, 2) }} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+
+                <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+            </div>
+
+            <report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,131 @@
+<div ng-controller="shareOfBusinessCtrl" class="share-of-business-report">
+    <div class="row" ng-show="channelsLoaded">
+        <div class="col-sm-12">
+            <div ng-show="haveChannels">
+                <div class="report-filters">
+                    <div class="filter-row main">
+                        <div class="date-wrapper-filter">
+                            <report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()"
+                                    period-start="reportData.PeriodStart" period-end="reportData.PeriodEnd"></report-custom-period-filter>
+						</div>
+                        <report-channel-including-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-including-filter>
+                        <report-day-part-filter on-init="onDirectivesInit()" on-change="load()"></report-day-part-filter>
+                        <report-notes note-id="share_of_business" ng-if="user.isAdmin" />
+                    </div>
+                    <div class="filter-row additional">
+                        <label class="filter-box">
+                            <input type="checkbox" ng-model="current.showPieCharts" ng-click="changePieChartDisplay()"> Show Pie Charts
+                        </label>
+                    </div>
+                </div>
+
+
+                <div class="report-data" ng-hide="message.show || loading">
+                    <div class="clearfix">
+                        <h3 class="report-section"> Summary </h3>
+                        <table class="report-table small-table table table-consensed table-striped table-hover table-bordered">
+                            <thead>
+                                <th ng-click="summarySortBy($index)" ng-class="getColumnClass($index)" ng-repeat="headerValue in reportData.SummaryTable.Headers[0] track by $index" style="width: 20%;">
+                                    {{ headerValue }}
+                                    <sort-icon ascending="summarySortDirection == directionEnum.Asc" show="$index != 0  && summarySorting == $index" />
+                                </th>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in reportData.SummaryTable.Rows | orderBy: summaryComparator">
+                                    <td ng-class="getColumnClass($index)" ng-repeat="rowValue in row track by $index"> {{ getValue(rowValue, $index) }} </td>
+                                </tr>
+                                <tr>
+                                    <td ng-class="getColumnClass($index)" ng-repeat="rowValue in totalSummary track by $index"> {{ getValue(rowValue, $index) }} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="floated-charts-wrapper clearfix" style="margin-top: 20px;">
+                        <div class="small-chart-wrapper">
+                            <label class="chart-label"> % Count </label>
+                            <nvd3 options="chartOptionsCount" data="countChart"></nvd3>
+                        </div>
+                        <div class="small-chart-wrapper">
+                            <label class="chart-label"> % Spend </label>
+                            <nvd3 options="chartOptionsSpend" data="spendChart"></nvd3>
+                        </div>
+                        <div class="small-chart-wrapper">
+                            <label class="chart-label"> % Air-Time </label>
+                            <nvd3 options="chartOptionsAirTime" data="durationChart"></nvd3>
+                        </div>
+                    </div>
+
+                    <div class="clearfix">
+                        <h3 class="report-section"> {{countTable.Name}}</h3>
+                        <table class="report-table table table-consensed table-striped table-hover table-bordered">
+                            <thead>
+                                <tr ng-repeat="header in countTable.Headers">
+                                    <th ng-class="getColumnClass($index)" ng-repeat="headerValue in header track by $index" ng-click="shareTableSortBy(0, $index)">
+                                        {{headerValue}}
+                                        <sort-icon ascending="shareTableDirection[0] == directionEnum.Asc" show="$index != 0  && indexesToSortBy[0] == $index" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in countTable.Rows | orderBy:countTableComparator">
+                                    <td ng-class="getColumnClass($index)" ng-repeat="rowValue in row track by $index"> {{rowValue | toPercentageString}} </td>
+                                </tr>
+                                    <tr>
+                                    <td ng-class="getColumnClass($index)" ng-repeat="val in totalCount track by $index"> {{val | toPercentageString}} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="clearfix">
+                        <h3 class="report-section"> {{spendTable.Name}}</h3>
+                        <table class="report-table table table-consensed table-striped table-hover table-bordered">
+                            <thead>
+                                <tr ng-repeat="header in spendTable.Headers">
+                                    <th ng-class="getColumnClass($index)" ng-repeat="headerValue in header track by $index" ng-click="shareTableSortBy(1, $index)">
+                                        {{headerValue}}
+                                            <sort-icon ascending="shareTableDirection[1] == directionEnum.Asc" show="$index != 0  && indexesToSortBy[1] == $index" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in spendTable.Rows | orderBy:spendTableComparator">
+                                    <td ng-class="getColumnClass($index)" ng-repeat="rowValue in row track by $index"> {{rowValue | toPercentageString}} </td>
+                                </tr>
+                                <tr>
+                                    <td ng-class="getColumnClass($index)" ng-repeat="val in totalSpend track by $index"> {{val | toPercentageString}} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="clearfix">
+                        <h3 class="report-section"> {{airTimeTable.Name}}</h3>
+                        <table class="report-table table table-consensed table-striped table-hover table-bordered">
+                            <thead>
+                                <tr ng-repeat="header in airTimeTable.Headers">
+                                    <th ng-class="getColumnClass($index)" ng-repeat="headerValue in header track by $index" ng-click="shareTableSortBy(2, $index)">
+                                        {{headerValue}}
+                                        <sort-icon ascending="shareTableDirection[2] == directionEnum.Asc" show="$index != 0  && indexesToSortBy[2] == $index" />
+                                    </th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="row in airTimeTable.Rows | orderBy:airTimeTableComparator">
+                                    <td ng-class="getColumnClass($index)" ng-repeat="rowValue in row track by $index"> {{rowValue | toPercentageString}} </td>
+                                </tr>
+                                    <tr>
+                                    <td ng-class="getColumnClass($index)" ng-repeat="val in totalAirTime track by $index"> {{val | toPercentageString}} </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+            </div>
+            <report-message template="NoMediaHouse" ng-hide="haveChannels"></report-message>
+        </div>
+    </div>
+</div>

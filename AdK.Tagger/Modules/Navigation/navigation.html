@@ -1,0 +1,30 @@
+	<nav id="side-nav" ng-class="{expanded: !menuClosed}">
+		<ul id="side-nav-list">
+			<li class="toggle-btn menu" ng-click="toggleMenu()">
+				<i class="glyphicon glyphicon-menu-hamburger"></i><span>Menu</span>
+			</li>
+			
+			<li ng-repeat="item in items" ng-class="{active: isMenuActive(item.path), 'menu-item' : !item.children, 'submenu': item.children}">
+				<a ng-click="activateMenu(item.path)" ng-show="!item.children">
+					<i class="glyphicon glyphicon-{{item.icon}}"></i><span>{{item.label}}</span>
+				</a>
+				<a class="submenu_title" ng-show="item.children">
+					<i class="glyphicon glyphicon-{{item.icon}}"></i>
+					<span>{{item.label}}</span>
+					<i class="glyphicon pull-right" ng-class="{'glyphicon-triangle-bottom' : !item.expanded, 'glyphicon-triangle-top' : item.expanded}"
+					   ng-click="toggleSubMenu(item)"></i>
+				</a>
+				<ul ng-show="item.children && item.expanded">
+					<li class="menu-item submenu-item" ng-repeat="c in item.children" ng-class="{active: isMenuActive(c.path)}">
+						<a ng-click="activateMenu(c.path)"><i class="glyphicon glyphicon-{{c.icon}}"></i><span>{{c.label}}</span></a>
+					</li>
+					
+				</ul>
+			</li>
+			<li class="submenu">
+				
+			</li>
+			
+		</ul>
+	</nav>
+

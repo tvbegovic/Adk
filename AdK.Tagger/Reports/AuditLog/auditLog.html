@@ -1,0 +1,134 @@
+﻿<div class="loader" ng-show="loading" style="margin-top: 80px"></div>
+
+<div class="audit-log" ng-hide="loading">
+
+	<div id="audit-list" ng-if="display === displayMode.auditList">
+		<div class="clearfix">
+			<button class="btn btn-primary" ng-click="changeDisplay(displayMode.createAudit)">
+					<i class="glyphicon glyphicon-plus" ></i> Add New
+			</button>
+
+			<report-notes note-id="audit_log" ng-if="user.isAdmin"></report-notes>
+
+		</div>
+
+		<div style="margin-top: 20px;">
+			<table class="report-table table-striped table-hover table table-bordered">
+				<thead>
+					<tr>
+						<th class="text-left date-column">Date From</th>
+						<th class="text-left date-column">Date To</th>
+						<th class="text">Channels</th>
+						<th class="text">Spots</th>
+						<th> </th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="audit in audits | skip:pager.skip | take:pager.size">
+						<td class="text-left" ng-click="showAuditReport(audit)">{{audit.DateFrom | userDate}}</td>
+						<td class="text-left" ng-click="showAuditReport(audit)">{{audit.DateTo | userDate}}</td>
+						<td class="text" ng-click="showAuditReport(audit)"> <p ng-repeat="auditChannel in audit.AuditChannels">{{auditChannel.Name}}</p></td>
+						<td class="text" ng-click="showAuditReport(audit)"> <p ng-repeat="auditSong in audit.AuditSongs">{{auditSong.Title}}</p></td>
+						<td ng-click="deleteAudit(audit)" class="delete-audit-box" title="Click to delete audit">
+							<i class="glyphicon glyphicon-trash delete-icon"></i>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<div class="pager" ng-if="audits.length">
+				<table-pager manager="pager"></table-pager>
+			</div>
+
+			<report-message template="CustomInfo" text="No saved reports" ng-if="!loading && !audits.length"></report-message>
+		</div>
+
+	</div>
+
+	<div id="create-audit" ng-show="display === displayMode.createAudit || isAuditReportView()">
+
+		<div class="clearfix hide-on-print" style="margin-bottom: 10px;">
+			<button class="btn btn-primary" ng-click="changeDisplay(displayMode.auditList); showDetails = false">
+						<i class="glyphicon glyphicon-chevron-left" ></i> Back
+			</button>
+
+			<div class="buttons-right">
+				<button class="btn btn-primary pull-right" ng-click="print()" ng-show="isAuditReportView()">
+					<i class="glyphicon glyphicon-print"></i>	Print
+				</button>
+				<button class="btn btn-primary pull-right" ng-click="toggleAuditDetails();" ng-show="isAuditReportView()">
+					<i class="glyphicon glyphicon-list"></i>
+					<span ng-show="!showDetails"> Audit Details </span>
+					<span ng-show="showDetails"> Audit Log </span>
+				</button>
+
+			</div>
+
+		</div>
+
+		<!--CREATE AUDIT CONTROLLS-->
+		<div class="report-filters" ng-if="display === displayMode.createAudit">
+			<div class="filter-row clearfix">
+				<report-date-range-filter on-init="onDirectivesInit()" on-change="load()"></report-date-range-filter>
+
+				<button class="btn btn-default" style="margin: 0 10px 0 30px;" ng-if="display === displayMode.createAudit" ng-click="runAuditLogReport()"
+					ng-disabled="!selectedChannels.length || !selectedSpots.length">
+				<i class="glyphicon glyphicon-play"></i>	Run Audit
+			</button>
+
+				<button class="btn btn-primary" ng-if="display === displayMode.createAudit" ng-click="saveAudit()" ng-disabled="!selectedChannels.length || !selectedSpots.length">
+				<i class="glyphicon glyphicon-floppy-disk"></i>	Save
+			</button>
+
+			</div>
+
+			<audit-log-autocomplete selected-channels="selectedChannels" selected-spots="selectedSpots"></audit-log-autocomplete>
+
+		</div>
+
+		<!--READ ONLY AUDIT FILTERS-->
+		<div class="report-filters" ng-if="isAuditReportView()">
+			<div class="filter-row clearfix">
+				<span style="margin-bottom: 5px;"> <label>From:</label> {{current.dateFrom | userDate}}</span> &nbsp;
+				<span style="margin-bottom: 0;"> <label>To:</label> {{current.dateTo | userDate}}</span>
+			</div>
+
+			<div class="filter-row row">
+				<div class="col-xs-6">
+					<label>Channels:</label>
+					<div>
+						<span ng-repeat="channel in selectedChannels" class="filter-tag">{{channel.Name}}</span>
+					</div>
+				</div>
+
+				<div class="col-xs-6">
+					<label>Spots:</label>
+
+					<div>
+						<span ng-repeat="spot in selectedSpots" class="filter-tag">{{spot.displayName}}</span>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+		<div ng-show="!showDetails">
+			<audit-report-table></audit-report-table>
+		</div>
+		<div ng-show="showDetails">
+			<audit-details></audit-details>
+		</div>
+
+	</div>
+
+
+</div>
+
+<style type="text/css" media="print">
+    @page {
+        size: landscape;
+    }
+    body {
+        writing-mode: tb-rl;
+    }
+</style>

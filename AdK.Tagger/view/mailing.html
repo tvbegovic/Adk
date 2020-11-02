@@ -1,0 +1,51 @@
+﻿<div>
+	<div class="row">
+		<div class="col-sm-12">
+			<h3>
+				Recipients:
+				<button type="button" class="btn btn-sm btn-default" btn-checkbox ng-model="showEmails">{{recipientEmails.length}} <i class="glyphicon glyphicon-chevron-down"></i></button>
+			</h3>
+			<p ng-show="showEmails" class="email-list">
+				<span class="label label-default" ng-repeat="email in recipientEmails">{{email}}</span>
+			</p>
+			<div ng-repeat="(claimName, claimValues) in claims">
+				<div class="btn-group">
+					<label class="btn btn-default" ng-repeat="(claimValue, selected) in claimValues"
+						ng-model="claims[claimName][claimValue]" btn-checkbox
+						ng-change="updateRecipientCount()">{{claimValue}}</label>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-3">
+			<h3>From Display Name</h3>
+			<input type="text" class="form-control" ng-model="fromDisplayName" placeholder="From Display Name" />
+		</div>
+		<div class="col-sm-9">
+			<h3>Subject</h3>
+			<input type="text" class="form-control" ng-model="subject" placeholder="Subject" />
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<h3>Message content</h3>
+			<div text-angular ng-model="htmlContent" name="demo-editor" ta-text-editor-class="html-editor-container" ta-html-editor-class="html-editor-container"></div>
+		</div>
+	</div>
+
+	<p class="help-block">Put "[name]" in the Subject or message Body to be replaced by the recipient's name.</p>
+
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="pull-right">
+				<button type="button" class="btn btn-danger" ng-click="sendMailing()" ng-disabled="recipientCount === 0">Send Mailing</button>
+				<button type="button" class="btn btn-default" ng-click="sendToMe()">Send test message to me</button>
+			</div>
+		</div>
+	</div>
+
+	<alert ng-if="mailSent !== undefined" type="{{mailSent ? 'info' : 'warning'}}">{{mailSent ? "Your message has been sent." : "Error sending the message."}}</alert>
+</div>

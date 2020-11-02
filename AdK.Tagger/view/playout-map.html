@@ -1,0 +1,56 @@
+﻿<div class="playout-map rows-spaced">
+	<div class="row">
+		<div class="col-md-6">
+			<table class="table table-condensed fs-grid">
+				<thead>
+					<tr>
+						<th ng-repeat="column in channelGrid.columns"><fs-header column="column"></fs-header></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="channel in channels | fsFilterItem:channelGrid | orderBy:orderByChannelGrid:!channelGrid.sort.ascending" ng-click="setChannel(channel)" ng-class="{'active':currentChannel === channel}">
+						<td ng-repeat="column in channelGrid.columns">{{channel[column.attribute]}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+		<div class="col-md-6" ng-if="channelCities">
+			<div ng-if="cities">
+				<div class="row">
+					<div class="col-sm-12">
+						<!--<div class="btn-group pull-right">
+							<div class="btn-group" dropdown>
+								<button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>{{country.name || 'Import cities'}} <span class="caret"></span></button>
+								<ul class="dropdown-menu" role="menu">
+									<li role="menuitem" ng-repeat="country in countries"><a ng-click="setCountry(country)">{{country.name}}</a></li>
+								</ul>
+							</div>
+							<button class="btn btn-primary" ng-click="importCountry()" ng-disabled="!country" title="Import country cities">+</button>
+						</div>-->
+						<h3 class="no-top-margin text-center">{{currentChannel.Name}}</h3>
+						<leaflet bounds="bounds" markers="markers" height="480px" width="100%"></leaflet>
+					</div>
+				</div>
+			</div>
+
+			<div class="row">
+				<div class="col-sm-12">
+					<table class="table table-condensed fs-grid">
+						<thead>
+							<tr>
+								<th ng-repeat="column in cityGrid.columns"><fs-header column="column"></fs-header></th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr ng-repeat="city in channelCities | fsFilterItem:cityGrid | orderBy:orderByCityGrid:!cityGrid.sort.ascending">
+								<td ng-repeat="column in cityGrid.columns">{{city[column.attribute]}}</td>
+							</tr>
+						</tbody>
+					</table>
+
+					<alert type="info" ng-if="channelCities.length === 0">No Cities for Channel {{currentChannel.Name}}</alert>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

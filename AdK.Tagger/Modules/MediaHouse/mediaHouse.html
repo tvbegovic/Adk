@@ -1,0 +1,142 @@
+<div class="media-house rows-spaced">
+	<div class="row">
+		<div class="col-sm-12">
+			<tabset>
+				<tab heading="Media Landscape">
+					<media-landscape></media-landscape>
+				</tab>
+				<!--<tab heading="Media Houses">
+					<div class="row" ng-controller="groupHoldingCtrl">
+						<div class="col-sm-4">
+							<label>Media Houses</label>
+							<ul class="list-group list-group-narrow">
+								<li class="list-group-item" ng-repeat="channel in mediaHouses.channels" ng-click="channelClicked(channel)" ng-class="{active: channel === current.channel}">
+									<div ng-if="channel !== current.channel || !current.editingChannel">
+										<span class="pull-right">{{mediaHouses.groupDic[channel.GroupId].Name}}</span>
+										{{channel.Name}}
+									</div>
+									<div class="row edit" ng-if="channel === current.channel && current.editingChannel">
+										<div class="col-sm-5"><label>Name</label><br />{{channel.Name}}</div>
+										<div class="col-sm-5">
+											<label>Group</label>
+											<select class="form-control" ng-model="channel.GroupId" ng-options="group.Id as group.Name for (groupId, group) in mediaHouses.groupDic" on-enter="saveChannel(channel)">
+												<option value="">No Group</option>
+											</select>
+										</div>
+										<div class="col-sm-2"><label>&nbsp;</label><br /><button ng-click="saveChannel(channel, $event)" class="btn btn-clear"><i class="glyphicon glyphicon-floppy-disk"></i></button></div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="col-sm-4">
+							<div class="list-group-header">
+								<button class="btn btn-xs btn-primary pull-right" ng-click="addGroup()" ng-disabled="current.editingGroup"><i class="glyphicon glyphicon-plus"></i></button>
+								<button class="btn btn-xs btn-danger pull-right" ng-click="deleteGroup()"><i class="glyphicon glyphicon-minus"></i></button>
+								<label>Groups</label>
+							</div>
+							<ul class="list-group">
+								<li class="list-group-item" ng-repeat="(groupId, group) in mediaHouses.groupDic" ng-click="groupClicked(group)" ng-class="{active: group === current.group}">
+									<div ng-if="group !== current.group || !current.editingGroup">
+										<span class="pull-right">{{mediaHouses.holdingDic[group.HoldingId].Name}}</span>
+										{{group.Name}}
+									</div>
+									<div class="row edit" ng-if="group === current.group && current.editingGroup">
+										<div class="col-sm-5">
+											<label>Name</label><br />
+											<input type="text" class="form-control" ng-model="group.Name" focus-on="group{{group.Id}}" on-enter="saveGroup(group)">
+										</div>
+										<div class="col-sm-5">
+											<label>Holding</label>
+											<select class="form-control" ng-model="group.HoldingId" ng-options="holding.Id as holding.Name for (holdingId, holding) in mediaHouses.holdingDic" on-enter="saveGroup(group)">
+												<option value="">No Holding</option>
+											</select>
+										</div>
+										<div class="col-sm-2"><label>&nbsp;</label><br /><button ng-click="saveGroup(group, $event)" class="btn btn-clear"><i class="glyphicon glyphicon-floppy-disk"></i></button></div>
+									</div>
+								</li>
+							</ul>
+						</div>
+						<div class="col-sm-4">
+							<div class="list-group-header">
+								<button class="btn btn-xs btn-primary pull-right" ng-click="addHolding()" ng-disabled="current.editingHolding"><i class="glyphicon glyphicon-plus"></i></button>
+								<button class="btn btn-xs btn-danger pull-right" ng-click="deleteHolding()"><i class="glyphicon glyphicon-minus"></i></button>
+								<label>Holdings</label>
+							</div>
+							<ul class="list-group">
+								<li class="list-group-item" ng-repeat="(holdingId, holding) in mediaHouses.holdingDic" ng-click="holdingClicked(holding)" ng-class="{active: holding === current.holding}">
+									<span ng-if="holding !== current.holding || !current.editingHolding">{{holding.Name}}</span>
+									<div ng-if="holding === current.holding && current.editingHolding" class="row edit">
+										<div class="col-sm-10">
+											<label>Name</label><br />
+											<input type="text" class="form-control" ng-model="holding.Name" focus-on="holding{{holding.Id}}" on-enter="saveHolding(holding)">
+										</div>
+										<div class="col-sm-2"><label>&nbsp;</label><br /><button ng-click="saveHolding(holding, $event)" class="btn btn-clear"><i class="glyphicon glyphicon-floppy-disk"></i></button></div>
+									</div>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</tab>-->
+				<tab heading="Key Accounts">
+					<key-accounts></key-accounts>
+				</tab>
+				<tab heading="Competitors">
+					<competitors></competitors>
+				</tab>
+				<tab heading="Day Parts">
+					<div class="row">
+						<div class="col-sm-3">
+							<!--<div class="row">
+								<div class="col-sm-12">
+									<label>Day Part Sets</label>
+									<ul class="list-group">
+										<li class="list-group-item" ng-repeat="dps in dayPartSets" ng-click="current.dayPartSet=dps" ng-class="{active: dps == current.dayPartSet}">
+											<i class="glyphicon glyphicon-remove-circle pull-right" ng-click="deleteSet($event, dps, $index)"></i>
+											{{dps.Name}}
+										</li>
+										<li>
+											<div class="form-group has-feedback new-item-name">
+												<input type="text" class="form-control" ng-model="current.newSetName" placeholder="Name of new Day Part Set" />
+												<i class="glyphicon glyphicon-ok-circle form-control-feedback" ng-click="createSet($event)"></i>
+											</div>
+										</li>
+									</ul>
+								</div>
+							</div>-->
+							<div class="row" ng-if="current.dayPartSet">
+								<div class="col-sm-12">
+									<div class="list-group-header">
+										<button class="btn btn-xs btn-primary pull-right" ng-click="addPart()"><i class="glyphicon glyphicon-plus"></i></button>
+										<button class="btn btn-xs btn-danger pull-right" ng-click="deletePart()" ng-if="current.part"><i class="glyphicon glyphicon-minus"></i></button>
+										<label>My Day Parts</label>
+									</div>
+									<ul class="list-group">
+										<li ng-repeat="dayPart in current.dayPartSet.Parts" ng-click="partClicked(dayPart)" class="list-group-item" ng-class="{active: dayPart === current.part}">
+											<span ng-if="dayPart !== current.part || !current.editingPart">{{dayPart.Name}}</span>
+											<input ng-if="dayPart === current.part && current.editingPart" type="text" class="form-control" ng-model="dayPart.Name" focus-on="part{{$index}}" on-enter="updatePartName(dayPart)" placeholder="Name of Day Part" />
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-9" ng-if="current.dayPartSet">
+							<table class="table table-bordered table-condensed hours">
+								<thead>
+									<tr><th style="width: 40px;"></th><th ng-repeat="day in days"><span>{{day.name}}</span></th></tr>
+								</thead>
+								<tbody>
+									<tr ng-repeat="hour in hours">
+										<th>{{hour}}</th>
+										<td ng-repeat="day in days" ng-class="{'has-part':hasPart(day.id, hour)}" title="{{partName(day.id, hour)}}">
+											<div ng-class="hourStyle(day.id, hour)" ng-mousedown="$event.preventDefault()" ng-click="hourClicked($event, day.id, hour)"></div>
+										</td>
+									</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+				</tab>
+			</tabset>
+		</div>
+	</div>
+</div>

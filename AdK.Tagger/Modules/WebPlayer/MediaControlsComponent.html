@@ -1,0 +1,7 @@
+<div id="media-controls" class="wp_video_controls">
+	<button id='play-pause-button' class='ml-2 wp_video_controls_play' title='play'
+		ng-click='$ctrl.togglePlayPause();'><span ng-class="$ctrl.getPlayButtonCss()" ></span></button>
+	<progressbar class="ml-2 wp_video_progress" value="$ctrl.progressValue()"
+		ng-click="$ctrl.onProgressBarClick($event)" ng-mousemove="$ctrl.onProgressBarMouseMove($event)"></progressbar>
+	<div id="playTime" class="wp_videoplaytime">{{$ctrl.formattedPlayTime($ctrl.currentTime)}}</div>
+</div>

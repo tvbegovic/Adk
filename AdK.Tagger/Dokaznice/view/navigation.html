@@ -1,0 +1,12 @@
+<nav id="side-nav" ng-class="{expanded: !menuClosed, fixed: applyFixedClass()}">
+	<ul id="side-nav-list">
+		<li class="toggle-btn menu" ng-click="toggleMenu()">
+			<i class="glyphicon glyphicon-menu-hamburger"></i><span>Menu</span>
+		</li>
+		<li class="menu-item" ng-repeat="item in items" ng-class="{active: isMenuActive(item.path)}">
+			<a ng-click="activateMenu(item.path)">
+				<i class="glyphicon glyphicon-{{item.icon}}"></i><span>{{item.label}}</span>
+			</a>
+		</li>
+	</ul>
+</nav>

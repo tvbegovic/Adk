@@ -1,0 +1,61 @@
+﻿<div ng-controller="marketOverviewCtrl">
+    <div class="row" ng-if="channels">
+        <div class="col-sm-12" ng-if="channels.length">
+            <div class="report-filters">
+                <div class="filter-row main">
+                    <div class="date-wrapper-filter">
+                        <report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()" period-start="marketOverview.PeriodStart"
+                            period-end="marketOverview.PeriodEnd"></report-custom-period-filter>
+                    </div>
+
+                    <report-period-by-filter on-init="onDirectivesInit()" on-change="load()"></report-period-by-filter>
+                    <report-market-filter on-init="onDirectivesInit()" on-change="load()"></report-market-filter>
+                    <report-notes note-id="market_overview" ng-if="user.isAdmin" />
+                </div>
+                <div class="filter-row additional">
+                    <div class="filter-box">
+                        <label>
+                            <input type="checkbox" ng-model="current.showPieCharts" ng-click="changePieChartDisplay()"> Show Pie Charts
+                        </label>
+                        <label>
+                            <input type="checkbox" ng-model="current.showOthers" ng-click="toggleOthersDisplay()"> Show Others
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <div class="floated-charts-wrapper clearfix" ng-hide="message.show">
+                <div class="small-chart-wrapper" ng-if="allMediaBySales.length > 0">
+                    <label class="chart-label"> All Media: {{current.periodBy.Title}} <br/> {{current.periodBy.Subtitle}} Sales</label>
+                    <nvd3 options="chartOptions" data="allMediaBySales" />
+                </div>
+                <div class="small-chart-wrapper" ng-if="radioBySales.length > 0">
+                    <label class="chart-label"> Radio: {{current.periodBy.Title}} <br/> {{current.periodBy.Subtitle}} Sales </label>
+                    <nvd3 options="chartOptions" data="radioBySales" />
+                </div>
+                <div class="small-chart-wrapper" ng-if="televisionBySales.length > 0">
+                    <label class="chart-label"> TV: {{current.periodBy.Title}} <br/> {{current.periodBy.Subtitle}} Sales </label>
+                    <div>
+                        <nvd3 options="chartOptions" data="televisionBySales" />
+                    </div>
+                </div>
+                <div class="small-chart-wrapper" ng-if="allMediaBySpotTime.length > 0">
+                    <label class="chart-label"> All Media: {{current.periodBy.Title}} <br/> {{current.periodBy.Subtitle}} Spot Time </label>
+                    <nvd3 options="chartOptions" data="allMediaBySpotTime" />
+                </div>
+                <div class="small-chart-wrapper" ng-if="radioBySpotTime.length > 0">
+                    <label class="chart-label"> Radio: {{current.periodBy.Title}} <br/> {{current.periodBy.Subtitle}} Spot Time </label>
+                    <nvd3 options="chartOptions" data="radioBySpotTime" />
+                </div>
+                <div class="small-chart-wrapper" ng-if="televisionBySpotTime.length > 0">
+                    <label class="chart-label"> TV: {{current.periodBy.Title}} <br/> {{current.periodBy.Subtitle}} Spot Time </label>
+                    <nvd3 options="chartOptions" data="televisionBySpotTime" />
+                </div>
+            </div>
+
+            <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+        </div>
+        <report-message ng-hide="channels.length" template="NoMediaHouse"></report-message>
+    </div>
+</div>

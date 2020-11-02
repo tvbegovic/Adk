@@ -1,0 +1,37 @@
+<h2 class="sg-h2 title">Dates</h2>
+
+<p>
+    For formatting <b>dates</b> the following custom angular filters are being used:
+    <ul>
+        <li>
+            <b>userDate</b> - User date format as selected by the user in <b>Settings</b> or <b>My Account</b>.
+            <br />The default format is yyyy-MM-dd (e.g. 2001-11-09).
+        </li>
+        <li>
+            <b>weekday</b> - Displays the a date's name of the day of the week based on their locale settings.
+        </li>
+    </ul>
+</p>
+<br /><br />
+<p>
+    <h4><b>Important:</b></h4>
+    All dates need to be fomated using the <b>userDate</b> filter unless otherwise instructed.
+</p>
+<br /><br />
+<h4><b>Example:</b></h4>
+<div class="sg-sub-section">
+    <div class="sg-source sg-source-active">
+        <pre class="line-numbers">
+        <code class="language-markup">
+        
+    <span class="token tag"><span class="token punctuation">&#123;&#123;</span>CurrentDate &#124; userDate<span class="token punctuation">&#125;&#125;</span></span> <span class="token comment">//e.g. 2017-12-22</span>
+        
+    <span class="token tag"><span class="token punctuation">&#123;&#123;</span>CurrentDate &#124; userDate<span class="token punctuation">&#125;&#125;</span></span> <span class="token comment">//e.g. 22.12.2017</span>
+
+    <span class="token tag"><span class="token punctuation">&#123;&#123;</span>channelDate.PlayDate &#124; weekday<span class="token punctuation">&#125;&#125;</span></span> <span class="token comment">//e.g. Thursday</span>
+
+    <span class="token tag"><span class="token punctuation">&#123;&#123;</span>channelDate.PlayDate &#124; weekday<span class="token punctuation">&#125;&#125;</span></span> <span class="token comment">//e.g. &ccaron;etvrtak</span>
+        </code>
+    </pre>
+    </div>
+</div>

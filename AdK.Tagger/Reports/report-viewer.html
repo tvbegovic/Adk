@@ -1,0 +1,10 @@
+﻿<div class="report-viewer rows-spaced">
+	<div class="row">
+		<div class="col-sm-12">
+			<tabset class="hide-on-print">
+				<tab ng-repeat="tab in tabs" heading="{{tab.heading}}" ng-click="goToReport(tab.id)" active="tab.active"></tab>
+			</tabset>
+			<ng-include src="tabContentUrl"></ng-include>
+		</div>
+	</div>
+</div>

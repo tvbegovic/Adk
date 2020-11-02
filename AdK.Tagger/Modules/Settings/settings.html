@@ -1,0 +1,243 @@
+<div class="rows-spaced">
+    <div class="row">
+        <tabset class="col-sm-12">
+            <tab heading="Global">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Locale <a href="https://gist.github.com/jacobbubu/1836273" target="_blank">&gt;</a></label>
+                                <input type="text" class="form-control" ng-model="Global.Locale" placeholder="en-UK">
+                            </div>
+                            <div class="form-group">
+                                <label>Time Zone <a href="https://en.wikipedia.org/wiki/List_of_tz_database_time_zones" target="_blank">&gt;</a></label>
+                                <input type="text" class="form-control" ng-model="Global.TimeZone" placeholder="Europe/London">
+                            </div>
+                            <div class="form-group">
+                                <label>Date format</label>
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="Global.UserDateFormat" value="yyyy-MM-dd">
+                                    {{DummyDate | date:'yyyy-MM-dd'}}
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="Global.UserDateFormat" value="d.M.yyyy">
+                                    {{DummyDate | date:'d.M.yyyy'}}
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="Global.UserDateFormat" value="MM/dd/yyyy">
+                                    {{DummyDate | date:'MM/dd/yyyy'}}
+                                </label>
+                                <label class="radio-inline">
+                                    <input type="radio" ng-model="Global.UserDateFormat" value="MM/dd/yy">
+                                    {{DummyDate | date:'MM/dd/yy'}}
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-primary" ng-click="saveGlobal()">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+            <tab heading="Mail">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>SMTP Domain</label>
+                                <input type="text" class="form-control" ng-model="Mail.SmtpDomain" placeholder="my.domain.com">
+                            </div>
+                            <div class="form-group">
+                                <label>SMTP Port</label>
+                                <input type="number" class="form-control" ng-model="Mail.SmtpPort" placeholder="Usually: 25, 2525 or 587">
+                            </div>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="Mail.EnableSsl">
+                                    Enable SSL
+                                </label>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>Login</label>
+                                <input type="text" class="form-control" ng-model="Mail.CredentialLogin">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" class="form-control" ng-model="Mail.CredentialPassword">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>From email</label>
+                                <input type="email" class="form-control" ng-model="Mail.DefaultFromEmail">
+                            </div>
+                            <div class="form-group">
+                                <label>From name</label>
+                                <input type="text" class="form-control" ng-model="Mail.DefaultFromName">
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label>BCC</label>
+                                <input type="email" class="form-control" ng-model="Mail.DefaultBccEmail">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-primary" ng-click="saveMail()">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+            <tab heading="Transcript">
+                <form>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <h3>Transcript slicing</h3>
+                            <div class="form-group">
+                                <label>Sample transcript slice length (seconds)</label>
+                                <input type="number" step="0.1" min="1" class="form-control" ng-model="Transcript.TargetPartDuration">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <h3>Notification on finished transcript</h3>
+                            <div class="row">
+                                <div class="col-md-3">
+                                    <button class="btn btn-primary" ng-click="editTranscriptDoneNotificationEmail()">Edit content</button>
+                                </div>
+                                <div class="checkbox col-md-4">
+                                    <label>
+                                        <input type="checkbox" ng-model="Transcript.SendMailOnNewTranscript">
+                                        Send notification e-mail
+                                    </label>
+                                </div>
+                                <div class="form-group col-md-5">
+                                    <label>New transcript notification recipient</label>
+                                    <input type="email" class="form-control" ng-model="Transcript.SendMailOnNewTranscriptTo" ng-disabled="!Transcript.SendMailOnNewTranscript"
+                                           placeholder="E-mail address">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <h3>Notification on ordered transcripts</h3>
+                            <div class="row">
+                                <div class="form-group col-md-6">
+                                    <button class="btn btn-primary" ng-click="editOrderNotificationEmail()">Edit content</button>
+                                </div>
+                                <div class="form-group col-md-6">
+                                    <label>Delay between notifications (minutes)</label>
+                                    <input type="number" class="form-control" ng-model="Transcript.NotificationThrottleDelay">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <h3>Notify that samples are waiting to be transcribed</h3>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <button class="btn btn-primary" ng-click="editAwaitingTranscriptsNotificationEmail()">Edit content</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <h3>Rights to be granted to new users</h3>
+                            <div class="row">
+                                <div class="form-group col-md-12">
+                                    <input type="text" class="form-control" ng-model="Transcript.NewUserDefaultRights" placeholder="Claims separated by '|'" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <h3>Status of new transcripts</h3>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="Transcript.AutoValidateFinishedTranscripts">
+                                    Mark new transcripts as Completed
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-6">
+                            <h3>Transcription of new Samples</h3>
+                            <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="Transcript.AutoTranscribeNewSamples">
+                                    Send new Samples to Transcription
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-3">
+                            <div class="form-group" ng-if="Transcript.AutoTranscribeNewSamples">
+                                <label>Number of Transcriptions for each new Sample</label>
+                                <input type="number" step="1" min="1" class="form-control" ng-model="Transcript.NewSamplesTranscriptionCount">
+                            </div>
+                        </div>
+                        <div class="col-sm-12 col-md-3">
+                            <div class="form-group" ng-if="Transcript.AutoTranscribeNewSamples">
+                                <label>Only Samples after</label>
+                                <date-picker date="Transcript.AutoTranscribeStartDate" date-picked="dateChanged()"></date-picker>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-12 col-md-3">
+                            <div class="form-group">
+                                <h3>Earning by transcribed sample second</h3>
+                                <input type="number" step="0.01" min="0" class="form-control" ng-model="Transcript.EarningPerSecond">
+                            </div>
+                        </div>
+						<div class="col-sm-12 col-md-3">
+                            <div class="form-group">
+                                <div class="checkbox">
+                                <label>
+                                    <input type="checkbox" ng-model="Transcript.FilterByUserDomain">
+                                    Filter by user domain
+                                </label>
+                            </div>
+                            </div>
+                        </div>
+                    </div>
+					<div class="row">
+						<div class="col-sm-12 col-md-6">
+							<button class="btn btn-primary" ng-click="unlockSongs()">Unlock transcribed songs</button>
+						</div>
+					</div>
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <button class="btn btn-primary" ng-click="saveTranscript()">Save</button>
+                        </div>
+                    </div>
+                </form>
+            </tab>
+            <tab heading="Audit">
+                <audit-settings></audit-settings>
+            </tab>
+            <tab heading="AdK">
+                <ad-k-settings></ad-k-settings>
+            </tab>
+            
+            <tab heading="Ad Alerts">
+                <feed-settings></feed-settings>
+            </tab>
+        </tabset>
+    </div>
+</div>

@@ -1,0 +1,26 @@
+﻿<div>
+    <h3>Not Promoted <small>Harvested clips that haven't been promoted</small></h3>
+
+    <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+    <table class="table table-bordered table-condensed table-striped" style="width:auto">
+        <thead>
+            <tr>
+                <td>Channel</td>
+                <td>Time Aired</td>
+                <td>Harvester</td>
+                <td>Time Harvested</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="clip in NotPromotedClips">
+                <td>{{clip.channel}}</td>
+                <td>{{clip.timeAired}}</td>
+                <td>{{clip.harvester}}</td>
+                <td>{{clip.timeHarvested}}</td>
+            </tr>
+        </tbody>
+    </table>
+    <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+</div>

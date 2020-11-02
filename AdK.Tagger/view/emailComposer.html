@@ -1,0 +1,23 @@
+﻿<div class="modal-header">
+	<h3>{{template.title}}</h3>
+	<p ng-if="template.subtitle">{{template.subtitle}}</p>
+</div>
+<div class="modal-body">
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="form-group">
+				<label>E-mail subject</label>
+				<input type="text" class="form-control" ng-model="template.subject" placeholder="E-mail subject">
+			</div>
+			<div class="form-group">
+				<label>E-mail content</label>
+				<div text-angular ng-model="template.body" name="email-body-editor" ta-text-editor-class="html-editor-container" ta-html-editor-class="html-editor-container"></div>
+				<p class="help-block">Insert {{tags}} in the e-mail subject or content.</p>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="modal-footer">
+	<button class="btn btn-default" ng-click="cancel()">Cancel</button>
+	<button class="btn btn-primary" ng-click="save()">Save</button>
+</div>

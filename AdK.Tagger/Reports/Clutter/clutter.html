@@ -1,0 +1,57 @@
+<div ng-controller="clutterReportCtrl">
+  <div class="row" ng-show="channelsLoaded">
+    <div class="col-sm-12">
+      <div ng-show="haveChannels">
+        <div class="report-filters">
+          <div class="filter-row main">
+            <div class="date-wrapper-filter">
+              <report-custom-date-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()"></report-custom-date-filter>
+            </div>
+            <report-channel-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-filter>
+            <report-day-part-filter on-init="onDirectivesInit()" on-change="load()"></report-day-part-filter>
+            <report-notes note-id="clutter_report" ng-if="user.isAdmin" />
+          </div>
+          <div class="filter-row additional">
+            <report-ad-break-duration-filter on-init="onDirectivesInit()" on-change="load()"></report-ad-break-duration-filter>
+          </div>
+        </div>
+
+        <div class="report-data" ng-hide="loading || message.show">
+          <div class="allow-overflow">
+            <table class="report-table table table-striped table-hover table-bordered">
+              <thead>
+                <tr>
+                  <th class="text" rowspan="2">Channels</th>
+                  <th class="text-center" ng-repeat="dayPart in clutter.DayParts" colspan="2">
+                    {{dayPart.Name}}
+                  </th>
+                </tr>
+                <tr>
+                  <th class="number" ng-click="sortBy(sort.column.averageBreak, $index)" ng-repeat-start="dayPart in clutter.DayParts">
+                    <span style="display:inline-block; text-align: center;"> Avg  Break </span>
+                    <sort-icon ascending="sort.ascending" show="sort.current === sort.column.averageBreak && sort.dayPartIndex === $index" />
+                  </th>
+                  <th class="number" ng-click="sortBy(sort.column.percentageAboveAdBreak, $index)" ng-repeat-end="">
+                    <span style="display:inline-block; text-align: center;"> Breaks % >= {{current.adBreakDuration.Name}} </span>
+                    <sort-icon ascending="sort.ascending" show="sort.current === sort.column.percentageAboveAdBreak && sort.dayPartIndex === $index" />
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="row in clutter.ChannelRows">
+                  <td class="text">{{row.ChannelName}}</td>
+                  <td class="number" ng-repeat-start="dayPartValue in row.DayPartValues"> {{dayPartValue.AverageBreak | zeroToEmptyString | secondsToTimeFilter }}</td>
+                  <td class="number" ng-repeat-end=""> <span ng-if="dayPartValue.AverageBreak"> {{dayPartValue.PercentageAboveAdBreak | toPercentageString }} </span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+      </div>
+      <report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+    </div>
+  </div>
+</div>

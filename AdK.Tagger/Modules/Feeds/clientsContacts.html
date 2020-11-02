@@ -1,0 +1,211 @@
+<h3>Clients, Contacts, Ad Alerts Administration</h3>
+
+<div class="row">
+	<div class="col-md-12">
+		<alert type="danger" ng-show="errorMessage">{{errorMessage}}</alert>
+	</div>
+</div>
+<div class="row">
+	
+	<div class="col-md-3" style="padding-right:2px">
+		<div class="panel panel-default">
+			<div class="panel-heading">Clients</div>
+			<div class="panel-body" style="padding-top: 2px">
+				
+				<div style="margin: 10px 0 10px 0">
+					<button class="btn btn-default" ng-click="addClient()">Add new</button>
+					<button class="btn btn-default" ng-click="editClient(client)" ng-disabled="!client">Edit</button>
+					<button class="btn btn-default" ng-disabled="!clientsChecked()" ng-click="deleteClients()">Remove</button>
+				</div>
+				<grid data="clients" selected="client" onselected="clientSelected" filterautocomplete="true" def="clientGridDef"></grid>
+				
+			</div>
+		</div>
+	</div>
+	<div class="col-md-9">
+		<div class="panel panel-default" style="margin-bottom: 2px">
+			<div class="panel-heading">Contacts for <span ng-if="client">{{client.name}}</span></div>
+			<div class="panel-body" style="padding-top: 2px">
+				<div class="row">
+					<div class="col-md-12">
+						<div style="margin: 10px 0 10px 0">
+							<button class="btn btn-default" ng-click="addContact()">Add new</button>
+							<button class="btn btn-default" ng-click="editContact(client.contact)" ng-disabled="!client.contact">Edit</button>
+							<button class="btn btn-default" ng-disabled="!contactsChecked()" ng-click="deleteContacts()">Remove</button>
+						</div>
+						<grid data="client.contacts" selected="client.contact" onselected="contactSelected" filterautocomplete="true" def="contactGridDef"></grid>
+						
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+		<div class="panel panel-default" style="border:0">
+			<div class="panel-body" style="padding:0">
+				<div class="row" style="margin-top: 15px">
+					<div class="col-md-12">						
+						<tabset>
+							<tab heading="{{client.name}} alerts" active="tabs['client'].active">
+								<div style="margin: 10px 0 10px 0">
+									<button class="btn btn-default" ng-click="addFeed()">Add </button>
+									<button class="btn btn-default" ng-click="removeClientFeeds()">Remove</button>
+									<button class="btn btn-default" ng-click="assign()" ng-disabled="!feedsChecked()">Add to contact</button>
+								</div>
+								<grid data="client.feeds" filterautocomplete="true" def="feedsGridDef"></grid>
+								
+							</tab>
+							<tab heading="Alerts for {{client.contact.name}}" active="tabs['contact'].active">
+								<div style="margin: 10px 0 10px 0">
+									<button class="btn btn-default" ng-click="unassign()" ng-disabled="!contactFeedsChecked()">Remove</button>
+								</div>
+								<grid data="client.contact.feeds" filterautocomplete="true" def="feedsGridDef"></grid>
+								
+							</tab>
+							<tab heading="{{client.name}} search phrases" active="tabs['search'].active">
+								<div class="col-md-6 form-inline" >
+									<h4>Common search phrases</h4>
+									<!--<div class="form-group">
+										<label>Predefined set:</label>
+										<select class="form-control" ng-options="cs as cs.name for cs in commonsearches" ng-model="selectedCommonSearch"></select>
+										<button class="btn" ng-click="addCommonSearchToClient()" ng-disabled="!selectedCommonSearch">Add</button>
+									</div>-->
+									
+
+									<tags-input ng-model="ClientSearchTerms" key-property="id" spellcheck="false" placeholder="Add a search term" ng-show="client"
+												display-property="search_term" replace-spaces-with-dashes="false" on-tag-adding="clientSearchTermAdding($tag)" on-tag-added="clientSearchTermAdded($tag)"
+												on-tag-removed="clientSearchTermRemoved($tag)" add-on-paste="true" paste-split_pattern=",|;" tag-class="clientSearchTagClass($tag,$index,$selected)"
+												template="tag-template" on-tag-dblclicked="editTag($tag)" template-scope="this">
+										<auto-complete source="getTerms($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+													   max-results-to-show="999"></auto-complete>
+									</tags-input>
+								</div>
+								<div class="col-md-6">
+									<div ng-show="client.contact">
+										<h4>{{client.contact.name}} search phrases</h4>
+										<tags-input ng-model="ContactSearchTerms" key-property="id" spellcheck="false" placeholder="Add a search term" ng-show="client"
+													display-property="search_term" replace-spaces-with-dashes="false" on-tag-adding="contactSearchTermAdding($tag)" on-tag-added="contactSearchTermAdded($tag)"
+													on-tag-removed="contactSearchTermRemoved($tag)" add-on-paste="true" paste-split_pattern=",|;" template="tag-template">
+											<auto-complete source="getTerms($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+														   max-results-to-show="999"></auto-complete>
+										</tags-input>
+									</div>
+								</div>
+							</tab>
+						</tabset>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="tplClientEdit.html">
+	<div class="modal-header">
+		<h3 class="modal-title">{{title}}</h3>
+	</div>
+	<form name="form" novalidate>
+		<div class="modal-body">
+			<div>
+
+				<alert type="danger" ng-show="form.$dirty && form.$invalid">Enter all required data</alert>
+				<div class="form-group">
+					<label>Name:</label>
+					<input type="text" name="clientName" autofocus class="form-control" ng-model="client.name" required />
+				</div>
+
+			</div>
+
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="ok()">Save</button>
+			<button class="btn btn-default" type="button" data-dismiss="modal" ng-click="cancel()">Cancel</button>
+		</div>
+	</form>			
+</script>
+<script type="text/ng-template" id="tplContactEdit.html">
+	<div class="modal-header">
+		<h3 class="modal-title">{{title}}</h3>
+	</div>
+	<form name="form" novalidate>
+		<div class="modal-body">
+			<div>
+				<alert type="danger" ng-show="errorMessage">{{errorMessage}}</alert>
+				<div class="form-group">
+					<label>User:</label>
+					<select class="form-control" autofocus ng-model="contact.user" ng-options="u as u.Email for u in users | filter:filterUsers track by u.Id" ng-change="userSelected()"></select>
+				</div>
+				<div class="form-group">
+					<label>Name:</label>
+					<input type="text" class="form-control" ng-model="contact.name" required />
+				</div>
+				<div class="form-group">
+					<label>E-mail:</label>
+					<input type="text" class="form-control" ng-model="contact.email" required />
+				</div>
+				<alert type="danger" ng-show="showValidation()">Enter all required data</alert>
+			</div>
+
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="ok()">Save</button>
+			<button class="btn btn-default" ng-click="cancel()" type="button" data-dismiss="modal">Cancel</button>
+		</div>
+	</form>
+</script>
+<script type="text/ng-template" id="tplAddFeed.html">
+	<div class="modal-header warning">
+		<h4 style="margin:0;"> Add new feed to client </h4>
+	</div>
+	<form name="form" novalidate>
+		<div class="modal-body">
+			<div style="width: 50%;margin-bottom: 5px">
+				<input class="form-control" autofocus type="text" ng-model="search" ng-model-options="{ debounce: 500 }">
+			</div>
+			<grid data="feeds" filterautocomplete="true" def="feedsGridDef" rowFilter="feedFilter"></grid>
+			
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="save()">Ok</button>
+			<button class="btn btn-default" type="button" data-dismiss="modal" ng-click="cancel()">Cancel</button>
+		</div>
+	</form>
+</script>
+<script type="text/ng-template" id="tag-template">
+	<div class="tag-template">
+		<div>
+			<span class="glyphicon glyphicon-list" ng-if="data.common_id" />
+		</div>
+		<div>
+			<span title="{{$scope.tagTitle(data)}}">{{$getDisplayText()}}</span>
+			<a class="remove-button" ng-click="$removeTag()" ng-bind="::$$removeTagSymbol"></a>
+		</div>
+	</div>
+</script>
+<script type="text/ng-template" id="editTag.html">
+	<div class="modal-header warning">
+		<h4 style="margin:0;">Create/edit search term list </h4>
+	</div>
+	<form name="form" novalidate>
+		<div class="modal-body">
+			<div class="form">
+				<div class="from-group">
+					<label>Name: </label>
+					<input type="text" class="form-control" ng-model="tag.search_term" />
+				</div>
+				<div class="form-group">
+					<label>Terms:</label>
+					<tags-input ng-model="tag.Common.Terms" key-property="id" spellcheck="false" placeholder="Add a search term"
+								display-property="name" replace-spaces-with-dashes="false"
+								add-on-paste="true" paste-split_pattern=",|;" on-tag-adding="termAdding($tag)">
+					</tags-input>
+				</div>
+			</div>
+			
+		</div>
+		<div class="modal-footer">
+			<button class="btn btn-primary" ng-click="ok()">Ok</button>
+			<button class="btn btn-default" type="button" data-dismiss="modal" ng-click="cancel()">Cancel</button>
+		</div>
+	</form>
+</script>

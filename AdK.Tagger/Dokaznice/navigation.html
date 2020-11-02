@@ -1,0 +1,27 @@
+<nav id="side-nav" ng-class="{expanded: !menuClosed, fixed: applyFixedClass()}">
+	<ul id="side-nav-list">
+		<li class="toggle-btn menu" ng-click="toggleMenu()">
+			<i class="glyphicon glyphicon-menu-hamburger"></i><span>Menu</span>
+		</li>
+		<li class="menu-item" ng-class="{active: isMenuActive('dashboard')}">
+			<a ng-click="activateMenu('dashboard')">
+				<i class="glyphicon glyphicon-home"></i><span>Home</span>
+			</a>
+		</li>
+		<li class="menu-item" ng-repeat="item in items" ng-class="{active: isMenuActive(item.path)}">
+			<a ng-click="activateMenu(item.path)">
+				<i class="glyphicon glyphicon-{{item.icon}}"></i><span>{{item.label}}</span>
+			</a>
+		</li>
+		<li class="menu-item" ng-class="{active: isMenuActive('account')}">
+			<a ng-click="activateMenu('account')">
+				<i class="glyphicon glyphicon-user"></i><span>My Account</span>
+			</a>
+		</li>
+        <li class="menu-item" ng-class="{active: isMenuActive('channels')}">
+			<a ng-click="activateMenu('channels')">
+				<i class="glyphicon glyphicon-th"></i><span>Channels</span>
+			</a>
+		</li>
+	</ul>
+</nav>

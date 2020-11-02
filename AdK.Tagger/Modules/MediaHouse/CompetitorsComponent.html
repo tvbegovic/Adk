@@ -1,0 +1,56 @@
+<div class="row">
+	<div class="col-sm-5">
+		<div class="btn-group" dropdown>
+			<button class="btn btn-primary dropdown-toggle" dropdown-toggle>
+				{{$ctrl.current.channel.Name}} <span class="caret"></span>
+			</button>
+			<ul class="dropdown-menu" role="menu">
+				<li role="menuitem" ng-repeat="channel in $ctrl.myChannels"><a ng-click="$ctrl.myChannelChanged(channel)">{{channel.Name}}</a></li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-5">
+		<div class="competitor-list">
+			<table class="table table-condensed fs-grid">
+				<thead>
+					<tr>
+						<th ng-repeat="column in $ctrl.channelGrid.columns"><fs-header column="column"></fs-header></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="channel in $ctrl.channels | filter:isntCompetitor | fsFilterItem:$ctrl.channelGrid | orderBy:$ctrl.orderByChannelGrid:!$ctrl.channelGrid.sort.ascending" ng-click="$ctrl.current.otherChannel = channel" ng-class="{'active':$ctrl.current.otherChannel === channel}">
+						<td ng-repeat="column in $ctrl.channelGrid.columns">{{channel[column.attribute]}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="col-sm-2">
+		<button class="btn btn-block btn-primary" ng-click="$ctrl.addCompetitor()" ng-disabled="!$ctrl.current.otherChannel">
+			Add
+			<i class="glyphicon glyphicon-chevron-right"></i>
+		</button>
+		<button class="btn btn-block btn-primary" ng-click="$ctrl.removeCompetitor()" ng-disabled="!$ctrl.current.competitor">
+			<i class="glyphicon glyphicon-chevron-left"></i>
+			Remove
+		</button>
+	</div>
+	<div class="col-sm-5">
+		<div class="competitor-list">
+			<table class="table table-condensed fs-grid">
+				<thead>
+					<tr>
+						<th ng-repeat="column in $ctrl.competitorGrid.columns"><fs-header column="column"></fs-header></th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="channel in $ctrl.channels | filter:$ctrl.isCompetitor | fsFilterItem:$ctrl.competitorGrid | orderBy:$ctrl.orderByCompetitorGrid:!$ctrl.competitorGrid.sort.ascending" ng-click="$ctrl.current.competitor = channel" ng-class="{'active':$ctrl.current.competitor === channel}">
+						<td ng-repeat="column in $ctrl.competitorGrid.columns">{{channel[column.attribute]}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

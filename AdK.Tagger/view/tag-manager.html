@@ -1,0 +1,138 @@
+﻿<div>
+	<span class="pull-right text-right" ng-if="statistics">
+		Statistics<br />
+		<span class="label label-success" title="Total">{{statistics.Total}}</span>
+	</span>
+	<h2>
+		Tag Manager
+		<div class="btn-group">
+			<label class="btn btn-xs" ng-model="editing.withBrands" indeterminate ng-change="searchTags()" ng-class="{'btn-default': editing.withBrands===null, 'btn-danger': editing.withBrands===false, 'btn-success': editing.withBrands===true}"><i class="glyphicon glyphicon-copyright-mark"></i></label>
+			<label class="btn btn-xs" ng-model="editing.withCompanies" indeterminate ng-change="searchTags()" ng-class="{'btn-default': editing.withCompanies===null, 'btn-danger': editing.withCompanies===false, 'btn-success': editing.withCompanies===true}"><i class="glyphicon glyphicon-home"></i></label>
+		</div>
+		<div class="btn-group">
+			<label class="btn btn-xs btn-default" ng-model="editing.prefix" btn-radio="''" ng-change="searchTags()">&nbsp;</label>
+			<label ng-repeat="prefix in editing.prefixes" class="btn btn-xs btn-default" ng-model="editing.prefix" btn-radio="prefix" ng-change="searchTags()">{{prefix}}</label>
+		</div>
+		<progressbar class="progress-striped active" value="100" ng-if="processing"></progressbar>
+	</h2>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="btn-group btn-group-justified">
+				<input type="search" class="form-control" ng-model="editing.tagFilter" ng-model-options="{debounce: 500}" ng-change="searchTags()" />
+				<span class="searchclear glyphicon glyphicon-remove-circle" ng-click="clearSearch()"></span>
+			</div>
+			<div class="tag-container" ng-style="{height: height.belowHeader-(manager.selected.length?300:0)+'px'}">
+				<tag-button ng-repeat="tag in tags" tag="tag" on-toggle="tagToggled(tag)"></tag-button>
+			</div>
+		</div>
+	</div>
+
+	<p></p>
+	<div class="row row-action" ng-if="manager.selected.length">
+		<div class="col-sm-6" ng-if="manager.selected.length===1">
+			<tabset>
+				<tab heading="Attributes">
+					<p class="text-muted">
+						Attributes for:
+						<tag-button tag="manager.selected[0]" on-toggle="tagToggled(tag)"></tag-button>
+					</p>
+					<multi-select items="manager.attributes" loading="loadingAttributes" suggest-service="getAttribute" editable="true"
+									editing="editing.attribute" filter="filter.attributeFilter"
+									on-add="onAddedAttribute(item)" on-remove="onRemovingAttribute(item, index)"></multi-select>
+				</tab>
+				<tab heading="Split">
+					<p class="text-muted">Split a tag in two. Select more tags to merge them.</p>
+					<div class="row">
+						<div class="col-sm-12">
+							<tag-button tag="manager.selected[0]" on-toggle="tagToggled(tag)"></tag-button>
+						</div>
+					</div>
+					<p></p>
+					<div class="row">
+						<div class="col-sm-5">
+							<input type="text" class="form-control" ng-model="manager.split.name1">
+						</div>
+						<div class="col-sm-5">
+							<input type="text" class="form-control" ng-model="manager.split.name2">
+						</div>
+						<div class="col-sm-2">
+							<button class="btn btn-danger" ng-click="split()" ng-disabled="!canSplit()">Split</button>
+						</div>
+					</div>
+				</tab>
+			</tabset>
+		</div>
+		<div class="col-sm-6" ng-if="manager.selected.length>1">
+			<tabset>
+				<tab heading="Attributes">
+					<p class="text-muted">
+						Common Attributes for:
+						<tag-button ng-repeat="tag in manager.selected" tag="tag" on-toggle="tagToggled(tag)"></tag-button>
+					</p>
+					<multi-select items="manager.attributes" loading="loadingAttributes" suggest-service="getAttribute" editable="true"
+									editing="editing.attribute" filter="filter.attributeFilter"
+									on-add="onAddedAttribute(item)" on-remove="onRemovingAttribute(item, index)"></multi-select>
+				</tab>
+				<tab heading="Merge">
+					<p class="text-muted">All selected tags are merged into the last.</p>
+					<div class="row">
+						<div class="col-sm-12">
+							<tag-button ng-repeat="tag in manager.selected" tag="tag" on-toggle="tagToggled(tag)" ng-class="{'btn-info':$last}"></tag-button>
+						</div>
+					</div>
+					<p></p>
+					<div class="row">
+						<div class="col-sm-12">
+							<div class="input-group">
+								<input type="text" class="form-control" ng-model="manager.merged.name">
+								<span class="input-group-btn">
+									<button class="btn btn-danger" ng-click="merge()">Merge</button>
+								</span>
+							</div>
+						</div>
+					</div>
+				</tab>
+			</tabset>
+		</div>
+		<div class="col-sm-6" ng-if="manager.tagSongs">
+			<h3>
+				<span ng-show="manager.tagCreator" class="pull-right">Creator: {{manager.tagCreator}}</span>
+				Samples
+			</h3>
+			<div class="sample-container">
+				<ul class="list-group list-group-narrow">
+					<li ng-repeat="song in manager.tagSongs" class="list-group-item ellipsis">
+						<label ng-if="!isPlaying(song)" ng-click="play(song)"><i class="glyphicon glyphicon-play"></i></label>
+						<label ng-if="isPlaying(song)" ng-click="stop()"><i class="glyphicon glyphicon-stop"></i></label>
+						{{song.Name}}
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script type="text/ng-template" id="customTemplate.html">
+	<a>
+		<span bind-html-unsafe="match.label | typeaheadHighlight:query"></span>
+	</a>
+</script>
+<script type="text/ng-template" id="tagButtonTemplate.html">
+	<button type="button" class="btn btn-xs btn-default btn-tag" btn-checkbox ng-model="tag.selected" ng-change="toggled({tag: tag})">
+		<i class="glyphicon glyphicon-copyright-mark" ng-if="tag.Attributes[1]"></i>
+		<i class="glyphicon glyphicon-home" ng-if="tag.Attributes[2]"></i>
+		{{::tag.Name}}
+		<span class="badge">{{::tag.Attributes[0]}}</span>
+	</button>
+</script>
+<script type="text/ng-template" id="attributeKindModal.html">
+	<div class="modal-header">
+		<h3 class="modal-title">Attribute kind</h3>
+	</div>
+	<div class="modal-body">
+		<ul class="list-group">
+			<li class="list-group-item" ng-click="createBrand()">Brand</li>
+			<li class="list-group-item" ng-click="createAdvertiser()">Advertiser</li>
+		</ul>
+	</div>
+</script>

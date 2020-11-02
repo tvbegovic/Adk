@@ -1,0 +1,34 @@
+<div class="filter-row row">
+	<div class="col-xs-6">
+		<label>Channels:</label>
+
+		<tags-input ng-model="selectedChannels" add-from-autocomplete-only="true" key-property="Id" spellcheck="false" placeholder="Add a channel"
+			display-property="Name" replace-spaces-with-dashes="false">
+			<auto-complete source="getChannelsAutocomplete($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+				max-results-to-show="999"></auto-complete>
+		</tags-input>
+
+	</div>
+	<div class="col-xs-6">
+		<label>Spots:</label>
+
+		<div class="tags-input-wrapper">
+			<tags-input ng-model="selectedSpots" add-from-autocomplete-only="true" key-property="Guid" spellcheck="false" placeholder="Add a spot"
+				display-property="displayName" replace-spaces-with-dashes="false">
+				<auto-complete source="getSpotsAutocomplete($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+					max-results-to-show="999"></auto-complete>
+			</tags-input>
+			<i class="fa fa-spinner fa-spin ajax-spinner" ng-show="loadingSpots"></i>
+		</div>
+
+		<script type="text/ng-template" id="spot-autocomplete-template">
+			<div class="spot-autocomplete-template">
+				<div class="right-panel">
+					<span ng-bind-html="$highlight(data.displayName)"></span>
+				</div>
+			</div>
+		</script>
+
+	</div>
+
+</div>

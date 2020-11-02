@@ -1,0 +1,143 @@
+﻿<div class="loader" ng-show="loading" style="margin-top: 80px"></div>
+
+<div ng-show="auditReport && auditReport.length">
+
+	<div>
+		<label style="margin-left: 5px;" class="partials-cb partial-color" ng-class="{extended: showPartials && savedAudit}">
+    	<input type="checkbox" ng-model="showPartials" ng-click="updateShowPartials(showPartials)"> Show Partials
+    </label>
+		<label style="margin-left: 5px;">
+			<input type="checkbox" ng-model="showDaySubTotal"> Show Day Subtotal
+		</label>
+		<label style="margin-left: 5px;">
+			<input type="checkbox" ng-model="groupEmptyHours"> Group Empty Hours
+		</label>
+	</div>
+
+	<channel-threshold-slide-in
+		show="showPartials"
+		edit-mode="savedAudit"
+		channels="thresholdChannels"
+		on-update="onChannelThresholdUpdate"></channel-threshold-slide-in>
+
+	<table class="table table-condensed table-bordered audit-table">
+		<colgroup>
+			<col class="date-column" />
+			<col class="spot-name-column" />
+		</colgroup>
+		<tbody ng-repeat="ch in auditReport">
+			<tr>
+				<th colspan="2" class="truncate channel-cell">Channel: {{ch.Channel.Name}}</th>
+				<th ng-repeat="hour in getHours(ch)" class="cell-center hour-cell" ng-class="{grouped: isGroupedHour(hour)}">{{hour}}</th>
+				<th class="truncate cell-center day-total-cell">Day total</th>
+			</tr>
+			<tr ng-repeat-start="channelDate in ch.Dates" ng-if="false"></tr>
+			<tr ng-repeat="song in channelDate.Songs" ng-if="song.DayTotal.NormalMatches || showPartials">
+				<td rowspan="{{(showPartials ? channelDate.Songs.length : channelDate.NumberOfSongsWithNormalMatch) + (showDaySubTotal ? 1 : 0)}}"
+					ng-if="(showPartials && $index === 0) || (!showPartials && $index === channelDate.FirstNormalMatchIndex)" style="vertical-align: middle; line-height: 1; padding-top: 20px; padding-bottom: 20px;"
+					class="truncate cell-center">
+                    <span style="font-size: 21px;">{{channelDate.PlayDate | userDate}}</span>
+                    <br />
+                    <span ng-bind-html="channelDate.PlayDate | weekday"></span>
+				</td>
+				<td class="wrap-text" style="vertical-align:middle">{{song.Spot.displayName}}</td>
+				<td ng-repeat="hour in getHours(ch)" class="cell-center">
+					<span ng-if="song.CountByHour[hour].NormalMatches || (showPartials && song.CountByHour[hour].PartialMatches)"> {{song.CountByHour[hour].NormalMatches }} </span>
+					<span ng-if="showPartials && song.CountByHour[hour].PartialMatches" class="partial-color">
+						<b> (+{{song.CountByHour[hour].PartialMatches}}) </b>
+					</span>
+				</td>
+				<td class="cell-center">
+					{{ song.DayTotal.NormalMatches }}
+					<span ng-if="showPartials && song.DayTotal.PartialMatches > 0" class="partial-color">
+					 <b> (+{{ song.DayTotal.PartialMatches }}) </b>
+					</span>
+				</td>
+			</tr>
+			<tr ng-if="showDaySubTotal && (channelDate.dayTotal.NormalMatches || showPartials)">
+				<th class="text-right truncate">Subtotal</th>
+				<td ng-repeat="hour in getHours(ch)" class="cell-center">
+					<span ng-if="channelDate.dayTotalsByHour[hour].NormalMatches || (showPartials && channelDate.dayTotalsByHour[hour].PartialMatches)">
+						{{channelDate.dayTotalsByHour[hour].NormalMatches}}
+					</span>
+					<span ng-if="showPartials && channelDate.dayTotalsByHour[hour].PartialMatches" class="partial-color">
+					 <b>(+{{channelDate.dayTotalsByHour[hour].PartialMatches}}) </b>
+					</span>
+				</td>
+				<td class="cell-center">
+					<span ng-if="channelDate.dayTotal.NormalMatches || (showPartials && channelDate.dayTotal.PartialMatches)">
+						{{channelDate.dayTotal.NormalMatches}}
+					</span>
+					<span ng-if="showPartials && channelDate.dayTotal.PartialMatches" class="partial-color">
+						<b> (+{{channelDate.dayTotal.PartialMatches}}) </b>
+					</span>
+				</td>
+			</tr>
+			<tr ng-repeat-end ng-if="false"></tr>
+			<!--CHANNEL TOTALS-->
+			<tr ng-repeat="songTotal in ch.songTotals">
+				<th colspan="2" class="wrap-text">{{songTotal.spot.displayName }} total</th>
+				<th ng-repeat="hour in getHours(ch)" class="cell-center">
+					<span ng-if="songTotal.countByHour[hour].NormalMatches || (showPartials && songTotal.countByHour[hour].PartialMatches)">
+						{{songTotal.countByHour[hour].NormalMatches}}
+					</span>
+					<span ng-if="showPartials && songTotal.countByHour[hour].PartialMatches" class="partial-color">
+						<b> (+{{songTotal.countByHour[hour].PartialMatches}}) </b>
+					</span>
+				</th>
+				<th class="cell-center">
+					<span ng-if="songTotal.total.NormalMatches || (showPartials && songTotal.total.PartialMatches)">
+						{{songTotal.total.NormalMatches}}
+					</span>
+					<span ng-if="showPartials && songTotal.total.PartialMatches" class="partial-color">
+						<b> (+{{songTotal.total.PartialMatches}}) </b>
+					</span>
+				</th>
+			</tr>
+			<tr class="total-footer">
+				<th colspan="2" class="text-right truncate">{{ch.Channel.Name}} total</th>
+				<th ng-repeat="hour in getHours(ch)" class="cell-center">
+					<span ng-if="ch.totalsByHour[hour].NormalMatches || (showPartials && ch.totalsByHour[hour].PartialMatches)">
+						{{ch.totalsByHour[hour].NormalMatches}}
+					</span>
+					<span ng-if="showPartials && ch.totalsByHour[hour].PartialMatches" class="partial-color">
+						<b> (+{{ch.totalsByHour[hour].PartialMatches}}) </b>
+					</span>
+				</th>
+				<th class="cell-center">
+					<span ng-if="ch.total.NormalMatches || (showPartials && ch.total.PartialMatches)">
+						{{ch.total.NormalMatches}}
+					</span>
+					<span ng-if="showPartials && ch.total.PartialMatches" class="partial-color">
+						<b> (+{{ch.total.PartialMatches}}) </b>
+					</span>
+
+				</th>
+			</tr>
+			<tr ng-repeat-end ng-if="false"></tr>
+		</tbody>
+		<tbody>
+			<tr>
+				<th colspan="2" class="text-right truncate">Grand total</th>
+				<th ng-repeat="hour in getHours(ch)" class="cell-center">
+					<span ng-if="grandTotal.ByHour[hour].NormalMatches || (showPartials && grandTotal.ByHour[hour].PartialMatches)">
+						{{grandTotal.ByHour[hour].NormalMatches}}
+					</span>
+					<span ng-if="showPartials && grandTotal.ByHour[hour].PartialMatches" class="partial-color">
+						<b> (+{{grandTotal.ByHour[hour].PartialMatches}}) </b>
+					</span>
+				</th>
+				<th class="cell-center">
+					<span ng-if="grandTotal.NormalMatches || (showPartials && grandTotal.PartialMatches)">
+						{{grandTotal.NormalMatches}}
+					</span>
+					<span ng-if="showPartials && grandTotal.PartialMatches" class="partial-color">
+						<b> (+{{grandTotal.PartialMatches}}) </b>
+					</span>
+				</th>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+<report-message template="{{message.template}}" ng-show="message.show"></report-message>

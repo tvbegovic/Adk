@@ -1,0 +1,173 @@
+﻿<div class="tagger-lab rows-spaced">
+	<div class="row">
+		<div class="col-sm-12">
+			<span class="pull-left">
+				<button type="button" class="btn btn-xs btn-info" ng-click="pause()">
+					<i class="glyphicon" ng-class="{true: 'glyphicon-play', false: 'glyphicon-pause'}[isPaused]"></i>
+				</button>
+				&nbsp;
+			</span>
+			<span class="pull-right position-indicator">
+				{{position/1000 | number:1}} / {{songToTag.AdTagging.Duration | number:1}}
+			</span>
+			<div class="progress" progress-seek on-seek="seeked(pos)">
+				<div class="progress-bar" role="progressbar" style="width: {{(position/1000/songToTag.AdTagging.Duration)*100}}%;"></div>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<label>Ad Facts</label>
+			<table class="table table-condensed">
+				<tr>
+					<th>Brand</th>
+					<td ng-repeat="fact in songToTag.AdTagging.OneAd.AdFacts"><input type="text" class="form-control input-sm" ng-model="fact.Brand" typeahead="item for item in getItems('brand', $viewValue)" tabindex="{{$index+1}}" /></td>
+					<td rowspan="6" class="cell-center">
+						<button class="btn btn-primary" ng-click="addFact()">Add a Brand</button>
+					</td>
+				</tr>
+				<tr>
+					<th>Category</th>
+					<td ng-repeat="fact in songToTag.AdTagging.OneAd.AdFacts"><input type="text" class="form-control input-sm" ng-model="fact.Category" typeahead="item for item in getItems('category', $viewValue)" tabindex="{{$index+1}}" /></td>
+				</tr>
+				<tr>
+					<th>Product or Item</th>
+					<td ng-repeat="fact in songToTag.AdTagging.OneAd.AdFacts"><input type="text" class="form-control input-sm" ng-model="fact.ProductOrItem" typeahead="item for item in getItems('product', $viewValue)" tabindex="{{$index+1}}" /></td>
+				</tr>
+				<tr>
+					<th>Item Type</th>
+					<td ng-repeat="fact in songToTag.AdTagging.OneAd.AdFacts">
+						<select class="form-control input-sm" ng-options="type.id as type.name for type in itemTypes" ng-model="fact.ItemType" tabindex="{{$index+1}}">
+							<option value="">Select a type</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<th>Advertiser</th>
+					<td ng-repeat="fact in songToTag.AdTagging.OneAd.AdFacts"><input type="text" class="form-control input-sm" ng-model="fact.Advertiser" typeahead="item for item in getItems('advertiser', $viewValue)" tabindex="{{$index+1}}" /></td>
+				</tr>
+				<tr>
+					<th>Industry</th>
+					<td ng-repeat="fact in songToTag.AdTagging.OneAd.AdFacts"><input type="text" class="form-control input-sm" ng-model="fact.Industry" typeahead="item for item in getItems('industry', $viewValue)" tabindex="{{$index+1}}" /></td>
+				</tr>
+				<tr>
+					<th>Media Type</th>
+					<td ng-repeat="fact in songToTag.AdTagging.OneAd.AdFacts"><input type="text" class="form-control input-sm" ng-model="fact.MediaType" tabindex="{{$index+1}}" /></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-10">
+			<form class="form-horizontal">
+				<div class="form-group">
+					<label for="inputSpotType" class="col-sm-2 control-label">Ad Type</label>
+					<div class="col-sm-10">
+						<select class="form-control input-sm" ng-options="type.id as type.name for type in adTypes" ng-model="songToTag.AdTagging.OneAd.AdType" tabindex="10">
+							<option value="">Select a type</option>
+						</select>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputExpirationDate" class="col-sm-2 control-label">Expiration Date</label>
+					<div class="col-sm-10">
+						<p class="input-group">
+							<input type="text" class="form-control input-sm" ng-model="songToTag.AdTagging.OneAd.ExpirationDate" id="inputExpirationDate" placeholder="Expiration Date" tabindex="10"
+								   datepicker-popup is-open="opened">
+							<span class="input-group-btn">
+								<button type="button" class="btn btn-default input-sm" ng-click="openDatePicker($event)" tabindex="10"><i class="glyphicon glyphicon-calendar"></i></button>
+							</span>
+						</p>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputCampaign" class="col-sm-2 control-label">Campaign</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" ng-model="songToTag.AdTagging.OneAd.Campaign" id="inputCampaign" placeholder="Campaign" typeahead="item for item in getItems('campaign', $viewValue)" tabindex="10">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputTitle" class="col-sm-2 control-label">Ad Title</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" ng-model="songToTag.AdTagging.OneAd.AdTitle" id="inputTitle" placeholder="Ad Title" tabindex="10">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputTranscript" class="col-sm-2 control-label">Transcript</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" ng-model="songToTag.AdTagging.OneAd.Transcript" id="inputTranscript" placeholder="Transcript" tabindex="10">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputVoice" class="col-sm-2 control-label">Voice</label>
+					<div class="col-sm-10">
+						<label class="checkbox-inline">
+							<input type="checkbox" ng-model="songToTag.AdTagging.OneAd.Voice.Male" tabindex="10"> Male
+						</label>
+						<label class="checkbox-inline">
+							<input type="checkbox" ng-model="songToTag.AdTagging.OneAd.Voice.Female" tabindex="10"> Female
+						</label>
+						<label class="checkbox-inline">
+							<input type="checkbox" ng-model="songToTag.AdTagging.OneAd.Voice.Child" tabindex="10"> Child
+						</label>
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputMusicBed" class="col-sm-2 control-label">Music Bed</label>
+					<div class="col-sm-10">
+						<select class="form-control input-sm" ng-options="type.id as type.name for type in musicTypes" ng-model="songToTag.AdTagging.OneAd.MusicBed" tabindex="10"></select>
+					</div>
+				</div>
+				<div class="form-group" ng-if="songToTag.AdTagging.OneAd.MusicBed === 3">
+					<label for="inputJingleSongArtist" class="col-sm-2 control-label">Song Title</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" ng-model="songToTag.AdTagging.OneAd.SongTitle" id="inputSongTitle" typeahead="item for item in getItems('song title', $viewValue)" placeholder="Song Title" tabindex="10">
+					</div>
+				</div>
+				<div class="form-group" ng-if="songToTag.AdTagging.OneAd.MusicBed === 3">
+					<label for="inputJingleSongArtist" class="col-sm-2 control-label">Song Artist</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" ng-model="songToTag.AdTagging.OneAd.SongArtist" id="inputSongArtist" typeahead="item for item in getItems('song artist', $viewValue)" placeholder="Song Artist" tabindex="10">
+					</div>
+				</div>
+				<div class="form-group">
+					<label for="inputTaggingIssue" class="col-sm-2 control-label">Tagging Issue</label>
+					<div class="col-sm-10">
+						<input type="text" class="form-control input-sm" ng-model="songToTag.AdTagging.TaggingIssue" id="inputTaggingIssue" placeholder="Tagging Issue" tabindex="10">
+					</div>
+				</div>
+			</form>
+		</div>
+		<div class="col-sm-2 rows-spaced">
+			<div class="row">
+				<div class="col-sm-12">
+					<button class="btn btn-block btn-primary" ng-click="save(2)" tabindex="10">Save Completed</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<button class="btn btn-block btn-primary" ng-click="save(1)" tabindex="10">Save Partial</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<button class="btn btn-block btn-primary" ng-click="save(3)" tabindex="10">Skip</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<button class="btn btn-block btn-info" ng-click="export()" tabindex="10">Export</button>
+				</div>
+			</div>
+			<div class="row" nf-if="songToTag.Statistics">
+				<div class="col-sm-12">
+					<div>Schema Version: {{songToTag.Statistics.SchemaVersion}}</div>
+					<div>Tagged: {{songToTag.Statistics.Completed + songToTag.Statistics.Partial + songToTag.Statistics.Skipped}}</div>
+					<div>Completed: {{songToTag.Statistics.Completed}}</div>
+					<div>Partial: {{songToTag.Statistics.Partial}}</div>
+					<div>Skipped: {{songToTag.Statistics.Skipped}}</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

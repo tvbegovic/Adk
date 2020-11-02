@@ -1,0 +1,14 @@
+<div>
+	<div class="wp_clockTitle">Daily clock</div>
+	<div id="wp_clock">
+		<div class="wp_clockrow" ng-repeat="r in $ctrl.clockRows">
+			<div class="wp_hour" ng-repeat="c in $ctrl.clockCols">
+				<button class="btn btn-default btn-sm btn-block" ng-click="$ctrl.click(r*4 + c)" ng-dblclick="$ctrl.dblClick(r*4+c)"
+						ng-disabled="$ctrl.disabled" ng-class="$ctrl.getFillClass(r*4 + c)">
+					{{('0' + (r*4 + c).toString()).slice(-2)}}:00
+				</button>
+				<!--<div ng-class="segmentFillClass(r*4 + c)"></div>-->
+			</div>
+		</div>
+	</div>
+</div>

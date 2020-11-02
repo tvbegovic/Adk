@@ -1,0 +1,109 @@
+<div class="row">
+	<div class="col-sm-4">
+		<label>Corporate owner</label>
+		<div>
+			<div class="pull-right" style="margin-left: 10px;">
+				<button class="btn btn-sm btn-primary" ng-disabled="!$ctrl.current.holding || $ctrl.current.editingHolding" ng-click="$ctrl.addHolding()">Add</button>
+				<button class="btn btn-sm btn-primary" ng-disabled="!$ctrl.current.holding" ng-click="$ctrl.editHolding()">Edit</button>
+				<button class="btn btn-sm btn-danger" ng-disabled="!$ctrl.current.holding" ng-click="$ctrl.deleteHolding()">Delete</button>
+				<button class="btn btn-sm" ng-disabled="!$ctrl.current.holding" btn-checkbox ng-model="$ctrl.current.holding.Mine" ng-change="$ctrl.mineChanged()" ng-class="{true:'btn-primary', false:'btn-default'}[$ctrl.current.holding.Mine]">Mine</button>
+			</div>
+			<div class="holding-control">
+				<input ng-if="!$ctrl.current.holding || $ctrl.current.editingHolding" type="text" class="form-control" ng-model="$ctrl.current.newHoldingName" placeholder="Holding name" focus-on="newHoldingName" on-enter="$ctrl.saveHolding()" />
+				<div ng-if="$ctrl.current.holding && !$ctrl.current.editingHolding" class="btn-group" style="width: 100%" dropdown is-open="status.isopen">
+					<button type="button" class="btn btn-block btn-primary dropdown-toggle" dropdown-toggle>
+						{{$ctrl.current.holding.Name}} <span class="caret"></span>
+					</button>
+					<ul class="dropdown-menu" role="menu">
+						<li role="menuitem" ng-repeat="(holdingId, holding) in $ctrl.mediaHouses.holdingDic" ng-class="{active: holding === $ctrl.current.holding}">
+							<a ng-click="$ctrl.holdingClicked(holding)">
+								{{holding.Name}}
+								<span class="badge pull-right" ng-if="holding.Mine">Mine</span>
+							</a>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row" ng-if="$ctrl.current.holding">
+	<div class="col-sm-4">
+		<label>Station Groups</label>
+		<ul class="list-group">
+			<li ng-repeat="group in $ctrl.current.holdingGroups" class="list-group-item" ng-class="{active: group === $ctrl.current.group}" ng-click="$ctrl.groupClicked(group)">
+				<div ng-if="group !== $ctrl.current.group || !$ctrl.current.editingGroup">
+					<div class="pull-right" ng-if="group === $ctrl.current.group">
+						<button class="btn btn-xs btn-default pull-right" ng-click="$ctrl.editGroup()"><i class="glyphicon glyphicon-pencil"></i></button>
+						<button class="btn btn-xs btn-danger pull-right" ng-click="$ctrl.deleteGroup()"><i class="glyphicon glyphicon-minus"></i></button>
+					</div>
+					{{group.Name}}
+				</div>
+				<div ng-if="group === $ctrl.current.group && $ctrl.current.editingGroup">
+					<input type="text" class="form-control" ng-model="group.Name" focus-on="editGroupName" on-enter="$ctrl.saveGroup()">
+				</div>
+			</li>
+			<li class="input-group">
+				<span class="input-group-btn">
+					<button class="btn btn-default" type="button" ng-click="$ctrl.addGroup()"><i class="glyphicon glyphicon-plus"></i></button>
+				</span>
+				<input type="text" class="form-control" ng-model="$ctrl.current.newGroupName" ng-disabled="$ctrl.current.group" focus-on="newGroupName" on-enter="$ctrl.saveGroup()" placeholder="Group name">
+			</li>
+		</ul>
+	</div>
+	<div class="col-sm-8" ng-if="$ctrl.current.group">
+		<label>Station list for {{$ctrl.current.group.Name}}</label>
+		<table class="table table-condensed table-striped table-grid">
+			<thead>
+				<tr>
+					<th class="col-select">Sel.</th>
+					<th class="col-title">Channel name</th>
+					<th class="col-title">City</th>
+					<th class="col-title">Country</th>
+					<th class="col-title">Media type</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="channel in $ctrl.mediaHouses.channels | filter: $ctrl.isChannelInGroup" ng-class="{info: channel.Selected}" ng-click="channel.Selected = !channel.Selected">
+					<td><input type="checkbox" ng-model="channel.Selected" ng-click="$event.stopPropagation()" /></td>
+					<td>{{channel.Name}}</td>
+					<td>{{channel.City}}</td>
+					<td>{{channel.Country}}</td>
+					<td>{{channel.MediaType}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<div>
+			<button class="btn btn-sm btn-primary" ng-click="$ctrl.addChannels()" ng-disabled="!$ctrl.canAdd()">Add <i class="glyphicon glyphicon-chevron-up"></i></button>
+			<button class="btn btn-sm btn-primary" ng-click="$ctrl.removeChannels()" ng-disabled="!$ctrl.canRemove()">Remove <i class="glyphicon glyphicon-chevron-down"></i></button>
+		</div>
+	</div>
+</div>
+<div class="row" ng-if="$ctrl.current.group">
+	<div class="col-sm-12">
+		<label>Available channels</label>
+		<input type="search" class="form-control" ng-model="$ctrl.current.channelFilter" placeholder="Search Channels" />
+		<div class="available-channels">
+			<table class="table table-condensed table-striped table-grid">
+				<thead>
+					<tr>
+						<th class="col-select">Sel.</th>
+						<th class="col-title">Channel name</th>
+						<th class="col-title">City</th>
+						<th class="col-title">Country</th>
+						<th class="col-title">Media type</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="channel in $ctrl.mediaHouses.channels | filter: $ctrl.isChannelNotInGroup | filter: $ctrl.current.channelFilter" ng-class="{info: channel.Selected}" ng-click="channel.Selected = !channel.Selected">
+						<td><input type="checkbox" ng-model="channel.Selected" ng-click="$event.stopPropagation()" /></td>
+						<td>{{channel.Name}}</td>
+						<td>{{channel.City}}</td>
+						<td>{{channel.Country}}</td>
+						<td>{{channel.MediaType}}</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>

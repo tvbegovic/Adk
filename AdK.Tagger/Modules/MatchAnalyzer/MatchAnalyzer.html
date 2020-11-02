@@ -1,0 +1,54 @@
+<h2>Match analyzer</h2>
+<div class="ma_filter" ng-show="showFilter">
+	<div class="form-inline">
+		<div class="form-group">
+			<label>Channel:</label>
+			<select class="form-control" ng-options="c as c.Name for c in channels" ng-model="selection.selectedChannel"></select>
+		</div>
+	</div>
+	<div class="filter-box ml-2">
+		<label class="filter-label">From:</label>
+		<div class="date-wrapper-filter" style="display:inline-block; float:none">
+			<custom-date class="report-period-picker" custom-date-model="selection.from"></custom-date>
+		</div>
+		<div class="btn-group">
+			<timepicker class="timepicker" ng-model="selection.from" ng-model-options="{debounce: 1000}" show-meridian="false"
+						template-url="/js/_directives/timepicker.html"></timepicker>
+		</div>
+	</div>
+	<div class="filter-box ml-2">
+		<label class="filter-label">To:</label>
+		<div class="date-wrapper-filter" style="display:inline-block; float:none">
+			<custom-date class="report-period-picker" custom-date-model="selection.to"></custom-date>
+		</div>
+		<div class="btn-group">
+			<timepicker class="timepicker" ng-model="selection.to" ng-model-options="{debounce: 1000}" show-meridian="false"
+						template-url="/js/_directives/timepicker.html"></timepicker>
+		</div>
+	</div>
+	<button class="btn btn-primary" ng-click="showData()">Show data</button>
+</div>
+<div class="mt-2" ng-show="lastUrl">
+	Last Url: {{lastUrl}}
+</div>
+
+<div class="mt-2">
+	<match-renderer width="1500" height="500" from="selection.from" to="selection.to" matches="matches" ng-show="showchart"></match-renderer>
+	<div ng-show="!showchart">
+		<table class="ma_matches_table">
+			<thead>
+				<tr>
+					 <th ng-repeat="h in headers">{{h}}</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="m in matches">
+					<td ng-repeat="h in headers">
+						{{m[h]}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		
+	</div>
+</div>

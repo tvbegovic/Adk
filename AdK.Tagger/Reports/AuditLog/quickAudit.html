@@ -1,0 +1,35 @@
+﻿<div ng-controller="quickAuditLogCtrl" class="audit-log">
+	<div class="report-filters">
+		<div class="filter-row clearfix">
+			<report-date-range-filter on-init="onDirectivesInit()" on-change="load()"></report-date-range-filter>
+			<report-notes note-id="audit_log" ng-if="user.isAdmin"></report-notes>
+
+			<button class="btn btn-primary hide-on-print" style="margin: 0 30px;" ng-click="getAudit()" ng-disabled="!selectedChannels.length || !selectedSpots.length">
+				<i class="glyphicon glyphicon-play"></i> Run Audit
+			</button>
+
+			<div class="buttons-right">
+				<button class="btn btn-primary pull-right hide-on-print" ng-click="print()">
+					<i class="glyphicon glyphicon-print"></i>	Print
+				</button>
+				<button class="btn btn-primary pull-right" ng-click="toggleAuditDetails();">
+					<i class="glyphicon glyphicon-list"></i>
+					<span ng-show="!showDetails"> Audit Details </span>
+					<span ng-show="showDetails"> Audit Log </span>
+				</button>
+			</div>
+
+		</div>
+
+		<audit-log-autocomplete selected-channels="selectedChannels" selected-spots="selectedSpots"></audit-log-autocomplete>
+
+	</div>
+
+	<div ng-show="!showDetails">
+		<audit-report-table></audit-report-table>
+	</div>
+	<div ng-show="showDetails">
+		<audit-details></audit-details>
+	</div>
+
+</div>

@@ -1,0 +1,82 @@
+<div class="row">
+	<div class="col-sm-12">
+		<h3>			
+			My Ad Alerts
+		</h3>		
+		<hr />
+	</div>	
+</div>
+<div class="row">
+	<div class="col-sm-12">
+		<table class="table table-condensed table-bordered table-hover fs-grid report-table">
+			<thead>
+				<tr>
+					<th ng-click="sortBy(sort.Client)">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Client
+								<sort-icon ascending="sort.Direction == 'ASC'" show="sort.Current === sort.Client" />
+							</div>
+						</div>
+					</th>
+					<th ng-click="sortBy(sort.RegMarket)">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Country / Market
+								<sort-icon ascending="sort.Direction == 'ASC'" show="sort.Current === sort.RegMarket" />
+							</div>
+						</div>
+					</th>
+					<th ng-click="sortBy(sort.Email)">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								E-mail Sent
+								<sort-icon ascending="sort.Direction == 'ASC'" show="sort.Current === sort.Email" />
+							</div>
+						</div>
+					</th>
+
+					<th class="button-column">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Browse
+							</div>
+						</div>
+					</th>
+					<th class="button-column">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Reports
+							</div>
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in feedList | orderBy:rowComparator:sort.reverse | skip:pager.skip | take:pager.size">
+					<td>
+						{{ item.ClientName }}
+					</td>
+					<td>
+						{{ item.Market + ' ' + item.Domain }}
+					</td>
+					<td class="date">
+						{{ item.LastEmailSent | userDate }} <br />
+						{{ item.LastEmailSent | date:'HH:mm:ss' }}
+					</td>
+
+					<td class="text-center">
+                        <a class="btn btn-default" ng-click="showUserFeed(item)">Browse</a>
+					</td>
+
+					<td class="text-center">
+                        <a class="btn btn-default" ng-click="showUserReports(item)">Reports</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="pager">
+			<table-pager manager="pager"></table-pager>
+		</div>
+	</div>
+</div>

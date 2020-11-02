@@ -1,0 +1,76 @@
+﻿<div>
+    <h3>Dead Channels <small>since: {{rciLookupLimit}} </small></h3>
+    <p><a href="/#/monitor" class="btn btn-primary btn-sm">Go Back to Monitor</a></p>
+
+    <table class="table table-bordered table-condensed table-striped" style="width:auto">
+        <thead>
+            <tr>
+                <th>Domain</th>
+                <th>Station Name</th>
+                <th>External ID</th>
+                <th>Machine Name</th>
+                <th>Dead For</th>
+                <th style="width:100px;">Status</th>
+                <th>Solved</th>
+                <th>Hold 12h</th>
+                <th>Hold 3d</th>
+                <th>Hold...</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="c in deadChannels.rows">
+                <td>{{c.Domain}}</td>
+                <td><a href="/#{{c.h_clickpath}}">{{c.Station_Name}}</a></td>
+                <td>{{c.External_ID}}</td>
+                <td>{{c.Machine_Name}}</td>
+                <td class="text-right">{{c.Waiting_For}}</td>
+                <td>{{c.Status}}</td>
+                <td><button class="btn btn-default btn-sm" ng-click="updateStatus(0, $index, 0)">Solved</button></td>
+                <td><button class="btn btn-default btn-sm" ng-click="updateStatus(1, $index, 12)">Hold 12h</button></td>
+                <td><button class="btn btn-default btn-sm" ng-click="updateStatus(1, $index, 72)">Hold 3d</button></td>
+                <td>
+                    <div class="btn-group" style="width: 100%" dropdown is-open="status.isopen">
+                        <button type="button" class="btn btn-block btn-default btn-sm dropdown-toggle" dropdown-toggle>
+                            Hold... <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li role="menuitem">
+                                <a ng-click="holdMore(7, $index)">Hold 7d</a>
+                                <a ng-click="holdMore(30, $index)">Hold 30d</a>
+                                <a ng-click="holdMore(90, $index)">Hold 90d</a>
+                            </li>
+                        </ul>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <!-- Modal -->
+    <script type="text/ng-template" id="holdModal.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Hold further checks for {{hold.days}} days</h3>
+        </div>
+        <div class="modal-body">
+            <div>
+                <form name="form" novalidate>
+                    <div class="form-group">
+                        <label>Reason for postponing checks:</label>
+                        <input type="text" class="form-control" ng-model="hold.reason" required />
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-primary" ng-click="ok()">Hold</button>
+            <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        </div>
+    </script>
+
+
+    <h3>Healthy Channels <small>since: {{rciLookupLimit}} </small></h3>
+    <p><a href="/#/monitor" class="btn btn-primary btn-sm">Go Back to Monitor</a></p>
+    <p>Click on channel to see details.</p>
+    <generic-table tabledata="otherChannels"></generic-table>
+
+</div>

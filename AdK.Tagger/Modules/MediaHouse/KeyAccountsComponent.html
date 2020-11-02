@@ -1,0 +1,38 @@
+<div class="row">
+	<div class="col-sm-5">
+		<input type="search" ng-model="$ctrl.filter" class="form-control" ng-change="$ctrl.filterChanged()" placeholder="Search for key accounts" />
+		<div class="btn-group">
+			<label class="btn btn-primary" ng-model="$ctrl.brandOrAdvertiser" ng-click="$ctrl.filterChanged()" btn-radio="1">Brands</label>
+			<label class="btn btn-primary" ng-model="$ctrl.brandOrAdvertiser" ng-click="$ctrl.filterChanged()" btn-radio="2">Advertisers</label>
+			<label class="btn btn-primary" ng-model="$ctrl.brandOrAdvertiser" ng-click="$ctrl.filterChanged()" btn-radio="3">All</label>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-sm-5">
+		<ul vs-repeat="41" class="list-group brandvertiser-list">
+			<li ng-repeat="ba in $ctrl.brandvertisers track by $index" class="list-group-item" ng-click="$ctrl.current.brandvertiser=ba" ng-class="{'active':$ctrl.current.brandvertiser===ba}">
+				<span class="badge pull-right" ng-show="$ctrl.brandOrAdvertiser === 3 && ba.IsBrand != null">{{ba.IsBrand?'Brand':'Advertiser'}}</span>
+				<div class="brandvertiser-name ellipsis">{{ba.Name}}{{$ctrl.getIndexed(ba.index)}}</div>
+			</li>
+		</ul>
+	</div>
+	<div class="col-sm-2">
+		<button class="btn btn-block btn-primary" ng-click="$ctrl.addKeyAccount()" ng-disabled="!$ctrl.canAdd()">
+			Add
+			<i class="glyphicon glyphicon-chevron-right"></i>
+		</button>
+		<button class="btn btn-block btn-primary" ng-click="$ctrl.removeKeyAccount()" ng-disabled="!$ctrl.canRemove()">
+			<i class="glyphicon glyphicon-chevron-left"></i>
+			Remove
+		</button>
+	</div>
+	<div class="col-sm-5">
+		<ul class="list-group brandvertiser-list">
+			<li class="list-group-item" ng-repeat="ba in $ctrl.keyAccounts" ng-click="$ctrl.current.keyAccount=ba" ng-class="{'active':$ctrl.current.keyAccount===ba}">
+				<span class="badge pull-right">{{ba.IsBrand?'Brand':'Advertiser'}}</span>
+				<div class="brandvertiser-name ellipsis">{{ba.Name}}</div>
+			</li>
+		</ul>
+	</div>
+</div>

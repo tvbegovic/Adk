@@ -1,0 +1,83 @@
+<div class="loader" ng-show="loading" style="margin-top: 80px">
+</div>
+<div ng-if="auditReport && auditReport.length">
+    <div>
+        <label style="margin-left: 5px;" class="partials-cb partial-color" ng-class="{extended: showPartials && savedAudit}">
+            <input type="checkbox" ng-model="showPartials" ng-click="updateShowPartials(showPartials)">
+            Show Partials
+        </label>
+    </div>
+
+		<channel-threshold-slide-in
+				show="showPartials"
+				edit-mode="savedAudit"
+				channels="thresholdChannels"
+				on-update="onChannelThresholdUpdate"
+			></channel-threshold-slide-in>
+
+    <table class="table table-condensed table-bordered report-table">
+        <tbody ng-repeat="ch in auditReport">
+            <tr>
+                <th colspan="2" class="truncate channel-cell text">
+                    Channel: {{ch.Channel.Name}}
+                </th>
+                <th>
+                </th>
+                <th rowspan="2">
+                    Spot duration
+                </th>
+                <th colspan="2">
+                    Missing time
+                </th>
+                <th>
+                </th>
+            </tr>
+            <tr>
+                <th>
+                    Date
+                </th>
+                <th>
+                    Playback time
+                </th>
+                <th>
+                    Spot title
+                </th>
+                <th>
+                    Start
+                </th>
+                <th>
+                    End
+                </th>
+                <th>
+                    %
+                </th>
+            </tr>
+            <tr ng-repeat="row in getVisibleChannelRows(ch.Rows)">
+                <td class="text" style="border-bottom: none; background: white;" ng-if="$index == 0">
+                    {{ row.PlayTime | userDate }}
+                </td>
+                <td class="text" style="border: none; background: white;" ng-if="$index != 0">
+                </td>
+                <td class="number" ng-class="{ 'red-background': row.PercentageNum < row.Treshold }">
+                    {{ row.PlayTime | date:'HH:mm:ss' }}
+                </td>
+                <td ng-class="{ 'red-background': row.PercentageNum < row.Treshold }">
+										{{ row.Title }}
+                </td>
+                <td class="text-center" ng-class="{ 'red-background': row.PercentageNum < row.Treshold }">
+                    {{ row.Duration }}
+                </td>
+                <td ng-class="{ 'red-background': row.PercentageNum < row.Treshold }">
+                    {{ row.Start }}
+                </td>
+                <td class="number" ng-class="{ 'red-background': row.PercentageNum < row.Treshold }">
+                    {{ row.End }}
+                </td>
+                <td class="number" ng-class="{ 'red-background': row.PercentageNum < row.Treshold }">
+                    {{ row.Percentage }}
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+<report-message template="{{message.template}}" ng-show="message.show"></report-message>

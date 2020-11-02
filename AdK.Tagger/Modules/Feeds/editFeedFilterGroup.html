@@ -1,0 +1,124 @@
+﻿<div class="rows-spaced" ng-show="isVisible">
+    <div ng-class="{'col-sm-11': exclude == 'true', 'col-sm-12': exclude == 'false'}">
+        <div class="row">
+            <div class="col-sm-11">
+                <h3><i class="fa fa-exclamation-circle" ng-if="exclude == 'true'"></i>{{clientName}}: {{ !filterGroupId ? 'New' : 'Edit'}} {{exclude == 'true'?'Exclude ':''}}Filters</h3>
+                <hr />
+            </div>
+        </div>
+        <div class="row form-horizontal">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label" style="text-align:left !important;">Countries:</label>
+                    <div class="col-sm-11">
+                        <div class="tags-input-wrapper">
+                            <tags-input ng-model="filterGroup.FeedFilterRulesDomains" add-from-autocomplete-only="true" key-property="Id" spellcheck="false" placeholder="Add a domain"
+                                        display-property="DisplayName" replace-spaces-with-dashes="false">
+                                <auto-complete source="getDomainsAutocomplete($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+                                               max-results-to-show="999"></auto-complete>
+                            </tags-input>
+                            <i class="fa fa-spinner fa-spin ajax-spinner" ng-show="loadingSwitches[keyChain.domains].loading"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-horizontal">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label " style="text-align:left !important;">Markets:</label>
+                    <div class="col-sm-11">
+                        <div class="tags-input-wrapper">
+                            <tags-input ng-model="filterGroup.FeedFilterRulesMarkets" add-from-autocomplete-only="true" key-property="Id" spellcheck="false" placeholder="Add a market"
+                                        display-property="DisplayName" replace-spaces-with-dashes="false">
+                                <auto-complete source="getMarketsAutocomplete($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+                                               max-results-to-show="999"></auto-complete>
+                            </tags-input>
+                            <i class="fa fa-spinner fa-spin ajax-spinner" ng-show="loadingSwitches[keyChain.markets].loading"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-horizontal">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label " style="text-align:left !important;">Advertisers:</label>
+                    <div class="col-sm-11">
+                        <div class="tags-input-wrapper">
+                            <tags-input ng-model="filterGroup.FeedFilterRulesAdvertisers" add-from-autocomplete-only="true" key-property="Id" spellcheck="false" placeholder="Add an advertiser"
+                                        display-property="DisplayName" replace-spaces-with-dashes="false">
+                                <auto-complete source="getAdvertisersAutocomplete($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+                                               max-results-to-show="999"></auto-complete>
+                            </tags-input>
+                            <i class="fa fa-spinner fa-spin ajax-spinner" ng-show="loadingSwitches[keyChain.advertisers].loading"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-horizontal">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label " style="text-align:left !important;">Brands:</label>
+                    <div class="col-sm-11">
+                        <div class="tags-input-wrapper">
+                            <tags-input ng-model="filterGroup.FeedFilterRulesBrands" add-from-autocomplete-only="true" key-property="Id" spellcheck="false" placeholder="Add a brand"
+                                        display-property="DisplayName" replace-spaces-with-dashes="false">
+                                <auto-complete source="getBrandsAutocomplete($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+                                               max-results-to-show="999"></auto-complete>
+                            </tags-input>
+                            <i class="fa fa-spinner fa-spin ajax-spinner" ng-show="loadingSwitches[keyChain.brands].loading"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-horizontal">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label " style="text-align:left !important;">Industries:</label>
+                    <div class="col-sm-11">
+                        <div class="tags-input-wrapper">
+                            <tags-input ng-model="filterGroup.FeedFilterRulesIndustries" add-from-autocomplete-only="true" key-property="Id" spellcheck="false" placeholder="Add an industry"
+                                        display-property="DisplayName" replace-spaces-with-dashes="false">
+                                <auto-complete source="getIndustriesAutocomplete($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+                                               max-results-to-show="999"></auto-complete>
+                            </tags-input>
+                            <i class="fa fa-spinner fa-spin ajax-spinner" ng-show="loadingSwitches[keyChain.industries].loading"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-horizontal">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <label class="col-sm-1 control-label " style="text-align:left !important;">Categories:</label>
+                    <div class="col-sm-11">
+                        <div class="tags-input-wrapper">
+                            <tags-input ng-model="filterGroup.FeedFilterRulesCategories" add-from-autocomplete-only="true" key-property="Id" spellcheck="false" placeholder="Add a category"
+                                        display-property="DisplayName" replace-spaces-with-dashes="false">
+                                <auto-complete source="getCategoriesAutocomplete($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+                                               max-results-to-show="999"></auto-complete>
+                            </tags-input>
+                            <i class="fa fa-spinner fa-spin ajax-spinner" ng-show="loadingSwitches[keyChain.categories].loading"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row form-horizontal">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="col-sm-1"></div>
+                    <div class="col-sm-11">
+                        <button type="submit" class="btn btn-default" ng-click="saveFilterGroup()">Save Filters</button>
+                        <button type="submit" class="btn btn-default" ng-click="deleteFilterGroup()">Delete Filter Group</button>
+                        <button type="submit" class="btn btn-default" ng-click="cancelEditFilters()">Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

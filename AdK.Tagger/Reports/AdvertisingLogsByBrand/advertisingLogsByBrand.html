@@ -1,0 +1,65 @@
+﻿<div class="share-by-brand-adv" ng-controller="advertisingLogsByBrand">
+    <div class="row" ng-show="channelsLoaded">
+        <div class="col-sm-12">
+            <div ng-show="haveChannels">
+                <div class="report-filters">
+                    <div class="filter-row main">
+                        <div class="date-wrapper-filter">
+                            <report-custom-date-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()"></report-custom-date-filter>
+						</div>
+                        <report-channel-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-filter>
+                        <report-industry-filter on-init="onDirectivesInit()" on-change="resetCategories(load)"></report-industry-filter>
+                        <report-media-filter on-init="onDirectivesInit()" on-change="load()"></report-media-filter>
+                        <report-brand-or-advertiser-filter on-init="onDirectivesInit()" on-change="load()"></report-brand-or-advertiser-filter>
+                        <report-notes note-id="advertising_logs_by_brand" ng-if="user.isAdmin" />
+                    </div>
+                    <div class="filter-row clearfix">
+                        <report-category-filter on-change="load()" selected-industry="current.industry.Id"></report-category-filter>
+                    </div>
+                </div>
+
+                <div class="report-data">
+                    <div class="row" style="margin-bottom: 20px;">
+                        <div class="col-sm-3" ng-show="reportData.AdvertisingLogs.length">
+                            <player-widget player="player"></player-widget>
+                        </div>
+                    </div>
+
+                    <div ng-repeat="channelLog in reportData.AdvertisingLogs">
+                        <h4><strong>{{channelLog.ChannelName}}</strong></h4>
+                        <table class="report-table table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th ng-if="current.brandOrAdvertiser.Id == 'Brand'">Brand</th>
+                                    <th ng-if="current.brandOrAdvertiser.Id == 'Advertiser'">Advertiser</th>
+                                    <th style="width: 70%">Spot Title</th>
+                                    <th>Duration</th>
+                                    <th>Play</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="log in channelLog.Logs">
+                                    <td class="number"> {{ log.PlayTime }} </td>
+                                    <td> {{ log.Name }} </td>
+                                    <td> {{ log.SongTitle }} </td>
+                                    <td class="number"> {{ log.AirTime | secondsToTimeFilter}} </td>
+                                    <td class="text-center">
+                                        <button type="button" class="btn btn-xs btn-info" ng-click="playPauseSong(log, $index)">
+                                            <i class="glyphicon" ng-class="{true: 'glyphicon-pause', false: 'glyphicon-play'}[$index === player.playingInfo.uiIndentifier && player.playingInfo.isPlaying]"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+            </div>
+
+            <report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+
+        </div>
+    </div>
+</div>

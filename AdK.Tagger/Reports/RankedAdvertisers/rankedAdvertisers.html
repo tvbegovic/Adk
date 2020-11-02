@@ -1,0 +1,78 @@
+﻿<div ng-controller="rankedAdvertisersCtrl" class="ranked-advertisers-report">
+	<div class="row">
+		<div class="col-sm-12">
+			<div ng-hide="showNoMediaHouseMsg">
+				<div class="report-filters">
+					<div class="filter-row main">
+						<div class="date-wrapper-filter">
+							<report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()" period-start="rankedAdvertisers.PeriodStart"
+								period-end="rankedAdvertisers.PeriodEnd"></report-custom-period-filter>
+						</div>
+						<report-market-filter on-init="onDirectivesInit()" on-change="load()"></report-market-filter>
+						<report-toggle-value-filter on-init="onDirectivesInit()" on-change="load()"></report-toggle-value-filter>
+						<report-advertiser-filter on-change="advertiserFilterChange"></report-advertiser-filter>
+						<report-notes note-id="ranked_advertiser" ng-if="user.isAdmin" />
+					</div>
+				</div>
+				<div class="report-data" ng-if="!message.show && !loading">
+					<div style="overflow-x: auto;">
+						<table class="report-table table table-striped table-hover table-bordered">
+							<thead>
+								<tr>
+									<th></th>
+									<th></th>
+									<th class="text-center" colspan="{{ rankedAdvertisers.GroupPropertiesChannels.length + 2 }}">{{ mediaHouse.Name }}</th>
+									<th class="text-center" colspan="{{ rankedAdvertisers.CompetitorsChannels.length + 1 }}">Competitors</th>
+									<th></th>
+								</tr>
+								<tr>
+									<th ng-click="sortBy(sort.column.Rank)" class="number">
+										Rank <sort-icon ascending="sort.ascending" show="sort.current === sort.column.Rank" />
+									</th>
+									<th class="text">Advertiser</th>
+									<th ng-click="sortBy(sort.column.Percentage)" class="number">
+										% <sort-icon ascending="sort.ascending" show="sort.current === sort.column.Percentage" />
+									</th>
+									<th ng-click="sortBy(sort.column.GroupProperties, $index)" class="number" ng-repeat="channel in rankedAdvertisers.GroupPropertiesChannels">
+										{{ channel.Name }} <sort-icon ascending="sort.ascending" show="sort.current == sort.column.GroupProperties && sort.SortingIndex == $index" />
+									</th>
+									<th ng-click="sortBy(sort.column.SubtotalMediaHouse)" class="number">
+										Subtotal Media House <sort-icon ascending="sort.ascending" show="sort.current == sort.column.SubtotalMediaHouse" />
+									</th>
+									<th ng-click="sortBy(sort.column.Competitors, $index)" class="number" ng-repeat="channel in rankedAdvertisers.CompetitorsChannels">
+										{{ channel.Name }} <sort-icon ascending="sort.ascending" show="sort.current == sort.column.Competitors && sort.SortingIndex == $index" />
+									</th>
+									<th ng-click="sortBy(sort.column.SubtotalCompetitors)" class="number">
+										Subtotal competitors <sort-icon ascending="sort.ascending" show="sort.current == sort.column.SubtotalCompetitors" />
+									</th>
+									<th ng-click="sortBy(sort.column.GrandTotal)" class="number">
+										Grand total <sort-icon ascending="sort.ascending" show="sort.current == sort.column.GrandTotal" />
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="row in rankedAdvertisers.RankedAdvertiserRows | orderBy: comparator | filter:filterAdvertisers | skip:pager.skip | take:pager.size ">
+									<td class="number">{{row.CurrentRank}}</td>
+									<td class="text">{{row.AdvertiserName}}</td>
+									<td class="number">{{ getPercent(row) }}</td>
+									<td class="number" ng-repeat="value in row.ChannelValuesGroup">{{ getValue(value.Value)}}</td>
+									<td class="number">{{ getTotal(row.ChannelValuesGroup) }}</td>
+									<td class="number" ng-repeat="value in row.ChannelValuesCompetitors">{{getValue(value.Value)}}</td>
+									<td class="number">{{ getTotal(row.ChannelValuesCompetitors) }}</td>
+									<td class="number">{{ getValue(row.GrandTotal) }}</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+					<div class="pager">
+						<table-pager manager="pager"></table-pager>
+					</div>
+				</div>
+
+				<report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+			</div>
+			<report-message ng-show="showNoMediaHouseMsg" template="NoMediaHouse"></report-message>
+		</div>
+	</div>
+</div>

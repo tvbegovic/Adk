@@ -1,0 +1,171 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+	<meta charset="utf-8">
+	<script src="js/angular.min.js"></script>
+	<script src="js/d3.min.js"></script>
+	<script src="js/nv.d3.min.js"></script>
+	<script src="js/angular-nvd3.js"></script>
+	<link href="css/nv.d3.min.css" rel="stylesheet" />
+	<style>
+		body {
+			background-color: whitesmoke;
+			font-family: sans-serif;
+			font-size: 12px;
+		}
+		.widget {
+			width: 400px;
+			height: 300px;
+			display: inline-block;
+			background-color: white;
+			margin: 10px;
+		}
+		.widget input[type="text"] {
+			width: 100px;
+		}
+		.nvd3.nv-line .nvd3.nv-scatter .nv-groups .nv-point {
+			fill-opacity: 1 !important;
+		}
+	</style>
+</head>
+<body ng-app="myApp">
+	<div ng-controller="myCtrl">
+		<div class="widget">
+			<nvd3 options="options" data="data"></nvd3>
+			Skipped 5th value
+			<div>
+				Interpolation:
+				<select ng-options="interpolation as interpolation for interpolation in interpolations" ng-model="options.chart.interpolate"></select>
+			</div>
+			<div>Color: <input type="text" ng-model="data[0].color" /></div>
+		</div>
+		<div class="widget">
+			<nvd3 options="options2" data="data2"></nvd3>
+			Null 5th value
+			<div>
+				Interpolation:
+				<select ng-options="interpolation as interpolation for interpolation in interpolations" ng-model="options2.chart.interpolate"></select>
+			</div>
+			<div>Colors: <input type="text" ng-model="data2[0].color" /><input type="text" ng-model="data2[1].color" /></div>
+		</div>
+
+	</div>
+</body>
+<script>
+	angular.module('myApp', ['nvd3'])
+    .controller('myCtrl', function ($scope) {
+
+    	$scope.options = {
+    		chart: {
+    			type: 'lineChart',
+    			height: 300,
+    			margin: {
+    				top: 0,
+    				right: 10,
+    				bottom: 25,
+    				left: 35
+    			},
+    			x: function (d) { return d.x; },
+    			y: function (d) { return d.y == null ? null : 6.0 - d.y; }, // Change y direction and origin (later inverted again in yAxis.tickFormat)
+    			useInteractiveGuideline: true,
+    			//dispatch: {
+    			//	stateChange: function (e) { console.log("stateChange"); },
+    			//	changeState: function (e) { console.log("changeState"); },
+    			//	tooltipShow: function (e) { console.log("tooltipShow"); },
+    			//	tooltipHide: function (e) { console.log("tooltipHide"); }
+    			//},
+    			xAxis: {
+    				//axisLabel: 'Days',
+    				tickFormat: function (d) {
+    					return ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'][d];
+    				},
+    			},
+    			yAxis: {
+    				//axisLabel: 'Score',
+    				tickFormat: function (d) {
+    					return d3.format('.01f')(6.0 - d);
+    				},
+    				//axisLabelDistance: 35
+    			},
+    			interpolate: 'cardinal',
+    			forceY: [0, 5], // yAxis range
+    			tooltip: {
+					enabled: false,
+    				contentGenerator: function (d) {
+    					return JSON.stringify(d);
+    				},
+    			},
+    			tooltipContent: function (d) {
+    				return JSON.stringify(d);
+    			},
+    		},
+    		title: {
+    			enable: false,
+    			text: 'Title for Line Chart'
+    		},
+    		caption: {
+    			enable: false,
+    			html: '<b>Figure 1.</b> Lorem ipsum dolor sit amet, at eam blandit sadipscing, <span style="text-decoration: underline;">vim adhuc sanctus disputando ex</span>, cu usu affert alienum urbanitas. <i>Cum in purto erat, mea ne nominavi persecuti reformidans.</i> Docendi blandit abhorreant ea has, minim tantas alterum pro eu. <span style="color: darkred;">Exerci graeci ad vix, elit tacimates ea duo</span>. Id mel eruditi fuisset. Stet vidit patrioque in pro, eum ex veri verterem abhorreant, id unum oportere intellegam nec<sup>[1, <a href="https://github.com/krispo/angular-nvd3" target="_blank">2</a>, 3]</sup>.',
+    			css: {
+    				'text-align': 'justify',
+    				'margin': '10px 13px 0px 7px'
+    			}
+    		}
+    	};
+    	$scope.options2 = angular.copy($scope.options);
+
+    	var values = [
+			{ x: 0, y: 1.9 },
+			{ x: 1, y: 2.7 },
+			{ x: 2, y: 2.5 },
+			{ x: 3, y: 3.2 },
+			//{ x: 4, y: 2.1 },
+			{ x: 5, y: 1.8 },
+			{ x: 6, y: 3.1 },
+    	];
+    	var values2 = [
+			{ x: 0, y: 1.9 },
+			{ x: 1, y: 2.7 },
+			{ x: 2, y: 2.5 },
+			{ x: 3, y: 3.2 },
+			{ x: 4, y: null },
+			{ x: 5, y: 1.8 },
+			{ x: 6, y: 3.1 },
+    	];
+    	$scope.data = [{
+    		values: values,
+    		key: 'Performance',
+    		color: 'slateblue',
+    		area: true
+    	}];
+    	$scope.data2 = [{
+    		values: values2,
+    		key: 'Performance',
+    		color: '#ff7f0e',
+    		area: true
+    	},
+    	{
+    		values: [{ x: 0, y: 3 }, { x: 2, y: 2.9 }, { x: 4, y: 3.1 }, { x: 6, y: 3 }],
+    		key: 'Average',
+    		color: 'rgba(0, 0, 255, 0.3)',
+    	}];
+
+    	$scope.interpolations = [
+			'linear',
+			//'linear-closed',
+			'basis',
+			//'basis-open',
+			//'basis-closed',
+			'bundle',
+			'cardinal',
+			//'cardinal-open',
+			//'cardinal-closed',
+			'monotone',
+			'step',
+			'step-before',
+			'step-after',
+    	];
+    });
+</script>
+</html>

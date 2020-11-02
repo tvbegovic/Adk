@@ -1,0 +1,173 @@
+﻿<div class="price-designer rows-spaced" ng-controller="priceDesignerCtrl">
+    <report-message template="WorkInProgress"></report-message>
+    <div class="row">
+        <!-- left column -->
+        <div class="col-md-4">
+            <!-- channels -->
+            <div class="row">
+                <div class="col-md-12">
+                    <div><label>Channels</label></div>
+                    <div>
+                        <input type="search" class="form-control" ng-model="channelFilter" placeholder="Search Channels" />
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="available-channels" ng-disabled="pendingSave">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="col-title">Channel Name</th>
+                                    <th class="col-title">Media type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="channel in Channels | filter: channelFilter" ng-class="{info: channel.Selected}" ng-click="channelClicked(channel)">
+                                    <td>{{channel.Name}}</td>
+                                    <td>{{channel.MediaType}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- products -->
+            <div class="row" style="margin-top:30px">
+                <div class="col-md-12">
+                    <div class="list-group-header">
+                        <button class="btn btn-xs btn-default pull-right" ng-disabled="channelHasSelectedProduct()" ng-click="addSelectedProductToChannel()"><i class="glyphicon glyphicon-forward"></i></button>
+                        <button class="btn btn-xs btn-primary pull-right" ng-click="modalNewProductInput()"><i class="glyphicon glyphicon-plus"></i></button>
+                        <label>Products</label>
+                    </div>
+                    <div>
+                        <input type="search" class="form-control" ng-model="productFilter" placeholder="Search Products" />
+                    </div>
+                </div>
+            </div>
+            <!--<div class="row" ng-show="newProductInputVisible">
+                <div class="col-md-12">
+                    <div>
+                        <input type="text" class="form-control" ng-model="newProductName" placeholder="New Product Name" on-escape="hideNewProductInput()" on-enter="createNewProduct()" focus-on="newProductName" />
+                    </div>
+                </div>
+            </div>-->
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="available-products">
+                        <table class="table table-striped table-hover table-bordered">
+                            <thead>
+                                <tr>
+                                    <th class="col-title">Product Name</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="product in Products | filter: productFilter" ng-class="{info: product.Selected}" ng-click="productClicked(product)">
+                                    <td>{{product.Name}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+
+
+        <!-- right column -->
+        <div class="col-md-8">
+            <!-- products for selected channel -->
+            <div class="row" ng-hide="isEmpty(selectedChannel)">
+                <div class="col-md-12">
+                    <div><label>Products Assigned to Channel {{selectedChannel.Name}}</label></div>
+                    <div class="btn-group">
+                        <label ng-repeat="channelProduct in selectedChannel.Products | filter: { ChannelHasProduct: true }" class="btn btn-default" ng-class="{'active': channelProduct.Selected}" ng-model="selectedChannel.ProductSelected" ng-click="channelProductClicked(channelProduct)" btn-radio="{{$index + 1}}">{{channelProduct.Name}}</label>
+                    </div>
+                </div>
+            </div>
+            <!-- price and time table for selected product -->
+            <div class="row" ng-hide="isEmpty(selectedChannelProduct)">
+                <div class="col-md-12">
+                    <div class="time-table">
+                        <table class="table table-striped table-hover table-bordered text-unselectable">
+                            <thead>
+                                <tr>
+                                    <th class="col-title text-center">Hour</th>
+                                    <th class="col-title text-center">Mon</th>
+                                    <th class="col-title text-center">Tue</th>
+                                    <th class="col-title text-center">Wed</th>
+                                    <th class="col-title text-center">Thu</th>
+                                    <th class="col-title text-center">Fri</th>
+                                    <th class="col-title text-center">Sat</th>
+                                    <th class="col-title text-center">Sun</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="hour in selectedChannelProduct.PriceDefsMatrix">
+                                    <td class="text-right">{{$index}}</td>
+                                    <td ng-repeat="dowPrice in hour track by $index" class="text-center" ng-class="{'info': dowPrice.Selected}" ng-click="priceCellClicked(dowPrice, $index, $parent.$index, $event)">{{dowPrice.valueOf() != 0 ? (dowPrice.valueOf() | number:2) : ''}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            <!-- actions -->
+            <div class="row form-group" ng-hide="isEmpty(selectedChannelProduct)">
+                <label for="spot-duration" class="col-label col-xs-2">Spot Duration:</label>
+                <div class="col-xs-2">
+                    <input id="spot-duration" class="form-control" type="number" ng-model="spotDuration" />
+                </div>
+                <div class="col-xs-2">
+                    <button class="btn btn-sm btn-primary btn-block" ng-click="fillPerSecond()">Fill per Second</button>
+                </div>
+            </div>
+
+            <div class="row form-group" ng-hide="isEmpty(selectedChannelProduct)">
+                <label for="spot-price" class="col-label col-xs-2">Spot Price:</label>
+                <div class="col-xs-2">
+                    <input id="spot-price" class="form-control" type="number" ng-model="spotPrice" />
+                </div>
+                <div class="col-xs-2">
+                    <button class="btn btn-sm btn-primary btn-block" ng-click="fillExact()">Fill Exact</button>
+                </div>
+                <button class="btn btn-sm btn-default" ng-click="clear()">Clear</button>
+            </div>
+
+            <div class="container-fluid">
+                <div class="row" ng-hide="isEmpty(selectedChannelProduct)">
+                    <div class="form-group pull-right">
+                        <button class="btn btn-sm btn-primary" ng-disabled="!pendingSave" ng-click="saveToDatabase()"><i class="glyphicon glyphicon-floppy-save"></i>&nbsp;Save to Database</button>
+                        <button class="btn btn-sm btn-default" ng-disabled="!pendingSave" ng-click="cancel()"><i class="glyphicon glyphicon-remove-circle"></i>&nbsp;Cancel</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="tplAddNewProduct.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Add New Product</h3>
+    </div>
+    <div class="modal-body">
+        <div class="container-fluid">
+            <div class="row form-group">
+                <!--<label for="new-product-name" class="col-label col-xs-2">
+                    Product Name:
+                </label>-->
+                <div class="col-xs-12">
+                    <input type="text" id="new-product-name" class="form-control" ng-model="newProductName" placeholder="New Product Name" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-primary" ng-click="save()">Add</button>
+    </div>
+</script>

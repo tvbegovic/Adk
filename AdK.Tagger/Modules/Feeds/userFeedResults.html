@@ -1,0 +1,181 @@
+﻿<div class="rows-spaced" ng-show="isVisible">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+
+                <h3><button class="btn btn-primary inline" ng-if="returnTo" ng-click="backButton()">Back</button>
+				{{clientName}} Notification Feed</h3>
+                <hr />
+            </div>
+        </div>
+        <div class="row form-horizontal" ng-hide="reportId.length > 0">
+            <div class="col-sm-12">
+                <div class="form-group">
+                    <div class="col-sm-12">
+                        <div class="report-filters">
+                            <div class="filter-row main" ng-hide="reportId.length > 0">
+                                <div class="filter-box" ng-hide="reportId.length > 0">
+                                    <label class="filter-label">Show new ads since</label>
+                                    <div class="date-wrapper-filter" style="display:inline-block; float:none">
+                                        <custom-date class="report-period-picker" custom-date-model="customDate" on-init="onDirectivesInit()" on-change="getFeed()" min-date="minDate"></custom-date>
+                                    </div>
+									<div class="btn-group">
+										<timepicker class="timepicker" ng-model="customDate" ng-model-options="{debounce: 1000}" show-meridian="false" template-url="/js/_directives/timepicker.html"></timepicker>
+										
+									</div>
+                                    
+
+                                </div>
+								<button type="submit" class="btn btn-default" ng-click="exportToExcel()">Export to Excel</button>
+								<div class="filter-row clearfix">
+									<input type="text" ng-model="filter.adTranscript" on-enter="getFeed()"
+										   style="height:30px; width: 710px; padding: 0 5px 0 5px; border: 1px solid #ccc; border-radius: 4px; "
+										   placeholder="Search ad title" />
+									<button class="btn btn-primary inline" style="border-radius:4px; padding: 6px 12px;" ng-click="getFeed()">Search</button>
+								</div>
+                                <!--<div class="filter-row clearfix" ng-show="feedFilter.IncludeMp3">
+                                    <player-widget player="player"></player-widget>
+                                </div>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <table class="nr-grid table table-condensed fs-grid feed-results">
+                    <thead>
+                        <tr>
+                            <!--<th class="col-advertiser-brand">
+                                <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                    <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.advertiserBrand == ''}" ng-click="setFocus('advertiserBrandFilter')"></i>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <input type="text" focus-on="advertiserBrandFilter" ng-model="filter.advertiserBrand" ng-model-options="{debounce: 1000}" ng-change="getFeed()" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-label" ng-click="setSort(keyChain.advertiserBrand)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.advertiserBrand" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    Advertiser<br />Brand
+                                </div>
+                            </th>-->
+                            <!--<th class="">
+                                <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                    <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.advertiser == ''}" ng-click="setFocus('advertiserFilter')"></i>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <input type="text" focus-on="advertiserFilter" ng-model="filter.advertiser" ng-model-options="{debounce: 1000}" ng-change="getFeed()" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-label" ng-click="setSort(keyChain.advertiser)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.advertiser" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    Advertiser
+                                </div>
+                            </th>-->
+                            <th class="col-advertiser-brand">
+                                <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                    <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.brand == ''}" ng-click="setFocus('brandFilter')"></i>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <input type="text" focus-on="brandFilter" ng-model="filter.brand" ng-model-options="{debounce: 1000}" ng-change="getFeed()" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-label" ng-click="setSort(keyChain.brand)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.brand" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    Brand
+                                </div>
+                            </th>
+                            <!--<th class="col-ad-transcript">
+                                Ad Transcript
+                            </th>-->
+                            <th class="col-ad-transcript">
+                                Ad Title
+                            </th>
+                            <th class="col-region-market">
+                                <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                    <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.regionMarket == ''}" ng-click="setFocus('regionMarketFilter')"></i>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <input type="text" focus-on="regionMarketFilter" ng-model="filter.regionMarket" ng-model-options="{debounce: 1000}" ng-change="getFeed()" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-label" ng-click="setSort(keyChain.regionMarket)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.regionMarket" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    <!--Country<br />-->Market
+                                </div>
+                            </th>
+                            <th class="col-industry-category">
+                                Industry<br />Category
+                            </th>
+                            <th class="col-channel">
+                                <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                    <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.channel == ''}" ng-click="setFocus('channelFilter')"></i>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <input type="text" focus-on="channelFilter" ng-model="filter.channel" ng-model-options="{debounce: 1000}" ng-change="getFeed()" />
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="col-label" ng-click="setSort(keyChain.channel)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.channel" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    Channel
+                                </div>
+                            </th>
+                            <th class="col-created">
+                                <div class="col-label" ng-click="setSort(keyChain.firstAiring)">
+                                    <i class="glyphicon pull-right" ng-show="filter.sort.column == keyChain.firstAiring" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+                                    First Airing
+                                </div>
+                            </th>
+                            <th class="col-play" >
+                                Play
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody ng-repeat="feed in feedList track by $index">
+                        <tr>
+                            <td rowspan="{{feed.Channels.length + 1}}" title="{{feed.BrandName}}">
+                                {{feed.BrandName}}
+                            </td>
+                            <!--<td class="wrap-text" rowspan="{{feed.Channels.length + 1}}" title="{{feed.AdTranscript}}">
+                                {{feed.AdTranscript}}
+                            </td>-->
+                            <td class="wrap-text" rowspan="{{feed.Channels.length + 1}}" title="{{feed.SongTitle}}">
+                                {{feed.SongTitle}}
+                            </td>
+                            <td rowspan="{{feed.Channels.length + 1}}" ng-attr-title="{{feed.Regions}}">
+                                <span>{{feed.Regions}}<!--<br />--></span>
+                                <!--<span>{{feed.Markets}}</span>-->
+                            </td>
+                            <td rowspan="{{feed.Channels.length + 1}}" title="{{feed.IndustryName}}&#013;{{feed.CategoryName}}">
+                                {{feed.IndustryName}}<br />{{feed.CategoryName}}
+                            </td>
+                            <td colspan="3" style="height:0; padding: 0"></td>
+                        </tr>
+                        <tr ng-repeat="channel in feed.Channels track by $index">
+                            <td title="{{channel.Name}}">
+                                {{channel.Name}}
+                            </td>
+                            <td title="{{channel.FirstAiring | userDate}} &#64; {{channel.FirstAiring | date: 'HH:mm:ss'}}">
+                                {{channel.FirstAiring | userDate}} &#64; {{channel.FirstAiring | date: 'HH:mm:ss'}}
+                            </td>
+                            <td ng-if="$first" rowspan="{{feed.Channels.length}}">
+                                <button type="button" class="btn btn-xs btn-info" ng-click="openPlayback(feed)">
+                                    <i class="glyphicon glyphicon-play"></i>
+                                </button>
+                                
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table-pager manager="pager"></table-pager>
+            </div>
+        </div>
+
+    </div>
+</div>

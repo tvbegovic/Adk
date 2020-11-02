@@ -1,0 +1,65 @@
+﻿<div class="spot-upload rows-spaced">
+	<div class="row">
+		<div class="col-sm-12">
+			<h3>
+				Spot Upload
+				<div class="btn btn-primary" style="padding: 5px 10px; margin-left: 20px;" ngf-select="uploadFiles($files)" multiple="multiple"
+					ngf-accept="'audio/*,video/*'">Select spots to upload</div>
+			</h3>
+			<hr>
+
+
+			<table class=".nr-grid table" ng-if="uploads.length">
+				<thead>
+					<tr>
+						<th width="30%">File name</th>
+						<th width="30%">Status</th>
+						<th>Size</th>
+						<th>Duration</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat="file in uploads">
+						<td>
+							{{file.originalName}}
+						</td>
+						<td ng-switch="file.status">
+							<div ng-switch-when="UPLOADING" class="progress">
+								<div class="progress-bar progress-bar-success"
+										style="width: {{file.loaded | percentOf: file.total}}"></div>
+							</div>
+							<div ng-switch-when="QUEUED">
+								<span ng-if="file.queuePosition > 0">Queued: {{file.queuePosition}}</span>
+								<span ng-if="file.queuePosition === 0">Processing</span>
+							</div>
+							<div ng-switch-when="OK">
+								Done
+							</div>
+							<div ng-switch-when="ERROR" class="error-label">
+								<span ng-if="file.error"> Error: {{file.error}} </span>
+								<span> Error uploading file. </span>
+							</div>
+						</td>
+						<td>{{file.total | megabytes: 1}} Mb</td>
+						<td>
+							<span ng-if="file.status === 'OK'">{{file.duration | duration}}</span>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<!--SPOT LIBRARY-->
+	<div style="margin-top: 50px;" ng-show="spotLibrary.totalCount">
+		<h3>
+			Uploaded Spots
+			<span class="btn btn-primary" style="padding: 5px 10px; margin-left: 20px;" ng-click="moveScannedToSpotLibrary()"> Move scanned to Spot Library </span>
+		</h3>
+		<hr>
+		<spot-list load-spots="spotLibrary.loadSpots(pageSize, pageNum)" show-scanned-column="true" filter="spotLibrary.filter" can-edit="spotLibrary.canEdit"
+			can-delete="spotLibrary.canDelete">
+		</spot-list>
+	</div>
+
+</div>

@@ -1,0 +1,162 @@
+﻿<div class="matcher rows-spaced">
+	<div class="row">
+		<div class="col-sm-8">
+			<table ng-if="songToMatch" class="table table-condensed table-bordered" title="{{songToMatch.SourcePksid}} - {{songToMatch.CustomerName}}">
+				<tr>
+					<td>Title (first words):</td>
+					<td colspan="5"><strong>{{songToMatch.FirstWords|dashIfNull}}</strong></td>
+				</tr>
+				<tr>
+					<td>From channel:</td>
+					<td><strong>{{songToMatch.Station|dashIfNull}}</strong></td>
+					<td class="text-right">at time:</td>
+					<td class="text-right"><strong>{{songToMatch.CreateDate | isoDate | dashIfNull}}</strong></td>
+					<td class="text-right">duration:</td>
+					<td class="text-right"><strong>{{songToMatch.Duration/1000 | number:1}}s</strong></td>
+				</tr>
+				<tr>
+					<td>Exported by:</td>
+					<td><strong>{{songToMatch.Harvester|dashIfNull}}</strong></td>
+					<td class="text-right">on:</td>
+					<td class="text-right"><strong>{{songToMatch.ExportDate | isoDate | dashIfNull}}</strong></td>
+					<td colspan="2"></td>
+				</tr>
+			</table>
+		</div>
+		<div class="col-sm-4">
+			<div class="btn-group">
+				<button class="btn btn-default" ng-class="{'btn-primary': !picked.date}" ng-click="pickOldest()">Old</button>
+				<button class="btn btn-default" ng-class="{'btn-primary': !!picked.date}" ng-click="pickByDate()">By day</button>
+				<date-picker date="picked.date" date-picked="dateChanged()" ng-if="picked.date" align-right="true"></date-picker>
+			</div>
+			<div class="alert alert-info" ng-if="!songToMatch">
+				No more samples to match <span ng-if="picked.date">for the picked date</span>
+			</div>
+			<div ng-if="songToMatch">Remaining in Queue: {{songToMatch.QueueLength}}</div>
+		</div>
+	</div>
+	<div class="row" ng-if="songToMatch">
+		<div class="col-sm-6">
+			<span class="pull-left">
+				<button type="button" class="btn btn-xs btn-info" ng-click="togglePause(1)">
+					<i class="glyphicon" ng-class="{true: 'glyphicon-play', false: 'glyphicon-pause'}[!!player1.player.paused]"></i>
+				</button>
+				&nbsp;
+			</span>
+			<span class="pull-right position-indicator">
+				{{player1.position/1000 | number:1}} / {{songToMatch.Duration/1000 | number:1}}
+			</span>
+			<div class="progress" progress-seek on-seek="seeked1(pos)">
+				<div class="progress-bar" role="progressbar" style="width: {{player1.position|percentOf:songToMatch.Duration}}"></div>
+			</div>
+		</div>
+		<div class="col-sm-6" ng-if="selectedMatch">
+			<span class="pull-left">
+				<button type="button" class="btn btn-xs btn-info" ng-click="togglePause(2)">
+					<i class="glyphicon" ng-class="{true: 'glyphicon-play', false: 'glyphicon-pause'}[!!player2.player.paused]"></i>
+				</button>
+				&nbsp;
+			</span>
+			<span class="pull-right position-indicator">
+				{{player2.position/1000 | number:1}} / {{selectedMatch.Duration/1000 | number:1}}
+			</span>
+			<div class="progress" progress-seek on-seek="seeked2(pos)">
+				<div class="progress-bar" role="progressbar" style="width: {{player2.position|percentOf:selectedMatch.Duration}}"></div>
+			</div>
+		</div>
+	</div>
+	<div class="row" ng-if="songToMatch">
+		<div class="col-sm-12">
+			<table class="table table-hover table-smaller">
+				<thead>
+					<tr>
+						<th style="width: 35px">Pick</th>
+						<th style="width: 40%">Title</th>
+						<th style="width: 20%">From</th>
+						<th style="width: 150px">At</th>
+						<th style="width: 20%">By</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat-start="match in songToMatch.GroupedMatches" ng-class="{'info':selectedMatch === match}">
+						<td><button class="btn btn-xs" ng-click="pickThis($event, match)" title="Pick this sample as master"><i class="glyphicon glyphicon-arrow-up"></i></button></td>
+						<td class="ellipsis" style="max-width: 0">{{match.FirstWords}}</td>
+						<td>{{match.Station|dashIfNull}}</td>
+						<td>{{match.CreateDate | isoDate:'L LT'}}</td>
+						<td>{{match.Harvester|dashIfNull}}</td>
+					</tr>
+					<tr ng-repeat-end ng-class="{'info':selectedMatch === match}">
+						<td colspan="5">
+							<div class="indicators" ng-repeat="offsetGroup in match.OffsetGroups">
+								<table style="width:100%">
+									<tr>
+										<td>
+											<div class="progress indicator"
+												 style="margin-left: {{-match.T0|percentOf:match.TimeFrame}}; margin-right: {{match.TimeFrame-(songToMatch.Duration-match.T0)|percentOf:match.TimeFrame}}"
+												 progress-seek on-seek="seeked1(pos)">
+												<div class="progress-bar" role="progressbar"
+													 style="left: {{chunk.SourceStart|percentOf:songToMatch.Duration}}; width: {{chunk.SourceEnd-chunk.SourceStart|percentOf:songToMatch.Duration}}"
+													 ng-repeat="chunk in offsetGroup.Chunks">
+													<span class="pull-left">{{chunk.SourceStart/1000 | number:1}}</span>
+													<span class="pull-right">{{chunk.SourceEnd/1000 | number:1}}</span>
+												</div>
+												<div ng-if="playing.index === 1" class="progress-bar progress-bar-warning" style="left: {{player1.position|percentOf:songToMatch.Duration}}; width: 3px; margin-left: -1px;"></div>
+											</div>
+											<div class="progress indicator"
+												 style="margin-left: {{offsetGroup.Offset-match.T0|percentOf:match.TimeFrame}}; margin-right: {{match.TimeFrame-(offsetGroup.Offset-match.T0)-match.Duration|percentOf:match.TimeFrame}}"
+												 progress-seek on-seek="selectAndSeek(match, pos)">
+												<div class="progress-bar" ng-class="{'progress-bar-danger': offsetGroup.HasOverlaps, 'progress-bar-info': offsetGroup.LooseOffsets}" role="progressbar"
+													 style="left: {{chunk.TargetStart|percentOf:match.Duration}}; width: {{chunk.TargetEnd-chunk.TargetStart|percentOf:match.Duration}}"
+													 ng-repeat="chunk in offsetGroup.Chunks">
+													<span class="pull-left">{{chunk.TargetStart/1000 | number:1}}</span>
+													<span class="pull-right">{{chunk.TargetEnd/1000 | number:1}}</span>
+												</div>
+												<div ng-if="playing.index === 2 && selectedMatch === match" class="progress-bar progress-bar-warning" style="left: {{player2.position|percentOf:selectedMatch.Duration}}; width: 3px; margin-left: -1px;"></div>
+											</div>
+										</td>
+										<td class="similarity">
+											<div>Common<br /><span>{{offsetGroup.CommonDuration/songToMatch.Duration*100 | number:0}} %</span></div>
+										</td>
+										<td class="similarity">
+											<div>Similarity<br /><span>{{(1-match.Difference)*100 | number:0}} %</span></div>
+										</td>
+									</tr>
+								</table>
+							</div>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<div class="row" ng-if="songToMatch">
+		<div class="col-sm-10">
+			<div class="form-horizontal">
+				<div class="form-group">
+					<label for="inputMatchingIssue" class="col-sm-2 control-label">Matching comment</label>
+					<div class="col-sm-10">
+						<input type="text" autocomplete="off" class="form-control input-sm" ng-model="comment.text" on-enter="commentThenPickNext()" id="inputMatchingIssue" placeholder="Matching Issue">
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-2 rows-spaced">
+			<div class="row">
+				<div class="col-sm-12">
+					<button class="btn btn-block btn-primary" ng-click="commentThenPickNext()" ng-disabled="comment.text == ''">Save</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<button class="btn btn-block btn-primary" ng-click="pickNext()">Skip</button>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<input type="text" class="form-control" ng-model="nextId" on-enter="pickThisPksid(nextId)" placeholder="Next ID" />
+					<button class="btn btn-block btn-primary" ng-click="pickThisPksid(nextId)">Show</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

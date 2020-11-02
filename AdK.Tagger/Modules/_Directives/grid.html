@@ -1,0 +1,56 @@
+<div class="channels rows-spaced">
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="nr-grid table table-condensed fs-grid" style="margin-bottom:0px">
+                <thead>
+					<tr>
+						<th ng-class="c.cssClass" ng-repeat="c in def.columns" ng-style="c.cssStyle">
+							<div ng-if="c.hasFilter" class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+								<i class="glyphicon glyphicon-filter" ng-class="{inactive: c.filter == ''}" ng-click="setFocus(c)"></i>
+								<i class="glyphicon glyphicon-minus-sign" ng-show="c.filter" ng-click="clearFilter(c)"></i>
+								<ul class="dropdown-menu" ng-show="activeFilter==c.field">
+									<li>
+										<input ng-if="isFilterTypeahead(c)" type="text" focus-on="{{'Filter_' + c.field}}" ng-model="c.filter" typeahead-on-select="filterOnSelect()" typeahead="item for item in getItems(c, $viewValue)"
+											   typeahead-append-to-body="true" typeahead-show-hint ng-model-options="{debounce: 1000}" on-enter="filterOnEnter()" />
+										
+										<input ng-if="!isFilterTypeahead(c)" type="text" focus-on="{{'Filter_' + c.field}}" ng-model="c.filter" ng-model-options="{debounce: 1000}" ng-change="getData()" on-enter="filterOnEnter()" />
+									</li>
+								</ul>
+							</div>
+							<div class="col-label" ng-click="setSort(c.field)" ng-if="c.hasSort != false">
+								<i class="glyphicon pull-right" ng-show="sort.column == c.field" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[sort.ascending]"></i>
+								{{c.name}}
+							</div>
+							<div class="col-label" ng-if="c.hasSort == false">
+								
+								{{c.name}}
+							</div>
+						</th>
+					</tr>
+                    
+                </thead>
+                <tbody ng-if="!def.fixedHeader">
+                    <tr ng-repeat="d in currentData | filter: dataFilter" ng-class="{info: d[def.selectionField]}" ng-click="rowClicked(d)"> 
+                        <td ng-repeat="c in def.columns">
+							<span ng-if="def.selectionColumnIndex != $index && c.type != 'checkbox'">{{d[c.field]}}</span>
+							<span ng-if="def.selectionColumnIndex == $index || c.type == 'checkbox'"><input type="checkbox" ng-model="d[c.field]" ng-click="$event.stopPropagation()"/></span>
+						</td>
+                    </tr>
+                </tbody>
+            </table>
+			<div style="overflow-y:auto" ng-if="def.fixedHeader" ng-class="def.fixedClass">
+				<table class="nr-grid table table-condensed fs-grid">
+					<tbody ng-if="def.fixedHeader">
+						<tr ng-repeat="d in currentData | filter: dataFilter" ng-class="{info: d[def.selectionField]}" ng-click="rowClicked(d)">
+							<td ng-repeat="c in def.columns" ng-style="c.cssStyle">
+								<span ng-if="def.selectionColumnIndex != $index && c.type != 'checkbox'">{{d[c.field]}}</span>
+								<span ng-if="def.selectionColumnIndex == $index || c.type == 'checkbox'"><input type="checkbox" ng-model="d[c.field]" ng-click="$event.stopPropagation()" /></span>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+            <table-pager manager="pager" ng-if="def.pager"></table-pager>
+        </div>
+    </div>
+</div>

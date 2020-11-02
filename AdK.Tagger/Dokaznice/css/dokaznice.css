@@ -1,0 +1,28 @@
+.logo {
+  display: inline-block;
+}
+
+.logo-img {
+  max-width: 400px;
+	max-height: 90px;
+}
+
+.logo-txt {
+  font-weight: bold;
+  font-size: 30px;
+  position: relative;
+  top: 10px;
+}
+
+/*****************CHANNELS*****************/
+.channels table td.green{
+    background-color: #67BF7C;
+}
+
+.channels table td.yellow{
+    background-color: #C6DB81;
+}
+
+.channels table td.red{
+    background-color: #F8696B;
+}

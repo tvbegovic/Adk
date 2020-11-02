@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>SoundManager auto paly POC</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <script src="../../js/vendor/angular/angular.js"></script>
+  <script src="mousetrap.js"></script>
+  <script src="keypress-poc.js"></script>
+</head>
+
+<body ng-app="poc-app" ng-controller="keypressPocCtrl" ng-cloak>
+  <h3>Change color with keybinding</h3>
+  <ul>
+    <li> ctrl+p - red </li>
+    <li> ctrl+o - blue </li>
+    <li> ctrl+d - green </li>
+    <li> ctrl+t - black </li>
+    <li> ctrl+w - gray </li>
+  </ul>
+
+  <div style="width: 200px; height: 200px; border: 1px solid;" ng-style="{'background-color': color}">
+
+  </div>
+</body>
+
+</html>

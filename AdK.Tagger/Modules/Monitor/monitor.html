@@ -1,0 +1,74 @@
+﻿<div class="rows-spaced">
+    <div class="row">
+        <tabset class="col-sm-12">
+            <tab heading="Operations">
+
+                <h3>Recording <small>since: {{rciLookupLimit}} </small><a href="/#/monitor/capture" class="btn btn-primary btn-sm">Details</a></h3>
+
+                <generic-table tabledata="captureSummary"></generic-table>
+
+                <div ng-if="whatClient!='PK'">
+
+                    <h3>Hashes <small>since: {{rciLookupLimit}} </small><a href="/#/monitor/hashes" class="btn btn-primary btn-sm">Details</a></h3>
+                    <p><i>- Under Construction!</i></p>
+                    <generic-table tabledata="hashSummary"></generic-table>
+                </div>
+
+                <div ng-if="whatClient=='MIS'">
+                    <h3>Duplicates <small>last 100 </small><a href="/#/monitor/duplicates" class="btn btn-primary btn-sm">Details</a></h3>
+                    <p><i>- Under Construction!</i></p>
+                    <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                        <thead>
+                            <tr>
+                                <th>Running Late</th>
+                                <th>Time Running</th>
+                                <th>Finished Late</th>
+                                <th>Max Delay</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td class="text-right" ng-class="{'dpoc-error': duplicatesLate.Running_Late > 0}">{{duplicatesLate.Running_Late}}</td>
+                                <td class="text-right" ng-class="{'dpoc-error': duplicatesLate.Now_Running > 0}">{{duplicatesLate.Now_Running}}</td>
+                                <td class="text-right" ng-class="{'dpoc-warn': duplicatesFinished.Finished_Late > 0}">{{duplicatesFinished.Finished_Late}}</td>
+                                <td class="text-right" ng-class="{'dpoc-warn': duplicatesFinished.Max_Delay > '00:05'}">{{duplicatesFinished.Max_Delay}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <h3>Harvesting <a href="/#/monitor/harvesting" class="btn btn-primary btn-sm">Details</a></h3>
+
+                <generic-table tabledata="harvestingSummary"></generic-table>
+
+                <h3>Promotion <a href="/#/monitor/promotion" class="btn btn-primary btn-sm">Details</a></h3>
+
+                <generic-table tabledata="promotionSummary"></generic-table>
+
+            </tab> <!--Operations-->
+
+            <tab heading="Control">
+                <h3>Channel Coverage <small>last 12 weeks</small></h3>
+                <p>Click on week to see coverage by channel</p>
+                <div class="row">
+                    <div class="col-sm-5">
+                        <generic-table tabledata="coverageAllChannels"></generic-table>
+                    </div>
+                    <div class="col-sm-7">
+                        <nvd3 options="lineChartOptions" data="chartCoverage"></nvd3>
+                    </div>
+                </div>
+
+                <div ng-if="whatClient=='PK'">
+                    <h3>IPSOS Channel Coverage <small>last 12 weeks</small></h3>
+                    <p>Click on week to see coverage by channel</p>
+                    <generic-table tabledata="coverageIpsos"></generic-table>
+                </div>
+
+                <h3>Yesterday Gaps <small>100 longest gaps in recordings</small></h3>
+                <generic-table tabledata="yesterdayGaps"></generic-table>
+            </tab><!--Control-->
+
+        </tabset>
+    </div>
+</div>

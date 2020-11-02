@@ -1,0 +1,611 @@
+﻿.report-viewer .bordered {
+    border: 1px solid gray;
+    padding: 5px;
+}
+
+    .report-viewer .bordered + .bordered {
+        margin-top: 5px;
+    }
+
+.report-viewer .dashboard {
+    font-size: 11px;
+}
+
+.report-viewer .decrease-increase {
+    line-height: 0;
+    padding: 0;
+}
+
+    .report-viewer .decrease-increase > div {
+        width: 50%;
+        display: inline-block;
+        height: 28px;
+        padding: 5px 0;
+    }
+
+    .report-viewer .decrease-increase .decrease {
+        border-right: dashed 1px black;
+    }
+
+    .report-viewer .decrease-increase .increase {
+        border-left: dashed 1px black;
+    }
+
+    .report-viewer .decrease-increase .decrease > div {
+        float: right;
+        height: 100%;
+        background-color: red;
+    }
+
+    .report-viewer .decrease-increase .increase > div {
+        height: 100%;
+        background-color: blue;
+    }
+
+.report-viewer .nav > li > a {
+    padding: 5px 8px;
+}
+
+.report-data caption {
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/*
+* Filters
+*/
+
+.filter-box {
+    margin: 2px;
+    display: inline-block;
+}
+
+    .filter-box .btn {
+        border-radius: 0px;
+        padding: 1px 4px 2px 4px;
+    }
+
+    .filter-box .filter-inline {
+        display: inline-block;
+    }
+
+
+    /*.filter-box .filter-label  {
+       min-width: 60px;
+    }*/
+
+    .filter-box .dropdown-toggle {
+        width: 180px;
+    }
+
+.report-period-picker .dropdown-toggle.with-sub {
+    width: 230px;
+}
+
+    .report-period-picker .dropdown-toggle.with-sub .dropdown-selected {
+        width: 110px;
+    }
+
+.dropdown-menu > li > a:focus, .dropdown-menu > li > a:hover {
+    background-color: #337ab7;
+    color: white;
+}
+
+.report-period-picker .btn,
+.report-period-picker .btn:focus {
+    color: black;
+    background: white;
+}
+
+.filter-box .dropdown-selected {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    width: 150px;
+    float: left;
+    text-align: left;
+}
+
+.filter-box .time-span-filter > input {
+    width: 45px;
+    height: 23px;
+}
+
+.filter-box .period-selector .subtitle {
+    float: right;
+    font-size: 9px;
+    line-height: 12px;
+    text-align: center;
+}
+
+.filter-box .period-selector button {
+    padding: 0 4px 0 4px;
+    height: 26px;
+}
+
+.filter-box .period-selector .dropdown-toggle.with-sub .dropdown-selected {
+    width: 105px;
+    line-height: 23px;
+}
+
+.filter-box .period-selector .caret-wrapper {
+    float: left;
+    display: block;
+    width: 8px;
+}
+
+.filter-box .period-selector .single-date {
+    margin-top: 5px;
+}
+
+.filter-box .form-control {
+    height: 22px;
+    padding: 0 5px 0 5px;
+}
+
+.custom-picker-button {
+    border-bottom-right-radius: 4px;
+    border-top-right-radius: 4px;
+}
+
+.with-custom-picker {
+    border-bottom-right-radius: 0px;
+    border-top-right-radius: 0px;
+}
+
+.period-date-picker {
+    position: absolute;
+    top: 23px;
+    right: 0;
+    z-index: 1000;
+    float: left;
+    min-width: 160px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    width: 470px;
+    padding: 10px;
+}
+
+.date-picker {
+    position: absolute;
+    top: 23px;
+    right: 16px;
+    z-index: 1000;
+    float: left;
+    min-width: 80px;
+    padding: 5px 0;
+    margin: 2px 0 0;
+    font-size: 14px;
+    text-align: left;
+    list-style: none;
+    background-color: #fff;
+    -webkit-background-clip: padding-box;
+    background-clip: padding-box;
+    border: 1px solid #ccc;
+    border: 1px solid rgba(0, 0, 0, .15);
+    border-radius: 4px;
+    -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
+    width: 235px;
+    padding: 10px;
+}
+
+.date-wrapper-filter {
+    float: right;
+    padding-left: 10px;
+}
+
+    .date-wrapper-filter .inline-datepicker input,
+    .date-wrapper-filter .inline-datepicker button {
+        height: 30px;
+    }
+
+    .date-wrapper-filter .inline-datepicker {
+        margin-right: 10px;
+    }
+
+.report-period-picker {
+    position: relative;
+}
+
+    .report-period-picker .dropdown-selected {
+        font-size: 12px;
+    }
+
+.period-date-picker > div {
+    float: left;
+    padding: 5px;
+}
+
+.inline-datepicker {
+    max-width: 140px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    margin-right: 5px;
+}
+
+    .inline-datepicker .input-group-btn {
+        position: absolute;
+        right: 30px;
+        top: 0;
+    }
+
+.tags-filter-box {
+    float: left;
+    width: 60%;
+    position: relative;
+}
+
+    .tags-filter-box .tags-input-wrapper {
+        padding-left: 90px;
+    }
+
+    .tags-filter-box tags-input .tags {
+        max-height: 63px;
+        overflow: auto;
+    }
+
+    .tags-filter-box > label {
+        position: absolute;
+        left: 5px;
+        top: 6px;
+    }
+
+
+/*End Filters*/
+
+
+/*
+* Report tables
+*/
+
+.report-table {
+    font-size: 12px;
+    color: #000;
+}
+
+    .report-table > tbody > tr > td {
+        padding: 4px;
+    }
+
+    .report-table .cell-empty {
+        background-color: lightgrey;
+        cursor: default;
+    }
+
+    .report-table .cell-selected {
+        background-color: #337ab7;
+        color: white;
+        font-weight: bold;
+        border-left: 2px solid black !important;
+        border-right: 2px solid black !important;
+    }
+
+    .report-table .cell-detail-table {
+        padding: 20px 20px 0;
+        background-color: #337ab7;
+    }
+
+    .report-table td .higlight {
+        background-color: #faf2cc;
+        display: inline-block;
+        padding: 2px 6px;
+        cursor: default;
+    }
+
+    .report-table tr.focus-row td {
+        background-color: greenyellow;
+    }
+
+    .report-table tr.competitor-row td {
+        background-color: palevioletred;
+    }
+
+    .report-table tr td.red-background {
+        background-color: palevioletred;
+    }
+
+
+/*End report tables*/
+
+.horizontal-barchart-graph {
+    max-width: 1100px;
+    padding: 0 20px 20px 100px;
+    box-sizing: border-box;
+}
+
+    .horizontal-barchart-graph svg {
+        overflow: visible;
+    }
+
+.chart-title-attached {
+    margin-top: 40px;
+    display: block;
+    text-align: center;
+    line-height: 150%;
+    font-size: .85em;
+}
+
+.date {
+    max-width: 150px;
+}
+
+
+/*START: FILTERS*/
+
+.report-filters {
+    margin-bottom: 20px;
+}
+
+    .report-filters .filter-row {
+        padding: 2px;
+    }
+
+        .report-filters .filter-row:not(:last-child) {
+            margin-bottom: 8px;
+        }
+
+        .report-filters .filter-row.main {
+            background-color: #e1e1e1;
+        }
+
+        .report-filters .filter-row.additional {
+            background-color: #f4f4f4;
+            margin-top: -3px;
+        }
+
+report-custom-date-filter ul.dropdown-menu {
+    left: -158px !important;
+    padding: 10px;
+}
+
+
+/*END: FILTERS*/
+
+.center-label {
+    display: block;
+    text-align: center;
+}
+
+.share-by-brand-adv .row-top-offset {
+    margin-top: 50px;
+}
+
+.share-by-brand-adv .nvd3-svg {
+    margin: 0 auto;
+}
+
+.table > thead > tr > td.havy, .table > tbody > tr > td.havy, .table > tfoot > tr > td.havy, .table > thead > tr > th.havy, .table > tbody > tr > th.havy, .table > tfoot > tr > th.havy, .table > thead > tr.havy > td, .table > tbody > tr.havy > td, .table > tfoot > tr.havy > td, .table > thead > tr.havy > th, .table > tbody > tr.havy > th, .table > tfoot > tr.havy > th {
+    font-weight: bold;
+}
+
+.table > thead > tr > td.normal, .table > tbody > tr > td.normal, .table > tfoot > tr > td.normal, .table > thead > tr > th.normal, .table > tbody > tr > th.normal, .table > tfoot > tr > th.normal, .table > thead > tr.normal > td, .table > tbody > tr.normal > td, .table > tfoot > tr.normal > td, .table > thead > tr.normal > th, .table > tbody > tr.normal > th, .table > tfoot > tr.normal > th {
+    font-weight: normal;
+}
+
+.audit-select-channels-modal .selected-channels-wrapper {
+    overflow: auto;
+    background-color: #eee;
+    border: 1px solid #ddd;
+    height: 330px;
+}
+
+    .audit-select-channels-modal .selected-channels-wrapper p {
+        margin-top: 137px;
+        text-align: center;
+        font-size: 15px;
+    }
+
+    .audit-select-channels-modal .selected-channels-wrapper ul {
+        margin: 0;
+        padding: 0;
+    }
+
+.audit-log .report-filters {
+    padding-top: 10px;
+}
+
+
+.audit-table {
+    table-layout: fixed;
+    /*white-space: nowrap;*/
+}
+
+    .audit-table .day-total-cell {
+        width: 8%;
+    }
+
+    .audit-table .hour-cell {
+        width: 3%;
+    }
+
+        .audit-table .hour-cell.grouped {
+            width: 6%;
+        }
+
+    .audit-table .channel-cell {
+        width: 20%;
+    }
+
+    .audit-table .date-column {
+        width: 7%;
+    }
+
+    .audit-table .spot-name-column {
+        width: 13%;
+    }
+
+.dropdown-menu {
+    z-index: 9999;
+}
+
+.report-viewer tr.total-footer {
+    border-top: 2px solid #CCC;
+}
+
+.autocomplete-wrapper {
+    position: relative;
+}
+
+    .autocomplete-wrapper input {
+        padding-right: 25px !important;
+        display: inline-block;
+    }
+
+    .autocomplete-wrapper .fa {
+        position: absolute;
+        top: 4px;
+        right: 7px;
+        cursor: pointer;
+    }
+
+@media only screen and (max-width: 992px) {
+    .tags-filter-box {
+        width: 100%;
+    }
+}
+
+.view-data-icon {
+    padding: 3px 8px 2px 8px;
+    border-radius: 0px;
+    margin-bottom: 5px;
+    color: #555;
+    background-color: #e1e1e1;
+    border-color: #e1e1e1;
+}
+
+.view-data-toggle {
+    padding-right: 15px;
+}
+
+.autocomplete-input::-ms-clear {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.autocomplete-input::-ms-reveal {
+    display: none;
+    width: 0;
+    height: 0;
+}
+
+.ov-x-auto {
+    overflow-x: auto;
+}
+
+tags-input .autocomplete .suggestion-item.selected {
+    color: #FFF;
+    background-color: #337ab7;
+}
+
+    tags-input .autocomplete .suggestion-item.selected em {
+        background-color: #337ab7;
+    }
+
+.report-text-editor .ta-toolbar {
+    margin-bottom: 5px;
+}
+
+    .report-text-editor .ta-toolbar .btn-group {
+        margin-top: 3px;
+    }
+
+.report-text-editor #toolbarWC {
+    margin-left: 5px;
+}
+
+.report-text-editor .ta-toolbar .btn.active {
+    background-color: darkslateblue;
+}
+
+.report-notes-buttons {
+    margin-left: 10px;
+}
+
+    .report-notes-buttons .btn {
+        line-height: 12px;
+    }
+
+        .report-notes-buttons .btn.have-note {
+            border-color: #337AB7;
+        }
+
+        .report-notes-buttons .btn:last-child {
+            margin-left: -4px;
+        }
+
+
+.border-thick {
+    border: 2px solid black !important;
+}
+
+.border-left-thick {
+    border-left: 2px solid black !important;
+}
+
+.border-right-thick {
+    border-right: 2px solid black !important;
+}
+
+.border-top-thick {
+    border-top: 2px solid black !important;
+}
+
+.border-bottom-thick {
+    border-bottom: 2px solid black !important;
+}
+
+.font-bold {
+    font-weight: bold;
+}
+
+table.playback-details-table, .playback-details-table table {
+    width: 100%;
+}
+
+    table.playback-details-table tr td {
+        vertical-align: top;
+        padding-bottom: 10px;
+    }
+
+        table.playback-details-table tr td:first-child {
+            padding-left: 0;
+        }
+
+@media print {
+    tags-input .tags .input::-webkit-input-placeholder {
+        color: transparent;
+    }
+
+    tags-input .tags .input:-moz-placeholder {
+        color: transparent;
+    }
+
+    tags-input .tags .input::-moz-placeholder {
+        color: transparent;
+    }
+
+    tags-input .tags .input:-ms-input-placeholder {
+        opacity: 0;
+    }
+}
+
+@page {
+    size: landscape;
+}
+
+table.feed-results tbody tr:nth-child(2) td {
+    border: 0;
+}

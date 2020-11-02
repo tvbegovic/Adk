@@ -1,0 +1,236 @@
+﻿<div class="transcript-manager rows-spaced">
+	<div class="row">
+		<div class="col-sm-12">
+			<label>Show clips:</label>
+			<div class="btn-group">
+				<label class="btn btn-default" ng-class="{'btn-primary': filter.status == null}" ng-model="filter.status" ng-change="statusChanged()" btn-radio="null">ALL</label>
+				<label class="btn btn-default" ng-class="{'btn-primary': filter.status == 'notOrdered'}" ng-model="filter.status" ng-change="statusChanged()" btn-radio="'notOrdered'">Not Ordered</label>
+				<label class="btn btn-default" ng-class="{'btn-primary': filter.status == 'queued'}" ng-model="filter.status" ng-change="statusChanged()" btn-radio="'queued'">Ordered</label>
+				<label class="btn btn-default" ng-class="{'btn-primary': filter.status == 'done'}" ng-model="filter.status" ng-change="statusChanged()" btn-radio="'done'">Transcripts Done</label>
+				<label class="btn btn-default" ng-class="{'btn-primary': filter.status == 'inReview'}" ng-model="filter.status" ng-change="statusChanged()" btn-radio="'inReview'">In Review</label>
+				<label class="btn btn-default" ng-class="{'btn-primary': filter.status == 'completed'}" ng-model="filter.status" ng-change="statusChanged()" btn-radio="'completed'">Completed</label>
+			</div>
+			<label>Selected: {{countSelected()}}</label>
+			<button class="btn btn-warning" ng-disabled="!countSelected()" ng-click="orderTranscripts()">Order Transcripts...</button>
+			<div class="btn-group" ng-if="filter.status == 'queued'">
+				<div class="btn-group" dropdown>
+					<button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>{{priority | priorityLabel}} <span class="caret"></span></button>
+					<ul class="dropdown-menu" role="menu">
+						<li role="menuitem"><a ng-click="pickPriority(100)">{{100 | priorityLabel}}</a></li>
+						<li role="menuitem"><a ng-click="pickPriority(50)">{{50 | priorityLabel}}</a></li>
+						<li role="menuitem"><a ng-click="pickPriority(0)">{{0 | priorityLabel}}</a></li>
+					</ul>
+				</div>
+				<button class="btn btn-warning" ng-disabled="!countSelected()" ng-click="setPriority()">Set Priority</button>
+			</div>
+			<button class="btn btn-primary" ng-if="filter.status == 'queued'" ng-disabled="!countSelected()" ng-click="unqueue()">Remove from Queue</button>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-4">
+			<input class="form-control" type="search" ng-model="filter.text" ng-model-options="{debounce: 1000}" ng-change="textChanged()" placeholder="Creative title search" />
+		</div>
+		<date-picker class="col-sm-2" date="filter.startDate" date-picked="datesChanged()"></date-picker>
+		<date-picker class="col-sm-2" date="filter.endDate" date-picked="datesChanged()"></date-picker>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<table class="nr-grid table table-condensed table-striped-4">
+				<thead>
+					<tr>
+						<th class="col-select">Sel.</th>
+						<th class="col-status">Status</th>
+						<th class="col-priority" ng-if="filter.status == 'queued'">
+							<div class="col-label" ng-click="setSort('priority')">
+								<i class="glyphicon pull-right" ng-show="filter.sort.column == 'priority'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+								Priority
+							</div>
+						</th>
+						<th class="col-title">
+							<div class="col-label" ng-click="setSort('title')">
+								<i class="glyphicon pull-right" ng-show="filter.sort.column == 'title'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+								Creative Title
+							</div>
+						</th>
+						<th class="col-advertiser">
+							<div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+								<i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.company == null}"></i>
+								<ul class="dropdown-menu">
+									<li ng-repeat="company in companies" ng-class="{active: filter.company == company.value}"><a ng-click="setCompanyFilter(company)">{{company.label}}</a></li>
+								</ul>
+							</div>
+							<div class="col-label" ng-click="setSort('company')">
+								<i class="glyphicon pull-right" ng-show="filter.sort.column == 'company'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+								Advertiser
+							</div>
+						</th>
+						<th class="col-brand">
+							<div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+								<i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.brand == null}"></i>
+								<ul class="dropdown-menu">
+									<li ng-repeat="brand in brands" ng-class="{active: filter.brand == brand.value}"><a ng-click="setBrandFilter(brand)">{{brand.label}}</a></li>
+								</ul>
+							</div>
+							<div class="col-label" ng-click="setSort('brand')">
+								<i class="glyphicon pull-right" ng-show="filter.sort.column == 'brand'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+								Brand
+							</div>
+						</th>
+						<th class="col-category">
+							<div class="dropdown pull-right" dropdown dropdown-toggle>
+								<i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.category == null}"></i>
+								<ul class="dropdown-menu">
+									<li ng-repeat="category in categories" ng-class="{active: filter.category == category.value}"><a ng-click="setCategoryFilter(category)">{{category.label}}</a></li>
+								</ul>
+							</div>
+							<div class="col-label" ng-click="setSort('category')">
+								<i class="glyphicon pull-right" ng-show="filter.sort.column == 'category'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+								Ad Category
+							</div>
+						</th>
+						<th class="col-message-type">Message Type</th>
+						<th class="col-campaign">Campaign</th>
+						<th class="col-product">
+							<div class="dropdown pull-right" dropdown dropdown-toggle>
+								<i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.product == null}"></i>
+								<ul class="dropdown-menu">
+									<li ng-repeat="product in products" ng-class="{active: filter.product == product.value}"><a ng-click="setProductFilter(product)">{{product.label}}</a></li>
+								</ul>
+							</div>
+							<div class="col-label" ng-click="setSort('product')">
+								<i class="glyphicon pull-right" ng-show="filter.sort.column == 'product'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+								Product
+							</div>
+						</th>
+						<th class="col-duration">
+							<div class="col-label" ng-click="setSort('duration')">
+								<i class="glyphicon pull-right" ng-show="filter.sort.column == 'duration'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+								Duration
+							</div>
+						</th>
+						<th class="col-created">
+							<div class="col-label" ng-click="setSort('created')">
+								<i class="glyphicon pull-right" ng-show="filter.sort.column == 'created'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>
+								Promoted On
+							</div>
+						</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr ng-repeat-start="sample in samples">
+						<td><i class="glyphicon" ng-class="{true: 'glyphicon-check', false: 'glyphicon-unchecked'}[!!selected[sample.Id]]" ng-mousedown="selectionClicked($event, $index)"></i></td>
+						<td>
+							<i ng-if="sample.Transcribed > 0" ng-click="toggleTranscripts(sample)" class="glyphicon" ng-class="{false:'glyphicon-triangle-bottom', true:'glyphicon-triangle-top'}[!!sample.transcripts]" title="Show/hide transcripts"></i>
+							{{sample.Status}}<span ng-if="sample.Status == 'queued'">&nbsp;{{sample.Transcribed}}/{{sample.Queued}}</span>
+						</td>
+						<td ng-if="filter.status == 'queued'">{{sample.Priority | priorityLabel}}</td>
+						<td title="{{sample.Title}}">{{sample.Title}}</td>
+						<td>{{sample.Company}}</td>
+						<td>{{sample.Brand}}</td>
+						<td>{{sample.Category}}</td>
+						<td>{{sample.MessageType}}</td>
+						<td>{{sample.Campain}}</td>
+						<td>{{sample.Product}}</td>
+						<td class="text-right">{{sample.Duration / 1000 | number:1}}</td>
+						<td>{{sample.Created.format('DD-MM HH:mm')}}</td>
+					</tr>
+					<tr ng-repeat-end ng-show="sample.transcripts">
+						<td colspan="{{filter.status == 'queued' ? 12 : 11}}">
+							<table class="table table-condensed table-bordered no-margin">
+								<tr ng-repeat-start="t in sample.transcripts">
+									<td rowspan="2" class="col-edit"><i class="glyphicon glyphicon-pencil" ng-click="editTranscript(sample, t)"></i></td>
+									<td class="col-user">{{t.User}}</td>
+									<td class="col-edit-end">{{t.EditStart.format('DD-MM-YYYY HH:mm')}}</td>
+									<td class="col-edit-duration">{{t.EditDuration | number}} sec</td>
+									<td class="col-performance">{{t.Performance | number : 1}} ({{t.PerformanceGrade}})</td>
+								</tr>
+								<tr ng-repeat-end>
+									<td colspan="4" title="{{t.Text}}">
+										<transcript-status-icon transcript="t"></transcript-status-icon> {{t.Text}}
+									</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+			<table-pager manager="pager"></table-pager>
+		</div>
+	</div>
+	<div ng-show="sample" class="overlay rows-spaced" ng-class="{expanded: menuClosed}" style="top: {{headerVisibleHeight}}px">
+		<div class="row">
+			<div class="col-sm-12">
+				<span class="pull-left">
+					<button type="button" class="btn btn-xs btn-info" ng-click="pause()">
+						<i class="glyphicon" ng-class="{true: 'glyphicon-play', false: 'glyphicon-pause'}[isPaused]"></i>
+					</button>
+					&nbsp;
+				</span>
+				<span class="pull-right position-indicator">
+					{{position/1000 | number:1}} / {{sample.Duration/1000 | number:1}}
+				</span>
+				<div class="progress" progress-seek on-seek="seeked(pos)">
+					<div class="progress-bar" role="progressbar" style="width: {{(position/sample.Duration)*100}}%;"></div>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<textarea rows="5" class="form-control" ng-model="sample.fullText"></textarea>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<button class="btn btn-default" transcript-status-icon transcript="transcript" ng-disabled="true"></button>
+				<button class="btn btn-primary" ng-click="saveTranscript(false, statuses.CorrectionPending)">
+					<i class="glyphicon glyphicon-floppy-disk"></i> Save
+				</button>
+				<button class="btn btn-primary" ng-click="saveTranscript(false, statuses.Corrected)">
+					<i class="glyphicon glyphicon-heart-empty"></i> Save Corrected
+				</button>
+				<button class="btn btn-primary" ng-click="saveTranscript(true, statuses.Corrected)">
+					<i class="glyphicon glyphicon-heart"></i> <span ng-if="sample.HasMaster && !transcript.IsMaster">Replace</span><span ng-if="!sample.HasMaster || transcript.IsMaster">Mark as</span> Master
+				</button>
+				<button class="btn btn-primary" ng-click="saveTranscript(false, statuses.Trashed)">
+					<i class="glyphicon glyphicon-trash"></i> Trash
+				</button>
+				<button class="btn btn-default pull-right" ng-click="cancelTranscript()">
+					<i class="glyphicon glyphicon-remove"></i> Cancel
+				</button>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12">
+			<div class="pull-right">
+				<button class="btn btn-primary" ng-click="editRemindEmail()">Remind awaiting transcripts...</button>
+			</div>
+		</div>
+	</div>
+	<script type="text/ng-template" id="transcriptStatusIcon.html">
+		<i ng-if="transcript.IsMaster || i.Status != statuses.None" class="glyphicon"
+		   ng-class="{'glyphicon-heart': transcript.IsMaster, 'glyphicon-floppy-disk': transcript.Status == statuses.CorrectionPending, 'glyphicon-heart-empty': !transcript.IsMaster && transcript.Status == statuses.Corrected, 'glyphicon-trash': transcript.Status == statuses.Trashed}"
+		   title="Master Transcript"></i>
+	</script>
+	<script type="text/ng-template" id="orderTranscripts.html">
+		<div class="modal-header">
+			<h3 class="modal-title">Order Transcripts</h3>
+		</div>
+		<div class="modal-body">
+			<p>How many transcripts do you want to order for each of the {{sampleCount}} selected samples?</p>
+			<input type="number" class="form-control" ng-model="transcriptCount" />
+
+			<p>Select a priority for these transcripts</p>
+			<div class="btn-group" dropdown>
+				<button type="button" class="btn btn-primary dropdown-toggle" dropdown-toggle>{{priority | priorityLabel}} <span class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu">
+					<li role="menuitem" ng-repeat="p in priorities"><a ng-click="setPriority(p)">{{p | priorityLabel}}</a></li>
+				</ul>
+			</div>
+		</div>
+		<div class="modal-footer">
+			<button type="button" class="btn btn-default btn-sm" ng-click="cancel()">Cancel</button>
+			<button type="button" class="btn btn-primary btn-sm" ng-click="ok()">Order</button>
+		</div>
+	</script>
+</div>

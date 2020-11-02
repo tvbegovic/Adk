@@ -1,0 +1,59 @@
+﻿<div class="rows-spaced">
+    <div class="row">
+        <tabset class="col-sm-12">
+            <tab heading="Hrvatska">
+                <h3>Harvesting</h3>
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Date</td>
+                            <td>Harvester</td>
+                            <td>Channel</td>
+                            <td>Spots Harvested</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="h in HarvestingStats">
+                            <td class="text-right">{{h.datum}}</td>
+                            <td>{{h.tagger}}</td>
+                            <td>{{h.channel}}</td>
+                            <td class="text-right">{{h.spotsCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+                </tab>
+
+            <tab heading="Trinidad">
+                <h3>Harvesting</h3>
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Date</td>
+                            <td>Harvester</td>
+                            <td>Channel</td>
+                            <td>Spots Harvested</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="h in HarvestingStatsMis">
+                            <td class="text-right">{{h.datum}}</td>
+                            <td>{{h.tagger}}</td>
+                            <td>{{h.channel}}</td>
+                            <td class="text-right">{{h.spotsCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+            </tab>
+                </tab>
+            </tabset>
+        </div>
+    </div>
+    </div>

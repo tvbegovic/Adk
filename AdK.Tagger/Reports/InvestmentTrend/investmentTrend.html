@@ -1,0 +1,35 @@
+<div ng-controller="investmentTrendCtrl">
+  <div class="row" ng-show="channelsLoaded">
+    <div class="col-sm-12">
+      <div ng-show="haveChannels">
+        <div class="report-filters">
+          <div class="filter-row main">
+            <report-industry-filter on-init="onDirectivesInit()" on-change="resetCategories(load)"></report-industry-filter>
+            <report-media-filter on-init="onDirectivesInit()" on-change="load()"></report-media-filter>
+            <report-market-filter on-init="onDirectivesInit()" on-change="load()"></report-market-filter>
+            <report-toggle-value-filter on-init="onDirectivesInit()" on-change="load()"></report-toggle-value-filter>
+            <report-brand-or-advertiser-filter on-init="onDirectivesInit()" on-change="load()"></report-brand-or-advertiser-filter>
+            <report-notes note-id="investment_trend" ng-if="user.isAdmin" />
+          </div>
+
+          <div class="filter-row additional">
+            <report-limit-filter on-init="onDirectivesInit()" on-change="load()"></report-limit-filter>
+          </div>
+
+          <div class="filter-row clearfix">
+            <report-category-filter on-change="load()" selected-industry="current.industry.Id"></report-category-filter>
+          </div>
+        </div>
+
+        <div class="report-data">
+          <div ng-hide="message.show">
+            <nvd3 options="lineChartOptions" data="lineChartData"></nvd3>
+          </div>
+        </div>
+
+        <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+      </div>
+      <report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+    </div>
+  </div>
+</div>

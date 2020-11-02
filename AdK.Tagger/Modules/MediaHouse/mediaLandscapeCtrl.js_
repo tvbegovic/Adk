@@ -1,0 +1,155 @@
+angular.module('app')
+  .controller('mediaLandscapeCtrl', ['$scope', '$filter', 'MediaHouses', 'confirmPopup', 'focus', function($scope, $filter, MediaHouses, confirmPopup, focus) {
+    $scope.current = {
+      holding: null,
+      newHoldingName: '',
+      channel: null,
+      group: null,
+      editingChannel: false,
+      editingGroup: false,
+      editingHolding: false
+    };
+    $scope.holdingClicked = selectHolding;
+    function selectHolding(holding) {
+      $scope.current.holding = holding;
+      $scope.current.holdingGroups = _.reduce(MediaHouses.groupDic, function(list, group) {
+        if (group.HoldingId === $scope.current.holding.Id)
+          list.push(group);
+        return list;
+      }, []);
+      selectGroup(_.first($scope.current.holdingGroups));
+    }
+    function selectAnyHolding() {
+      if (!_.isEmpty(MediaHouses.holdingDic)) {
+        var holding = MediaHouses.holdingDic[_.first(Object.keys(MediaHouses.holdingDic))];
+        selectHolding(holding);
+      } else {
+        $scope.current.holding = null;
+        //$scope.current.holdingGroups = [];
+      }
+    }
+    $scope.editHolding = function() {
+      $scope.current.editingHolding = true;
+      $scope.current.newHoldingName = $scope.current.holding.Name;
+      focus('newHoldingName');
+    };
+    $scope.addHolding = function() {
+      $scope.current.holding = null;
+      $scope.current.newHoldingName = '';
+      focus('newHoldingName');
+    };
+    $scope.saveHolding = function() {
+      if (!$scope.current.holding) {
+        var holding = MediaHouses.newHolding();
+        holding.Name = $scope.current.newHoldingName;
+        MediaHouses.createHolding(holding);
+        selectHolding(holding);
+      } else {
+        $scope.current.editingHolding = false;
+        $scope.current.holding.Name = $scope.current.newHoldingName;
+        MediaHouses.updateHolding($scope.current.holding);
+      }
+    };
+    $scope.deleteHolding = function() {
+      confirmPopup.open("Delete Holding", null, "Do you want to delete the holding '" + $scope.current.holding.Name + "' and depending groups?").then(function() {
+        MediaHouses.deleteHolding($scope.current.holding).then(selectAnyHolding);
+      });
+    };
+    $scope.mineChanged = function() {
+      if ($scope.current.holding)
+        _.forEach(MediaHouses.holdingDic, function(h) {
+          if (h.Id !== $scope.current.holding.Id)
+            h.Mine = false;
+        });
+      MediaHouses.setMyHolding($scope.current.holding.Mine ? $scope.current.holding : null);
+    };
+
+    $scope.groupClicked = selectGroup;
+    function selectGroup(group) {
+      $scope.current.group = group;
+      MediaHouses.channels.forEach(function(channel) {
+        channel.Selected = false;
+      });
+    }
+    $scope.editGroup = function() {
+      $scope.current.editingGroup = true;
+    };
+    $scope.addGroup = function() {
+      $scope.current.group = null;
+      $scope.current.newGroupName = '';
+      focus('newGroupName');
+    };
+    $scope.saveGroup = function() {
+      if (!$scope.current.group) {
+        var group = MediaHouses.newGroup();
+        group.Name = $scope.current.newGroupName;
+        $scope.current.newGroupName = '';
+        group.HoldingId = $scope.current.holding.Id;
+        $scope.current.holdingGroups.push(group);
+        MediaHouses.createGroup(group);
+        $scope.current.group = group;
+      } else {
+        $scope.current.editingGroup = false;
+        MediaHouses.updateGroup($scope.current.group);
+      }
+    };
+    $scope.deleteGroup = function() {
+      confirmPopup.open("Delete Group", null, "Do you want to delete the group '" + $scope.current.group.Name + "'?").then(function() {
+        MediaHouses.deleteGroup($scope.current.group).then(function() {
+          _.remove($scope.current.holdingGroups, $scope.current.group);
+          $scope.current.group = null;
+        });
+      });
+    };
+
+    $scope.isChannelInGroup = function(channel) {
+      return channel && _.includes($scope.current.group.ChannelIds, channel.Id);
+    };
+    $scope.isChannelNotInGroup = function(channel) {
+      return !$scope.isChannelInGroup(channel);
+    };
+    $scope.canAdd = function() {
+      return _.some(MediaHouses.channels, function(channel) {
+        return channel.Selected && $scope.isChannelNotInGroup(channel);
+      });
+    };
+    $scope.canRemove = function() {
+      return _.some(MediaHouses.channels, function(channel) {
+        return channel.Selected && $scope.isChannelInGroup(channel);
+      });
+    };
+    $scope.addChannels = function() {
+      var filter = $filter('filter');
+      filter(MediaHouses.channels, $scope.current.channelFilter).forEach(function(channel) {
+        if (channel.Selected) {
+          $scope.current.group.ChannelIds.push(channel.Id);
+          channel.Selected = false;
+        }
+      });
+      $scope.saveGroup();
+    };
+    $scope.removeChannels = function() {
+      MediaHouses.channels.forEach(function(channel) {
+        if (channel.Selected) {
+          _.remove($scope.current.group.ChannelIds, function(id) { return id === channel.Id; });
+          channel.Selected = false;
+        }
+      });
+      $scope.saveGroup();
+    };
+
+    $scope.$on('escaped', function() {
+      $scope.$apply(function() {
+        if (!$scope.current.holding)
+          selectAnyHolding();
+      });
+    });
+
+    MediaHouses.ready.then(function() {
+      $scope.mediaHouses = MediaHouses;
+
+      selectAnyHolding();
+      if (!$scope.current.holding)
+        $scope.addHolding();
+    });
+  }])

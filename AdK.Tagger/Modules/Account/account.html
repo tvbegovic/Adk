@@ -1,0 +1,93 @@
+﻿<style>
+	#account-page .default-label {
+		display: inline-block;
+		width: 120px;
+	}
+</style>
+<div id="account-page">
+    <div class="row">
+        <div class="col-sm-6">
+            <h2>My account</h2>
+            <div>
+                <button type="button" class="btn pull-right" ng-click="logout()">Log out</button>
+                <div class="form-group">
+                    <label>Email address: {{user.email}}</label>
+                </div>
+            </div>
+            <form role="form" class="well">
+                <div class="form-group">
+                    <label>Full Name</label>
+                    <input type="text" class="form-control" ng-model="account.name" placeholder="Full name">
+                </div>
+                <div class="form-group" style="margin-top: 20px;">
+                    <label>Date format</label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="account.userDateFormat" value="yyyy-MM-dd">
+                        {{today | date:'yyyy-MM-dd'}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="account.userDateFormat" value="d.M.yyyy">
+                        {{today | date:'d.M.yyyy'}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="account.userDateFormat" value="MM/dd/yyyy">
+                        {{today | date:'MM/dd/yyyy'}}
+                    </label>
+                    <label class="radio-inline">
+                        <input type="radio" ng-model="account.userDateFormat" value="MM/dd/yy">
+                        {{today | date:'MM/dd/yy'}}
+                    </label>
+                </div>
+								<div class="form-group">
+									<label >Defaults</label>
+									<div>
+										<div class="form-group form-inline">
+											<span class="default-label">Default Category</span>
+											<input type="text" ng-model="userSettings.defaultCategory.Value" class="form-control" >
+										</div>
+										<div class="form-group form-inline">
+											<span class="default-label">Default Brand</span>
+											<input type="text" ng-model="userSettings.defaultBrand.Value" class="form-control">
+										</div>
+										<div class="form-group form-inline">
+											<span class="default-label">Default Advertiser</span>
+											<input type="text" ng-model="userSettings.defaultAdvertiser.Value" class="form-control">
+										</div>
+										<div class="form-group form-inline">
+											<input type="checkbox" ng-model="userSettings.groupEmptyAuditHours.Value" class="form-control">
+											<span>Group Empty Audit Hours</span>
+										</div>
+									</div>
+								</div>
+                <alert type="danger" ng-if="errorSaving">
+										Saving account failed
+                </alert>
+                <div class="text-right">
+									<ajax-inline-indicator show-spinner="savingChanges" show-success="successUpdate"></ajax-inline-indicator>
+                  <button type="submit" class="btn btn-default" ng-click="saveAccount()">Save changes</button>
+                </div>
+            </form>
+            <form role="form" class="well">
+                <h3>Change my password</h3>
+                <div class="form-group">
+                    <label>Former Password</label>
+                    <input type="password" class="form-control" ng-model="account.formerPassword" ng-required="true" placeholder="Former Password">
+                </div>
+                <div class="form-group">
+                    <label>New Password</label>
+                    <input type="password" class="form-control" ng-model="account.newPassword" ng-required="true" placeholder="New Password">
+                </div>
+                <div class="form-group">
+                    <label>Repeat New Password</label>
+                    <input type="password" class="form-control" ng-model="account.repeatNewPassword" ng-required="true" compare-to="account.newPassword" placeholder="Repeat New Password">
+                </div>
+                <alert type="{{passwordChanged ? 'success' : 'danger'}}" ng-if="passwordChanged !== undefined">
+                    {{passwordChanged ? "The password has been changed" : "Changing password failed"}}
+                </alert>
+                <div class="text-right">
+                    <button type="submit" class="btn btn-default" ng-click="changePassword()" ng-disabled="!account.formerPassword || !account.newPassword || !account.repeatNewPassword || account.newPassword != account.repeatNewPassword">Change password</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

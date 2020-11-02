@@ -1,0 +1,14 @@
+﻿<span class="inline-datepicker">
+    <input type="text" class="form-control"
+        datepicker-popup is-open="dateOptions.dropDownOpened"
+        max="dateOptions.maxDate"
+		min="dateOptions.minDate"
+		min-date="dateOptions.minDate"
+        ng-model="customDateModel"
+        ng-required="true"
+        close-text="Close"
+        alt-input-formats="altInputFormats" />
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-click="openDropDown()"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+</span>

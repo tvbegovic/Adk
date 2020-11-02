@@ -1,0 +1,171 @@
+﻿<div ng-controller="adBlocksCtrl">
+    <div class="row" ng-show="channelsLoaded">
+        <div class="col-sm-12">
+            <div ng-show="haveChannels">
+                <div class="report-filters">
+                    <div class="filter-row main">
+                        <div class="date-wrapper-filter">
+                            <report-custom-date-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()"></report-custom-date-filter>
+                        </div>
+                        <report-channel-including-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-including-filter>
+                        <!--<report-channel-or-date-filter on-change="load()"></report-channel-or-date-filter>-->
+                        <report-day-part-filter on-init="onDirectivesInit()" on-change="load()"></report-day-part-filter>
+                        <report-notes note-id="ad_blocks" ng-if="user.isAdmin" />
+                    </div>
+                    <div class="filter-row clearfix">
+                        <div class="col-sm-3" ng-show="DayParts.length">
+                            <player-widget player="player"></player-widget>
+                        </div>
+
+                    </div>
+                </div>
+
+                <div class="report-data" ng-hide="message.show || loading">
+                    <div class="allow-overflow">
+                        <table class="report-table table table-striped table-hover table-bordered border-thick">
+                            <thead class="border-thick">
+                                <tr>
+                                    <th class="text-center border-thick">Channels</th>
+                                    <th class="text-center border-thick">Date</th>
+                                    <th class="text-center border-thick" colspan="2">Total</th>
+                                    <th class="text-center border-thick" ng-repeat="dayPart in DayParts" ng-class="{'hidden': !DayPartVisibility[dayPart.Id]}">
+                                        {{dayPart.Name}}
+                                    </th>
+                                </tr>
+                            </thead>
+
+                            <tbody ng-repeat="row in AdBlockTable">
+                                <!-- Channel -->
+                                <tr>
+                                    <td class="text-center border-thick" rowspan="{{row.RowSpan || (row.DayRows.length * 5)}}">
+                                        {{row.ChannelName}}
+                                    </td>
+                                </tr>
+
+
+                                <!-- Date -->
+                                <tr ng-repeat-start="dayRow in row.DayRows">
+                                    <td rowspan="{{(row.RowSpan || 5) - 1}}" class="text-center cell-clickable border-thick" ng-click="ToggleDayRow(dayRow, row)">{{dayRow.DateString}}</td>
+                                </tr>
+
+                                <!-- Date Summary -->
+                                <tr class="date-summary-blocks">
+                                    <td class="text border-left-thick border-top-thick">Blocks</td>
+                                    <td class="text-right border-top-thick border-right-thick">{{dayRow.Totals.BlockCount | zeroToEmptyString}}</td>
+                                    <td class="text-right border-top-thick"
+                                        ng-class="{'hidden': !DayPartVisibility[dayRowDayPart.DayPart.Id], 'visible': !!DayPartVisibility[dayRowDayPart.DayPart.Id]}"
+                                        ng-repeat="dayRowDayPart in dayRow.AdBlockDayRowDayPartSummaries">
+                                        {{dayRowDayPart.BlockCount | zeroToEmptyString}}
+                                    </td>
+                                </tr>
+                                <tr class="date-summary-duration">
+                                    <td class="text border-left-thick">Duration</td>
+                                    <td class="text-right border-right-thick">{{dayRow.Totals.Duration | secondsToTimeFilter | zeroToEmptyString}}</td>
+                                    <td class="text-right"
+                                        ng-class="{'hidden': !DayPartVisibility[dayRowDayPart.DayPart.Id], 'visible': !!DayPartVisibility[dayRowDayPart.DayPart.Id]}"
+                                        ng-repeat="dayRowDayPart in dayRow.AdBlockDayRowDayPartSummaries">
+                                        {{dayRowDayPart.Duration | secondsToTimeFilter | zeroToEmptyString}}
+                                    </td>
+                                </tr>
+                                <tr class="date-summary-adcount">
+                                    <td class="text border-left-thick border-bottom-thick">AdCount</td>
+                                    <td class="text-right border-bottom-thick border-right-thick">{{dayRow.Totals.AdCount | zeroToEmptyString}}</td>
+                                    <td class="text-right border-bottom-thick"
+                                        ng-class="{'hidden': !DayPartVisibility[dayRowDayPart.DayPart.Id], 'visible': !!DayPartVisibility[dayRowDayPart.DayPart.Id]}"
+                                        ng-repeat="dayRowDayPart in dayRow.AdBlockDayRowDayPartSummaries">
+                                        {{dayRowDayPart.AdCount | zeroToEmptyString}}
+                                    </td>
+                                </tr>
+
+
+                                <!-- Adblocks -->
+                                <tr ng-repeat-start="adBlock in dayRow.AdBlocks" ng-class="{ 'hidden' : !dayRow.Expand || adBlock.AdCount == 0}">
+                                    <td class="border-left-thick border-top-thick border-bottom-thick" rowspan="{{5 - !adBlock.Expanded}}">Ad Block {{}}</td>
+                                </tr>
+                                <!-- Start -->
+                                <tr ng-class="{ 'hidden' : !dayRow.Expand || adBlock.AdCount == 0}">
+                                    <td class="text border-top-thick border-right-thick">Start</td>
+                                    <td class="text-right border-top-thick"
+                                        ng-class="{'cell-empty': adBlockDayPart.AdCount == 0, 'cell-selected': adBlockDayPart.Expand, 'hidden': !DayPartVisibility[adBlockDayPart.DayPart.Id],'visible': !!DayPartVisibility[dayRowDayPart.DayPart.Id] }"
+                                        ng-click="adBlockDayPart.AdCount == 0 || ToggleAdBlockDayPart(adBlockDayPart, adBlock, dayRow, row)"
+                                        ng-repeat="adBlockDayPart in adBlock.AdBlockDayParts">
+                                        {{adBlockDayPart.StartTimeString}}
+                                    </td>
+                                </tr>
+                                <!-- End -->
+                                <tr ng-class="{ 'hidden' : !dayRow.Expand || adBlock.AdCount == 0}">
+                                    <td class="text border-right-thick">End</td>
+                                    <td class="text-right"
+                                        ng-class="{'cell-empty': adBlockDayPart.AdCount == 0, 'cell-selected': adBlockDayPart.Expand, 'hidden': !DayPartVisibility[adBlockDayPart.DayPart.Id],'visible': !!DayPartVisibility[dayRowDayPart.DayPart.Id] }"
+                                        ng-click="adBlockDayPart.AdCount == 0 || ToggleAdBlockDayPart(adBlockDayPart, adBlock, dayRow, row)"
+                                        ng-repeat="adBlockDayPart in adBlock.AdBlockDayParts">
+                                        {{adBlockDayPart.EndTimeString}}
+                                    </td>
+                                </tr>
+                                <!-- Count -->
+                                <tr ng-class="{ 'hidden' : !dayRow.Expand || adBlock.AdCount == 0}">
+                                    <td class="text border-right-thick border-bottom-thick">Count</td>
+                                    <td class="text-right border-bottom-thick"
+                                        ng-class="{'cell-empty': adBlockDayPart.AdCount == 0, 'cell-selected': adBlockDayPart.Expand, 'hidden': !DayPartVisibility[adBlockDayPart.DayPart.Id],'visible': !!DayPartVisibility[dayRowDayPart.DayPart.Id] }"
+                                        ng-click="adBlockDayPart.AdCount == 0 || ToggleAdBlockDayPart(adBlockDayPart, adBlock, dayRow, row)"
+                                        ng-repeat="adBlockDayPart in adBlock.AdBlockDayParts">
+                                        {{adBlockDayPart.AdCount | zeroToEmptyString}}
+                                    </td>
+                                </tr>
+
+                                <!-- Ads -->
+                                <tr ng-class="{ 'hidden' : !dayRow.Expand || !adBlock.Expanded || adBlock.AdCount == 0 }">
+                                    <td colspan="{{NumberOfVisibleDayParts + 1}}" class="cell-detail-table">
+                                        <table class="report-table table table-striped table-hover table-bordered border-thick">
+                                            <thead>
+                                                <tr>
+                                                    <th class="text-center border-left-thick">Start</th>
+                                                    <th class="text-center">Duration</th>
+                                                    <th class="text-center">Spot</th>
+                                                    <th class="text-center">Brand</th>
+                                                    <th class="text-center border-right-thick">Play</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody ng-repeat="adBlockDayPart in adBlock.AdBlockDayParts" ng-class="{ 'hidden' : !dayRow.Expand || !adBlockDayPart.Expand || adBlock.AdCount == 0 }">
+                                                <tr ng-repeat="adBlockAd in adBlockDayPart.AdBlockAds">
+                                                    <td class="text-center border-left-thick">
+                                                        {{adBlockAd.StartTimeString}}
+                                                    </td>
+                                                    <td class="text-right">
+                                                        {{adBlockAd.Duration | secondsToTimeFilter | zeroToEmptyString}}
+                                                    </td>
+                                                    <td>
+                                                        {{adBlockAd.SpotName}}
+                                                    </td>
+                                                    <td>
+                                                        {{adBlockAd.BrandName}}
+                                                    </td>
+                                                    <td class="text-center border-right-thick">
+                                                        <div ng-if="adBlockAd.SpotId && adBlockAd.Duration">
+                                                            <button type="button" class="btn btn-xs btn-info" ng-click="playPauseSong(adBlockAd, $index)">
+                                                                <i class="glyphicon" ng-class="{true: 'glyphicon-pause', false: 'glyphicon-play'}[$index === player.playingInfo.uiIndentifier && player.playingInfo.isPlaying]"></i>
+                                                            </button>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </td>
+                                </tr>
+                                <tr ng-repeat-end="adBlock in dayRow.AdBlocks" ng-hide="true"></tr>
+
+                                <tr ng-repeat-end="dayRow in row.DayRows" ng-hide="true"></tr>
+
+                            </tbody>
+
+                        </table>
+                    </div>
+
+                </div>
+            </div>
+
+            <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+        </div>
+    </div>
+</div>

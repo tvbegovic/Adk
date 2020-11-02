@@ -1,0 +1,13 @@
+<div>
+    <span class="pull-left">
+        <button type="button" ng-disabled="!player.playingInfo.songUrl" class="btn btn-xs btn-info" ng-click="togglePause()">
+            <i class="glyphicon glyphicon-play"  ng-class="{true: 'glyphicon-pause', false: 'glyphicon-play'}[player.playingInfo.isPlaying]" ></i>
+        </button>&nbsp;
+    </span>
+    <span class="pull-right position-indicator">
+        {{player.playingInfo.songPosition/1000 | number:1}}/ {{player.playingInfo.songDuration/1000 | number:1}}
+    </span>
+    <div class="progress" progress-seek on-seek="playerSeek(pos)">
+        <div class="progress-bar" role="progressbar" ng-style="{ width: player.playingInfo.getCompletePercentage()+ '%' }"></div>
+    </div>
+</div>

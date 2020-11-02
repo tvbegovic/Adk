@@ -1,0 +1,47 @@
+﻿.table.fs-grid {
+	table-layout: fixed;
+	width: 100%;
+	white-space: nowrap;
+	font-size: 12px;
+
+	&.no-margin {
+		margin: 0;
+	}
+
+	th {
+		color: white;
+		background-color: #483D8B;
+		&:hover {
+			background-color: #7c73b2;
+		}
+		.dropdown {
+			position: relative;
+		}
+		.filter-input {
+			width: 100%;
+			color: black;
+		}
+	}
+
+	&.table-striped-4 > tbody > tr:nth-of-type(4n-1) {
+		background-color: #f9f9f9;
+	}
+
+	td {
+		white-space: nowrap;
+		overflow: hidden;
+		-ms-text-overflow: ellipsis;
+		-o-text-overflow: ellipsis;
+		text-overflow: ellipsis;
+		input {
+			width: 100%;
+		}
+	}
+	&.fs-grid-auto-layout {
+		 table-layout:auto;
+		 white-space: normal;
+		 td {
+			 white-space: normal;
+		 }
+	}
+}

@@ -1,0 +1,34 @@
+﻿<div ng-controller="brandActivityByMediaHouseCtrl">
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="report-filters">
+                <div class="filter-row main clearfix">
+                    <div class="date-wrapper-filter">
+                        <report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()" period-start="period.PeriodStart"
+                            period-end="period.PeriodEnd"></report-custom-period-filter>
+                    </div>
+                    <report-industry-filter on-init="onDirectivesInit()" on-change="resetCategories(load)"></report-industry-filter>
+                    <report-market-filter on-init="onDirectivesInit()" on-change="load()"></report-market-filter>
+                    <report-toggle-value-filter on-init="onDirectivesInit()" on-change="load()"></report-toggle-value-filter>
+                    <report-display-type-filter on-init="onDirectivesInit()" on-change="onDisplayTypeChange()"></report-display-type-filter>
+                    <report-brand-or-advertiser-filter on-init="onDirectivesInit()" on-change="load()"></report-brand-or-advertiser-filter>
+                    <report-notes note-id="brand_activity_by_media_house" ng-if="user.isAdmin" />
+                </div>
+                <div class="filter-row additional">
+                    <report-limit-filter on-init="onDirectivesInit()" on-change="load()"></report-limit-filter>
+                </div>
+                <div class="filter-row clearfix">
+                    <report-category-filter on-change="load()" selected-industry="current.industry.Id"></report-category-filter>
+                </div>
+            </div>
+            <div class="report-data col-md-12 ov-x-auto" ng-hide="message.show">
+                <div class="horizontal-barchart-graph">
+                    <nvd3 options="nvd3Options" data="brandActivityByMediaHouseChartData"></nvd3>
+                </div>
+            </div>
+
+            <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+        </div>
+    </div>
+</div>

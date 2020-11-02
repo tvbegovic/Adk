@@ -1,0 +1,123 @@
+﻿<div class="rows-spaced">
+    <div class="row">
+        <div class="col-sm-4">
+            <player-widget player="player"></player-widget>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <table class="nr-grid table table-condensed fs-grid">
+                <thead>
+                    <tr>
+                        <th class="col-file">
+                            <div class="col-label" ng-click="setSort('file')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'file'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>								File
+                            </div>
+                        </th>
+                        <th class="col-play">Play</th>
+                        <th class="col-title">
+                            <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.name == ''}" ng-click="setFocus('nameFilter')"></i>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <input type="text" focus-on="nameFilter" ng-model="filter.name" ng-model-options="{debounce: 1000}" ng-change="getSpots()" />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-label" ng-click="setSort('name')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'name'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>								Name
+                            </div>
+                        </th>
+                        <th class="col-brand">
+                            <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.brand == ''}" ng-click="setFocus('brandFilter')"></i>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <input type="text" focus-on="brandFilter" ng-model="filter.brand" typeahead-on-select="getSpots()" typeahead="item for item in getItems('brand', $viewValue)"
+                                               typeahead-append-to-body="true" ng-model-options="{debounce: 1000}" ng-change="getSpots()" />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-label" ng-click="setSort('brand')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'brand'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>								Brand
+                            </div>
+                        </th>
+                        <th class="col-category">
+                            <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.category == ''}" ng-click="setFocus('categoryFilter')"></i>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <input type="text" focus-on="categoryFilter" ng-model="filter.category" typeahead-on-select="getSpots()" typeahead="item for item in getItems('category', $viewValue)"
+                                               typeahead-append-to-body="true" ng-model-options="{debounce: 1000}" ng-change="getSpots()" />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-label" ng-click="setSort('category')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'category'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>								Category
+                            </div>
+                        </th>
+                        <th class="col-advertiser">
+                            <div class="dropdown pull-right" dropdown dropdown-append-to-body dropdown-toggle>
+                                <i class="glyphicon glyphicon-filter" ng-class="{inactive: filter.advertiser == ''}" ng-click="setFocus('advertiserFilter')"></i>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <input type="text" focus-on="advertiserFilter" ng-model="filter.advertiser" typeahead-on-select="getSpots()" typeahead="item for item in getItems('advertiser', $viewValue)"
+                                               typeahead-append-to-body="true" ng-model-options="{debounce: 1000}" ng-change="getSpots()" />
+                                    </li>
+                                </ul>
+                            </div>
+                            <div class="col-label" ng-click="setSort('advertiser')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'advertiser'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>								Advertiser
+                            </div>
+                        </th>
+                        <th class="col-duration">
+                            <div class="col-label" ng-click="setSort('duration')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'duration'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>								Duration
+                            </div>
+                        </th>
+                        <th class="col-created">
+                            <div class="col-label" ng-click="setSort('created')">
+                                <i class="glyphicon pull-right" ng-show="filter.sort.column == 'created'" ng-class="{true: 'glyphicon-chevron-up', false: 'glyphicon-chevron-down'}[filter.sort.ascending]"></i>								Created
+                            </div>
+                        </th>
+                        <th class="col-scanned text-center" ng-if="showScannedColumn"> Scanned </th>
+                        <th class="col-delete" ng-if="canDelete">Delete</th>
+                        <th class="col-pick" ng-if="canPick">Pick</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="spot in spots" ng-class="{active: spot === current.spot, inactive: spot.Deleted}">
+                        <td ng-click="selectSpot(spot, $index)">{{spot.Filename}}</td>
+                        <td>
+                            <button type="button" class="btn btn-xs btn-info" ng-click="playPauseSong(spot, $index)">
+                                <i class="glyphicon" ng-class="{true: 'glyphicon-pause', false: 'glyphicon-play'}[$index === player.playingInfo.uiIndentifier && player.playingInfo.isPlaying]"></i>
+                            </button>
+                        </td>
+                        <td title="{{spot.Name}}" ng-click="selectSpot(spot, $index)">
+                            <input ng-if="isEdited(spot)" type="text" ng-model="spot.Name" ng-blur="saveChanges(spot)" />
+                            <span ng-if="!isEdited(spot)">{{spot.Name}}</span>
+                        </td>
+                        <td ng-click="selectSpot(spot, $index)">
+                            <input ng-if="isEdited(spot)" type="text" ng-model="spot.Brand" ng-blur="saveChanges(spot)" />
+                            <span ng-if="!isEdited(spot)">{{spot.Brand}}</span>
+                        </td>
+                        <td ng-click="selectSpot(spot, $index)">
+                            <input ng-if="isEdited(spot)" type="text" ng-model="spot.Category" ng-blur="saveChanges(spot)" />
+                            <span ng-if="!isEdited(spot)">{{spot.Category}}</span>
+                        </td>
+                        <td ng-click="selectSpot(spot, $index)">
+                            <input ng-if="isEdited(spot)" type="text" ng-model="spot.Advertiser" ng-blur="saveChanges(spot)" />
+                            <span ng-if="!isEdited(spot)">{{spot.Advertiser}}</span>
+                        </td>
+                        <td ng-click="selectSpot(spot, $index)" class="text-right">{{spot.Duration | duration}}</td>
+                        <td ng-click="selectSpot(spot, $index)" class="text-right">{{spot.Created | userDate}}</td>
+                        <td ng-click="selectSpot(spot, $index)" class="text-center" ng-if="showScannedColumn"> <i class="glyphicon glyphicon-ok" ng-if="spot.ScannedToDate" style="color: green; font-size: 11px;"></i> </td>
+                        <td ng-if="canDelete"><button class="btn btn-xs btn-danger" ng-disabled="spot.Deleted" ng-click="deleteSpot(spot)">Delete</button></td>
+                        <td ng-if="canPick"><button class="btn btn-xs btn-primary" ng-click="pickSpot(spot)">+</button></td>
+                    </tr>
+                </tbody>
+            </table>
+            <table-pager manager="pager"></table-pager>
+        </div>
+    </div>
+</div>

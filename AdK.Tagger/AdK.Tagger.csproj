@@ -1,0 +1,814 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>
+    </ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{B5D3D600-4ECE-4F16-BCE1-30C09D41935D}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AdK.Tagger</RootNamespace>
+    <AssemblyName>AdK.Tagger</AssemblyName>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <UseIISExpress>true</UseIISExpress>
+    <IISExpressSSLPort />
+    <IISExpressAnonymousAuthentication />
+    <IISExpressWindowsAuthentication />
+    <IISExpressUseClassicPipelineMode />
+    <UseGlobalApplicationHostFile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <Use64BitIISExpress />
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <GenerateSerializationAssemblies>Off</GenerateSerializationAssemblies>
+    <LangVersion>5</LangVersion>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="BouncyCastle.Crypto, Version=1.8.3.0, Culture=neutral, PublicKeyToken=0e99375e54769942">
+      <HintPath>..\packages\BouncyCastle.1.8.3.1\lib\BouncyCastle.Crypto.dll</HintPath>
+    </Reference>
+    <Reference Include="EPPlus">
+      <HintPath>..\Binaries\EPPlus\EPPlus.dll</HintPath>
+    </Reference>
+    <Reference Include="Google.Protobuf, Version=3.6.1.0, Culture=neutral, PublicKeyToken=a7d26565bac4d604, processorArchitecture=MSIL">
+      <HintPath>..\packages\Google.Protobuf.3.6.1\lib\net45\Google.Protobuf.dll</HintPath>
+    </Reference>
+    <Reference Include="ICSharpCode.SharpZipLib, Version=1.2.0.246, Culture=neutral, PublicKeyToken=1b03e6acf1164f73, processorArchitecture=MSIL">
+      <HintPath>..\packages\SharpZipLib.1.2.0\lib\net45\ICSharpCode.SharpZipLib.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\Microsoft.VisualStudio.QualityTools.UnitTestFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="MySql.Data, Version=8.0.19.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <HintPath>..\packages\MySql.Data.8.0.19\lib\net452\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="NLog, Version=3.0.0.0, Culture=neutral, PublicKeyToken=5120e14c03d0593c, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Binaries\NLog-3.0\net40\NLog.dll</HintPath>
+    </Reference>
+    <Reference Include="NodaTime">
+      <HintPath>..\Binaries\NodaTime-1.3.1\NodaTime.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OOXML, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OOXML.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXml4Net, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OpenXml4Net.dll</HintPath>
+    </Reference>
+    <Reference Include="NPOI.OpenXmlFormats, Version=2.4.1.0, Culture=neutral, PublicKeyToken=0df73ec7942b34e1, processorArchitecture=MSIL">
+      <HintPath>..\packages\NPOI.2.4.1\lib\net45\NPOI.OpenXmlFormats.dll</HintPath>
+    </Reference>
+    <Reference Include="Renci.SshNet, Version=2016.1.0.0, Culture=neutral, PublicKeyToken=1cee9f8bde3db106, processorArchitecture=MSIL">
+      <HintPath>..\packages\SSH.NET.2016.1.0\lib\net40\Renci.SshNet.dll</HintPath>
+    </Reference>
+    <Reference Include="System">
+    </Reference>
+    <Reference Include="System.ComponentModel" />
+    <Reference Include="System.ComponentModel.DataAnnotations">
+    </Reference>
+    <Reference Include="System.configuration">
+    </Reference>
+    <Reference Include="System.Configuration.Install" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Drawing.Design" />
+    <Reference Include="System.Management" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Web.DynamicData" />
+    <Reference Include="System.Web.Entity" />
+    <Reference Include="System.Web.ApplicationServices" />
+    <Reference Include="System.Data">
+    </Reference>
+    <Reference Include="System.Web.Extensions" />
+    <Reference Include="System.Drawing">
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices">
+    </Reference>
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="Ubiety.Dns.Core, Version=2.4.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Ubiety.Dns.Core.2.4.1\lib\netstandard2.0\Ubiety.Dns.Core.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\audit.css" />
+    <Content Include="css\bootstrap.min.css" />
+    <Content Include="css\colorpicker.min.css" />
+    <Content Include="css\dpoc.css" />
+    <Content Include="css\font-awesome.min.css" />
+    <Content Include="css\markets.css" />
+    <Content Include="css\ng-tags-input.css" />
+    <Content Include="css\nv.d3.min.css" />
+    <Content Include="css\report.css" />
+    <Content Include="css\styleguide.css" />
+    <Content Include="css\tagger.css" />
+    <Content Include="css\textAngular.css" />
+    <Content Include="css\video-js.css" />
+    <Content Include="Dokaznice\css\dokaznice.css" />
+    <Content Include="Dokaznice\index.html" />
+    <Content Include="Dokaznice\js\app.js" />
+    <Content Include="Dokaznice\js\reports.js" />
+    <Content Include="Dokaznice\login.html" />
+    <Content Include="Dokaznice\navigation.html" />
+    <Content Include="Dokaznice\view\navigation.html" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
+    <Content Include="fonts\glyphicons-halflings-regular.svg" />
+    <Content Include="gulpfile.js" />
+    <Content Include="gulp\gulp.build-dokaznice.js" />
+    <Content Include="gulp\gulp.build-tagger.js" />
+    <Content Include="gulp\gulp.common.js" />
+    <Content Include="gulp\gulp.config.js" />
+    <Content Include="gulp\gulp.serve.js" />
+    <Content Include="img\adk-web-headerbg.png" />
+    <Content Include="img\adk-web-headerlogo.png" />
+    <Content Include="img\adk-web-ikona-velika.jpg" />
+    <Content Include="img\chart_icon.gif" />
+    <Content Include="img\dokaznice-logo.png" />
+    <Content Include="img\favicon.png" />
+    <Content Include="img\loadspinner.gif" />
+    <Content Include="img\newresults.gif" />
+    <Content Include="img\SegmentStateIconEnd.png" />
+    <Content Include="img\SegmentStateIconFull.png" />
+    <Content Include="img\SegmentStateIcon.png" />
+    <Content Include="img\site_nav_bg.png" />
+    <Content Include="img\site_nav_logo.png" />
+    <Content Include="img\table_icon.png" />
+    <Content Include="img\vp\merge_from_ofoct0.jpg" />
+    <Content Include="img\vp\merge_from_ofoct1.jpg" />
+    <Content Include="img\white-question-mark.png" />
+    <Content Include="index.html" />
+    <Content Include="js\app.js" />
+    <Content Include="js\common.js" />
+    <Content Include="js\filters.js" />
+    <Content Include="js\fsGrid.js" />
+    <Content Include="js\login.js" />
+    <Content Include="js\Services\appSettings.js" />
+    <Content Include="js\Services\baseChartConfig.js" />
+    <Content Include="js\Services\brandvertiser.js" />
+    <Content Include="js\Services\cachedApiCalls.js" />
+    <Content Include="js\Services\yesnoModal.js" />
+    <Content Include="js\Services\confirmModal.js" />
+    <Content Include="js\Services\cookieService.js" />
+    <Content Include="js\Services\d3ChartLabels.js" />
+    <Content Include="js\Services\fsGrid.js" />
+    <Content Include="js\Services\infoModal.js" />
+    <Content Include="js\Services\localStorage.js" />
+    <Content Include="js\Services\myChannels.js" />
+    <Content Include="js\Services\paged.js" />
+    <Content Include="js\Services\pager.js" />
+    <Content Include="js\Services\service.js" />
+    <Content Include="js\Services\soundmanager.js" />
+    <Content Include="js\Services\spotLIbraryService.js" />
+    <Content Include="js\Services\userSettings.js" />
+    <Content Include="js\Services\valueFormatter.js" />
+    <Content Include="js\vendor\angular-nvd3.js" />
+    <Content Include="js\vendor\angular-nvd3.min.js" />
+    <Content Include="js\vendor\angular\angular-cookies.min.js" />
+    <Content Include="js\vendor\angular\angular-route.min.js" />
+    <Content Include="js\vendor\angular\angular-sanitize.js" />
+    <Content Include="js\vendor\angular\angular-sanitize.min.js" />
+    <Content Include="js\vendor\angular\angular-vs-repeat.js" />
+    <Content Include="js\vendor\angular\angular-vs-repeat.min.js" />
+    <Content Include="js\vendor\angular\angular.js" />
+    <Content Include="js\vendor\angular\angular.min.js" />
+    <Content Include="js\vendor\d3.min.js" />
+    <Content Include="js\vendor\datePickerDecorator.js" />
+    <Content Include="js\vendor\hotkeys.min.js" />
+    <Content Include="js\vendor\leaflet\angular-leaflet-directive.js" />
+    <Content Include="js\vendor\leaflet\angular-leaflet-directive.min.js" />
+    <Content Include="js\vendor\leaflet\images\layers-2x.png" />
+    <Content Include="js\vendor\leaflet\images\layers.png" />
+    <Content Include="js\vendor\leaflet\images\marker-icon-2x.png" />
+    <Content Include="js\vendor\leaflet\images\marker-icon.png" />
+    <Content Include="js\vendor\leaflet\images\marker-shadow.png" />
+    <Content Include="js\vendor\leaflet\leaflet-src.js" />
+    <Content Include="js\vendor\leaflet\leaflet.css" />
+    <Content Include="js\vendor\leaflet\leaflet.js" />
+    <Content Include="js\vendor\line-chart.min.js" />
+    <Content Include="js\vendor\lodash.js" />
+    <Content Include="js\vendor\moment-with-locales.min.js" />
+    <Content Include="js\vendor\moment.min.js" />
+    <Content Include="js\vendor\ng-file-upload\ng-file-upload-shim.js" />
+    <Content Include="js\vendor\ng-file-upload\ng-file-upload-shim.min.js" />
+    <Content Include="js\vendor\ng-file-upload\ng-file-upload.js" />
+    <Content Include="js\vendor\ng-file-upload\ng-file-upload.min.js" />
+    <Content Include="js\vendor\ng-tags-input.js" />
+    <Content Include="js\vendor\ng-tags-input.min.js" />
+    <Content Include="js\vendor\nv.d3.js" />
+    <Content Include="js\vendor\nv.d3.min.js" />
+    <Content Include="js\vendor\soundmanager2\soundmanager2-jsmin.js" />
+    <Content Include="js\vendor\soundmanager2\soundmanager2-nodebug-jsmin.js" />
+    <Content Include="js\vendor\soundmanager2\soundmanager2-nodebug.js" />
+    <Content Include="js\vendor\soundmanager2\soundmanager2.js" />
+    <Content Include="js\vendor\soundmanager2\swf\soundmanager2.swf" />
+    <Content Include="js\vendor\soundmanager2\swf\soundmanager2_debug.swf" />
+    <Content Include="js\vendor\soundmanager2\swf\soundmanager2_flash9.swf" />
+    <Content Include="js\vendor\soundmanager2\swf\soundmanager2_flash9_debug.swf" />
+    <Content Include="js\vendor\textAngular\textAngular-rangy.min.js" />
+    <Content Include="js\vendor\textAngular\textAngular-sanitize.js" />
+    <Content Include="js\vendor\textAngular\textAngular-sanitize.min.js" />
+    <Content Include="js\vendor\textAngular\textAngular.css" />
+    <Content Include="js\vendor\textAngular\textAngular.js" />
+    <Content Include="js\vendor\textAngular\textAngular.min.js" />
+    <Content Include="js\vendor\textAngular\textAngular.umd.js" />
+    <Content Include="js\vendor\textAngular\textAngularSetup.js" />
+    <Content Include="js\vendor\ui-bootstrap-tpls-0.13.4.js" />
+    <Content Include="js\vendor\ui-bootstrap-tpls-0.13.4.min.js" />
+    <Content Include="js\vendor\video\video-js.css" />
+    <Content Include="js\vendor\vjs-video.min.js" />
+    <Content Include="js\vendor\wavesurfer\wavesurfer.js" />
+    <Content Include="js\vendor\wavesurfer\wavesurfer.min.js" />
+    <Content Include="js\vendor\wavesurfer\wavesurfer.regions.js" />
+    <Content Include="js\vendor\wavesurfer\wavesurfer.regions.min.js" />
+    <Content Include="js\vendor\ZeroClipboard.min.js" />
+    <Content Include="js\vendor\ZeroClipboard.swf" />
+    <Content Include="js\_Directives\ajaxInlineIndicator.js" />
+    <Content Include="js\_Directives\alertMessage.html" />
+    <Content Include="js\_Directives\alertMessage.js" />
+    <Content Include="js\_Directives\autogrow.js" />
+    <Content Include="js\_Directives\bootstrap-colorpicker-module.min.js" />
+    <Content Include="js\_Directives\clickAnywhereButHere.js" />
+    <Content Include="js\_Directives\customDate.js" />
+    <Content Include="js\_Directives\focusMe.js" />
+    <Content Include="js\_Directives\customDate.html" />
+    <Content Include="js\_Directives\playerWidget.html" />
+    <Content Include="js\_Directives\playerWidget.js" />
+    <Content Include="js\_Directives\sortIcon.js" />
+    <Content Include="js\_Directives\timepicker.html" />
+    <Content Include="login.html" />
+    <Content Include="Modules\Account\account.html" />
+    <Content Include="Modules\Account\accountCtrl.js" />
+    <Content Include="Modules\dpoc\dpocCapture.html" />
+    <Content Include="Modules\dpoc\dpocCapture.js" />
+    <Content Include="Modules\dpoc\dpocCaptureChannel.html" />
+    <Content Include="Modules\dpoc\dpocCaptureChannel.js" />
+    <Content Include="Modules\dpoc\dpocDuplicates.html" />
+    <Content Include="Modules\dpoc\dpocDuplicatesCtrl.js" />
+    <Content Include="Modules\dpoc\dpocHarvesting.html" />
+    <Content Include="Modules\dpoc\dpocHarvesting.js" />
+    <Content Include="Modules\dpoc\dpocHashing.html" />
+    <Content Include="Modules\dpoc\dpocHashingCtrl.js" />
+    <Content Include="Modules\EmailComposer\emailComposer.html" />
+    <Content Include="Modules\EmailComposer\emailComposer.js" />
+    <Content Include="Modules\Feeds\clientsContacts.html" />
+    <Content Include="Modules\Feeds\clientsContactsCtrl.js" />
+    <Content Include="Modules\Feeds\feedCheckNewMatches.html" />
+    <Content Include="Modules\Feeds\feedCheckNewMatches.js" />
+    <Content Include="Modules\Feeds\playback.html" />
+    <Content Include="Modules\Feeds\playback.js" />
+    <Content Include="Modules\Feeds\editFeedCtrl.js" />
+    <Content Include="Modules\Feeds\feedForm.html" />
+    <Content Include="Modules\Feeds\filterGroupsCtrl.js" />
+    <Content Include="Modules\Feeds\filterGroups.html" />
+    <Content Include="Modules\Feeds\feedList.html" />
+    <Content Include="Modules\Feeds\createFeedCtrl.js" />
+    <Content Include="Modules\Feeds\feedListCtrl.js" />
+    <Content Include="Modules\Feeds\clientFeeds.html" />
+    <Content Include="Modules\Feeds\addFeed.html" />
+    <Content Include="Modules\Feeds\addFeed.js" />
+    <Content Include="Modules\Feeds\clientFeeds.js" />
+    <Content Include="Modules\dpoc\dpoc.html" />
+    <Content Include="Modules\dpoc\dpocCtrl.js" />
+    <Content Include="Modules\dpoc\dpocNotPromoted.html" />
+    <Content Include="Modules\dpoc\dpocNotPromotedCtrl.js" />
+    <Content Include="Modules\Feeds\userFeed.html" />
+    <Content Include="Modules\Feeds\userFeedCtrl.js" />
+    <Content Include="Modules\Feeds\userFeedReports.html" />
+    <Content Include="Modules\Feeds\userFeedReports.js" />
+    <Content Include="Modules\Feeds\userFeedsCtrl.js" />
+    <Content Include="Modules\Feeds\userFeeds.html" />
+    <Content Include="Modules\MatchAnalyzer\MatchAnalyzer.html" />
+    <Content Include="Modules\MatchAnalyzer\matchAnalyzerCtrl.js" />
+    <Content Include="Modules\MatchAnalyzer\matchesRendererDirective.js" />
+    <Content Include="Modules\MediaHouse\CompetitorsComponent.html" />
+    <Content Include="Modules\MediaHouse\CompetitorsComponent.js" />
+    <Content Include="Modules\MediaHouse\KeyAccountsComponent.html" />
+    <Content Include="Modules\MediaHouse\KeyAccountsComponent.js" />
+    <Content Include="Modules\MediaHouse\MediaLandscapeComponent.html" />
+    <Content Include="Modules\MediaHouse\MediaLandscapeComponent.js" />
+    <Content Include="Modules\Monitor\coverage.html" />
+    <Content Include="Modules\Monitor\harvesting.html" />
+    <Content Include="Modules\Monitor\coverageCtrl.js" />
+    <Content Include="Modules\Monitor\promotionCtrl.js" />
+    <Content Include="Modules\Monitor\hashes.html" />
+    <Content Include="Modules\Monitor\promotion.html" />
+    <Content Include="Modules\Monitor\harvestingCtrl.js" />
+    <Content Include="Modules\Monitor\hashesCtrl.js" />
+    <Content Include="Modules\Monitor\duplicates.html" />
+    <Content Include="Modules\Monitor\capture.html" />
+    <Content Include="Modules\Monitor\duplicatesCtrl.js" />
+    <Content Include="Modules\Monitor\captureCtrl.js" />
+    <Content Include="Modules\Monitor\captureChannel.html" />
+    <Content Include="Modules\Monitor\captureChannelCtrl.js" />
+    <Content Include="Modules\Monitor\genericTable.html" />
+    <Content Include="Modules\Monitor\monitor.html" />
+    <Content Include="Modules\Monitor\monitorCtrl.js" />
+    <Content Include="Modules\PriceDesigner 2\priceDesigner2Service.js" />
+    <Content Include="Modules\PriceDesigner 2\priceDesigner2Channel.html" />
+    <Content Include="Modules\PriceDesigner 2\priceDesigner2ChannelCtrl.js" />
+    <Content Include="Modules\Security\auth.js" />
+    <Content Include="Modules\Settings\HTMLSettingModal.html" />
+    <Content Include="Modules\Settings\HTMLSettingService.js" />
+    <Content Include="Modules\Transcript\countries.html" />
+    <Content Include="Modules\Transcript\countries.js" />
+    <Content Include="Modules\WebPlayer\CalendarComponent.html" />
+    <Content Include="Modules\WebPlayer\CalendarComponent.js" />
+    <Content Include="Modules\WebPlayer\ChannelSelect.html" />
+    <Content Include="Modules\WebPlayer\ChannelSelect.js" />
+    <Content Include="Modules\WebPlayer\DailyClockComponent.html" />
+    <Content Include="Modules\WebPlayer\DailyClockComponent.js" />
+    <Content Include="Modules\WebPlayer\MediaControlsComponent.html" />
+    <Content Include="Modules\WebPlayer\MediaControlsComponent.js" />
+    <Content Include="Modules\WebPlayer\timeline.html" />
+    <Content Include="Modules\WebPlayer\TimeLine.js" />
+    <Content Include="Modules\WebPlayer\waveFormDirective.js" />
+    <Content Include="Modules\WebPlayer\webplayer2.html" />
+    <Content Include="Modules\WebPlayer\webPlayerCtrl.js" />
+    <Content Include="Modules\WebPlayer\webPlayerFactory.js" />
+    <Content Include="public\public_app.js" />
+    <Content Include="Modules\Feeds\userFeedResults.html" />
+    <Content Include="Modules\Feeds\feedResults.html" />
+    <Content Include="Modules\Feeds\userFeedResultsCtrl.js" />
+    <Content Include="Modules\Feeds\feedResultsCtrl.js" />
+    <Content Include="Modules\Markets\markets.html" />
+    <Content Include="Modules\Markets\marketsCtrl.js" />
+    <Content Include="Modules\MediaHouse\1debounce.js" />
+    <None Include="Modules\MediaHouse\competitorsCtrl.js_" />
+    <None Include="Modules\MediaHouse\keyAccountsCtrl.js_" />
+    <Content Include="Modules\MediaHouse\mediaHouse.html" />
+    <Content Include="Modules\MediaHouse\mediaHouse.js" />
+    <Content Include="Modules\MediaHouse\mediaHouseCtrl.js" />
+    <None Include="Modules\MediaHouse\mediaLandscapeCtrl.js_" />
+    <Content Include="Modules\Channels\channels.html" />
+    <Content Include="Modules\Channels\channelsCtrl.js" />
+    <Content Include="Modules\Navigation\navigation.html" />
+    <Content Include="Modules\Navigation\navigation.js" />
+    <Content Include="Modules\PriceDesigner1.1\priceDesigner11.html" />
+    <Content Include="Modules\PriceDesigner1.1\priceDesigner11Channel.html" />
+    <Content Include="Modules\PriceDesigner1.1\priceDesigner11ChannelCtrl.js" />
+    <Content Include="Modules\PriceDesigner1.1\priceDesigner11Ctrl.js" />
+    <Content Include="Modules\PriceDesigner1.1\priceDesigner11Service.js" />
+    <Content Include="Modules\PriceDesigner\priceDesigner.html" />
+    <Content Include="Modules\PriceDesigner\priceDesignerCtrl.js" />
+    <Content Include="Modules\Rights\rights.html" />
+    <Content Include="Modules\Rights\rightsCtrl.js" />
+    <Content Include="Modules\Security\loginForm.html" />
+    <Content Include="Modules\Security\loginForm.js" />
+    <Content Include="Modules\Security\security.js" />
+    <Content Include="Modules\Settings\adKSettings.html" />
+    <Content Include="Modules\Settings\adKSettings.js" />
+    <Content Include="Modules\Settings\feedSettings.html" />
+    <Content Include="Modules\Settings\feedSettings.js" />
+    <Content Include="Modules\Settings\auditSettings.html" />
+    <Content Include="Modules\Settings\auditSettings.js" />
+    <Content Include="Modules\Settings\dokazniceSettings.html" />
+    <Content Include="Modules\Settings\dokazniceSettings.js" />
+    <Content Include="Modules\Settings\settingsController.js" />
+    <Content Include="Modules\Settings\settingsCtrl.js" />
+    <Content Include="Modules\Feeds\editFeedFilterGroup.html" />
+    <Content Include="Modules\Feeds\editFeedFilterGroupCtrl.js" />
+    <Content Include="Modules\SpotLibrary\spotLibrary.html" />
+    <Content Include="Modules\SpotLibrary\spotLibraryCtrl.js" />
+    <Content Include="Modules\SpotLibrary\spotList.html" />
+    <Content Include="Modules\SpotLibrary\spotListCtrl.js" />
+    <Content Include="Modules\SpotUpload\spotUpload.html" />
+    <Content Include="Modules\SpotUpload\spotUploadCtrl.js" />
+    <Content Include="Modules\_Directives\grid.html" />
+    <Content Include="Modules\_Directives\grid.js" />
+    <Content Include="public.html" />
+    <Content Include="POC\keypress\index.html" />
+    <Content Include="POC\keypress\keypress-poc.js" />
+    <Content Include="POC\keypress\keypress.js" />
+    <Content Include="POC\keypress\mousetrap.js" />
+    <Content Include="POC\soundmanager-auto-play\app.js" />
+    <Content Include="POC\soundmanager-auto-play\index.html" />
+    <Content Include="POC\soundmanager-auto-play\mp3\1.mp3" />
+    <Content Include="POC\soundmanager-auto-play\mp3\10.mp3" />
+    <Content Include="POC\soundmanager-auto-play\mp3\2.mp3" />
+    <Content Include="POC\soundmanager-auto-play\mp3\3.mp3" />
+    <Content Include="POC\soundmanager-auto-play\mp3\4.mp3" />
+    <Content Include="POC\soundmanager-auto-play\mp3\5.mp3" />
+    <Content Include="POC\soundmanager-auto-play\mp3\6.mp3" />
+    <Content Include="POC\soundmanager-auto-play\mp3\7.mp3" />
+    <Content Include="POC\soundmanager-auto-play\mp3\8.mp3" />
+    <Content Include="POC\soundmanager-auto-play\mp3\9.mp3" />
+    <Content Include="Reports\AuditLog\auditLogAutocomplete.html" />
+    <Content Include="Reports\AuditLog\auditLogAutocomplete.js" />
+    <Content Include="Reports\AuditLog\auditReportTable.html" />
+    <Content Include="Reports\AuditLog\auditReportTable.js" />
+    <Content Include="Reports\AuditLog\auditDetails.html" />
+    <Content Include="Reports\AuditLog\auditDetails.js" />
+    <Content Include="Reports\AuditLog\quickAudit.html" />
+    <Content Include="Reports\AuditLog\quickAudit.js" />
+    <Content Include="Reports\CompetitorProximity\competitorProximity.html" />
+    <Content Include="Reports\CompetitorProximity\competitorProximity.js" />
+    <Content Include="Reports\AdvertisingActivityTrend\advertisingActivityTrend.html" />
+    <Content Include="Reports\AdvertisingActivityTrend\advertisingActivityTrend.js" />
+    <Content Include="Reports\BrandActivityByMediaHouse\brandActivityByMediaHouse.html" />
+    <Content Include="Reports\BrandActivityByMediaHouse\brandActivityByMediaHouse.js" />
+    <Content Include="Reports\BrandActivityByWeekday\brandActivityByWeekday.html" />
+    <Content Include="Reports\BrandActivityByWeekday\brandActivityByWeekday.js" />
+    <Content Include="Reports\ActivityByDaypart\activityByDaypart.html" />
+    <Content Include="Reports\ActivityByDaypart\activityByDaypart.js" />
+    <Content Include="Reports\AdBlocks\adBlocks.html" />
+    <Content Include="Reports\AdBlocks\adBlocks.js" />
+    <Content Include="Reports\AdvertisingSummary\advertisingSummary.html" />
+    <Content Include="Reports\AdvertisingSummary\advertisingSummary.js" />
+    <Content Include="Reports\AsRunLog\asRunLog.html" />
+    <Content Include="Reports\AsRunLog\asRunLog.js" />
+    <Content Include="Reports\AuditLog\auditLog.html" />
+    <Content Include="Reports\AuditLog\auditLog.js" />
+    <Content Include="Reports\Brandvertiser\brandvertiser.js" />
+    <Content Include="Reports\AdvertisingLogsByBrand\advertisingLogsByBrand.html" />
+    <Content Include="Reports\AdvertisingLogsByBrand\advertisingLogsByBrand.js" />
+    <Content Include="Reports\Clutter\clutter.html" />
+    <Content Include="Reports\Clutter\clutter.js" />
+    <Content Include="Reports\InvestmentTrend\investmentTrend.html" />
+    <Content Include="Reports\InvestmentTrend\investmentTrend.js" />
+    <Content Include="Reports\Market12MonthTrend\market12MonthTrend.html" />
+    <Content Include="Reports\Market12MonthTrend\market12MonthTrend.js" />
+    <Content Include="Reports\ShareByBrandOrAdvertiser\shareByBrandOrAdvertiser.html" />
+    <Content Include="Reports\ShareByBrandOrAdvertiser\shareByBrandOrAdvertiser.js" />
+    <Content Include="Reports\RankedAdvertisers\rankedAdvertisers.html" />
+    <Content Include="Reports\RankedAdvertisers\rankedAdvertisers.js" />
+    <Content Include="Reports\KeyAccountActivity\keyAccountActivity.html" />
+    <Content Include="Reports\KeyAccountActivity\keyAccountActivity.js" />
+    <Content Include="Reports\MarketOverview\marketOverview.html" />
+    <Content Include="Reports\MarketOverview\marketOverview.js" />
+    <Content Include="Reports\reports.js" />
+    <Content Include="Reports\Brandvertiser\brandvertiser.html" />
+    <Content Include="Reports\pager.html" />
+    <Content Include="Reports\SalesLeads\salesLeads.html" />
+    <Content Include="Reports\SalesLeads\salesLeads.js" />
+    <Content Include="Reports\ShareOfAdvertisingActivity\shareOfAdvertisingActivity.html" />
+    <Content Include="Reports\ShareOfAdvertisingActivity\shareOfAdvertisingActivity.js" />
+    <Content Include="Reports\ShareOfBusiness\ShareOfBusiness.html" />
+    <Content Include="Reports\ShareOfBusiness\ShareOfBusiness.js" />
+    <Content Include="Reports\TopChart\topChart.html" />
+    <Content Include="Reports\TopChart\topChart.js" />
+    <Content Include="Reports\_Directives\chartTooltip.js" />
+    <Content Include="Reports\_Directives\chartTooltipTemplate.html" />
+    <Content Include="Reports\_Directives\reportBrandFilter.html" />
+    <Content Include="Reports\_Directives\reportBrandFilter.js" />
+    <Content Include="Reports\_Directives\reportAdBreakDurationFilter.js" />
+    <Content Include="Reports\_Directives\reportAdvertiserFilter.html" />
+    <Content Include="Reports\_Directives\reportAdvertiserFilter.js" />
+    <Content Include="Reports\_Directives\reportBrandOrAdvertiserFilter.js" />
+    <Content Include="Reports\_Directives\reportBrandOrChannelFilter.js" />
+    <Content Include="Reports\_Directives\reportCategoryFilter.js" />
+    <Content Include="Reports\_Directives\reportChannelFilter.js" />
+    <Content Include="Reports\_Directives\reportChannelIncludingFilter.html" />
+    <Content Include="Reports\_Directives\reportChannelIncludingFilter.js" />
+    <Content Include="Reports\_Directives\reportChannelOrDateFilter.js" />
+    <Content Include="Reports\_Directives\reportCustomDateFilter.html" />
+    <Content Include="Reports\_Directives\reportCustomDateFilter.js" />
+    <Content Include="Reports\_Directives\reportCustomPeriodFilter.html" />
+    <Content Include="Reports\_Directives\reportCustomPeriodFilter.js" />
+    <Content Include="Reports\_Directives\reportDateRangeFilter.html" />
+    <Content Include="Reports\_Directives\reportDateRangeFilter.js" />
+    <Content Include="Reports\_Directives\reportDayOfWeekFilter.js" />
+    <Content Include="Reports\_Directives\reportDayPartFilter.js" />
+    <Content Include="Reports\_Directives\reportDisplayTypeFilter.js" />
+    <Content Include="Reports\_Directives\reportDropDownTemplate.html" />
+    <Content Include="Reports\_Directives\reportFilterBase.js" />
+    <Content Include="Reports\_Directives\reportIndustryFilter.js" />
+    <Content Include="Reports\_Directives\reportLimitFilter.js" />
+    <Content Include="Reports\_Directives\reportMarketFilter.js" />
+    <Content Include="Reports\_Directives\reportMediaFilter.js" />
+    <Content Include="Reports\_Directives\reportMessage.js" />
+    <Content Include="Reports\_Directives\reportMessagesTemplate.html" />
+    <Content Include="Reports\_Directives\reportNotes.html" />
+    <Content Include="Reports\_Directives\reportNotes.js" />
+    <Content Include="Reports\_Directives\reportPeriodByFilter.js" />
+    <Content Include="Reports\_Directives\reportShowFilter.js" />
+    <Content Include="Reports\_Directives\reportSpentFilter.html" />
+    <Content Include="Reports\_Directives\reportSpentFilter.js" />
+    <Content Include="Reports\_Directives\reportTagsInputFilterTemplate.html" />
+    <Content Include="Reports\_Directives\reportTimeSpanFilter.html" />
+    <Content Include="Reports\_Directives\reportTimeSpanFilter.js" />
+    <Content Include="Reports\_Directives\reportToggleButtonsTemplate.html" />
+    <Content Include="Reports\_Directives\reportToggleValueFilter.js" />
+    <Content Include="Reports\_Directives\truncateToLimitFilter.js" />
+    <Content Include=".eslintrc" />
+    <Content Include="js\vendor\angular\angular-sanitize.min.js.map" />
+    <Content Include="js\vendor\angular\angular.min.js.map" />
+    <Content Include="js\vendor\soundmanager2\swf\soundmanager2_flash_xdomain.zip" />
+    <Content Include=".editorconfig" />
+    <Content Include="package.json" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Modules\WebPlayer\FakeThumbs.ashx" />
+    <None Include="Properties\PublishProfiles\CustomProfile.pubxml" />
+    <None Include="Properties\PublishProfiles\FileSystem.pubxml" />
+    <Content Include="Service References\SpotUploadService\AdK.Tagger.SpotUploadService.ArrayOfString.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <Content Include="Service References\SpotUploadService\AdK.Tagger.SpotUploadService.Match.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Content>
+    <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
+    <None Include="Service References\SpotUploadService\ServiceProvider.disco" />
+    <None Include="Service References\SpotUploadService\configuration91.svcinfo" />
+    <None Include="Service References\SpotUploadService\configuration.svcinfo" />
+    <None Include="Service References\SpotUploadService\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
+    <Content Include="StyleGuide\css\github-markdown.css" />
+    <Content Include="StyleGuide\css\sg-style-old-ie.css" />
+    <Content Include="StyleGuide\css\sg-style.css" />
+    <Content Include="StyleGuide\css\style.css" />
+    <Content Include="StyleGuide\images\navicon.png" />
+    <Content Include="StyleGuide\index.html" />
+    <Content Include="StyleGuide\js\app.js" />
+    <Content Include="StyleGuide\js\reportsControllers.js" />
+    <Content Include="StyleGuide\js\sg-scripts.js" />
+    <Content Include="StyleGuide\markup\gettingstarted.html" />
+    <Content Include="StyleGuide\markup\reports\barChart.html" />
+    <Content Include="StyleGuide\markup\reports\donutChart.html" />
+    <Content Include="StyleGuide\markup\reports\filters.html" />
+    <Content Include="StyleGuide\markup\reports\fonts.html" />
+    <Content Include="StyleGuide\markup\reports\dates.html" />
+    <Content Include="StyleGuide\markup\reports\formating.html" />
+    <Content Include="StyleGuide\markup\reports\horizontalBarChart.html" />
+    <Content Include="StyleGuide\markup\reports\messages.html" />
+    <Content Include="StyleGuide\markup\reports\pieChart.html" />
+    <Content Include="StyleGuide\markup\reports\tables.html" />
+    <Content Include="StyleGuide\vendor\prism\prism.css" />
+    <Content Include="StyleGuide\vendor\prism\prism.js" />
+    <Content Include="js\tagger.js" />
+    <Content Include="Service.asmx" />
+    <Content Include="view\charts.html" />
+    <Content Include="view\dashboard.html" />
+    <Content Include="view\emailComposer.html" />
+    <Content Include="view\mailing.html" />
+    <Content Include="view\matcher.html" />
+    <Content Include="view\media-house.html" />
+    <Content Include="view\playout-map.html" />
+    <Content Include="view\playout.html" />
+    <Content Include="Reports\report-viewer.html" />
+    <Content Include="view\reporting.html" />
+    <Content Include="view\rights.html" />
+    <Content Include="Modules\Settings\settings.html" />
+    <Content Include="view\tag-manager.html" />
+    <Content Include="view\tagger-lab.html" />
+    <Content Include="view\tagger.html" />
+    <Content Include="view\transcript-ad.html" />
+    <Content Include="view\transcript-manager.html" />
+    <Content Include="view\transcript-stats.html" />
+    <Content Include="view\transcript-training.html" />
+    <Content Include="view\transcript.html" />
+    <Content Include="view\word-cut.html" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <None Include="Service References\SpotUploadService\ServiceProvider.wsdl" />
+    <Content Include="StyleGuide\vendor\prism\LICENSE" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Advertiser.cs" />
+    <Compile Include="Model\Account.cs" />
+    <Compile Include="Model\AdTagging.cs" />
+    <Compile Include="Model\Application.cs" />
+    <Compile Include="Model\AppSettings\FeedSettings.cs" />
+    <Compile Include="Model\AppSettings\AdKSettings.cs" />
+    <Compile Include="Model\AppSettings\DokazniceSettings.cs" />
+    <Compile Include="Model\AppSettings\IApplicationSettings.cs" />
+    <Compile Include="Model\Audit\Audit.cs" />
+    <Compile Include="Model\Audit\AuditChannel.cs" />
+    <Compile Include="Model\Audit\AuditChannelThreshold.cs" />
+    <Compile Include="Model\AppSettings\AuditSettings.cs" />
+    <Compile Include="Model\Audit\AuditSong.cs" />
+    <Compile Include="Model\Audit\AuditDetails.cs" />
+    <Compile Include="Model\Audit\SongScanBatchMailerService.cs" />
+    <Compile Include="Model\Brand.cs" />
+    <Compile Include="Model\Brandvertiser.cs" />
+    <Compile Include="Model\Category.cs" />
+    <Compile Include="Model\ChannelWithPriceDefinitionsV2.cs" />
+    <Compile Include="Model\ChannelWithPriceDefs11.cs" />
+    <Compile Include="Model\Client.cs" />
+    <Compile Include="Model\Clip.cs" />
+    <Compile Include="Model\ClipValuesFields.cs" />
+    <Compile Include="Model\Contact.cs" />
+    <Compile Include="Model\Domain.cs" />
+    <Compile Include="Model\Feeds.cs" />
+    <Compile Include="Model\Channel.cs" />
+    <Compile Include="Model\ChannelsWithCoverage.cs" />
+    <Compile Include="Model\ChannelWithProducts.cs" />
+    <Compile Include="Model\City.cs" />
+    <Compile Include="Model\Claim.cs" />
+    <Compile Include="Model\ClipForInbox.cs" />
+    <Compile Include="Model\Company.cs" />
+    <Compile Include="Model\Competitor.cs" />
+    <Compile Include="Model\MailTemplates\FeedMail.cs" />
+    <Compile Include="Model\MailTemplates\EmailVerificationMail.cs" />
+    <Compile Include="Model\Market.cs" />
+    <Compile Include="Model\MarketChannels.cs" />
+    <Compile Include="Model\Match.cs" />
+    <Compile Include="Model\MediaHouseReport\ChannelAdBlockGenerator.cs" />
+    <Compile Include="Model\MediaHouseReport\BrandActivityByMediaHouse.cs" />
+    <Compile Include="Model\MediaHouseReport\BrandActivityByWeekday.cs" />
+    <Compile Include="Model\MediaHouseReport\AdBlocks.cs" />
+    <Compile Include="Model\MediaHouseReport\AdvertisingSummary.cs" />
+    <Compile Include="Model\MediaHouseReport\ActivityByDaypart.cs" />
+    <Compile Include="Model\MediaHouseReport\AdvertisingLogsByBrand.cs" />
+    <Compile Include="Model\MediaHouseReport\CompetitorProximity.cs" />
+    <Compile Include="Model\MediaHouseReport\Clutter.cs" />
+    <Compile Include="Model\MediaHouseReport\MarketTrend.cs" />
+    <Compile Include="Model\MediaHouseReport\ShareByBrandOrAdvertiser.cs" />
+    <Compile Include="Model\DayPartSet.cs" />
+    <Compile Include="Model\Extensions.cs" />
+    <Compile Include="Model\Group.cs" />
+    <Compile Include="Model\Holding.cs" />
+    <Compile Include="Model\KeyAccount.cs" />
+    <Compile Include="Model\LabelSet.cs" />
+    <Compile Include="Model\Localization.cs" />
+    <Compile Include="Model\Mailer.cs" />
+    <Compile Include="Model\MediaHouseReport\AsRunLog.cs" />
+    <Compile Include="Model\Audit\AuditLog.cs" />
+    <Compile Include="Model\MediaHouseReport\Brandvertiser.cs" />
+    <Compile Include="Model\MediaHouseReport\AdvertiserActivityTrend.cs" />
+    <Compile Include="Model\MediaHouseReport\RankedAdvertisers.cs" />
+    <Compile Include="Model\MediaHouseReport\Enumerations.cs" />
+    <Compile Include="Model\MediaHouseReport\KeyAccountActivity.cs" />
+    <Compile Include="Model\MediaHouseReport\MarketOverview.cs" />
+    <Compile Include="Model\MediaHouseReport\Period.cs" />
+    <Compile Include="Model\MediaHouseReport\ReportBase.cs" />
+    <Compile Include="Model\MediaHouseReport\SalesLeads.cs" />
+    <Compile Include="Model\MediaHouseReport\ShareOfAdvertisingActivity.cs" />
+    <Compile Include="Model\MediaHouseReport\ShareOfBusiness.cs" />
+    <Compile Include="Model\MediaHouseReport\TopChart.cs" />
+    <Compile Include="Model\MediaHouseReport\InvestmentTrend.cs" />
+    <Compile Include="Model\Note.cs" />
+    <Compile Include="Model\Notificator.cs" />
+    <Compile Include="Model\OneAd.cs" />
+    <Compile Include="Model\OverpassQuery.cs" />
+    <Compile Include="Model\Playout.cs" />
+    <Compile Include="Model\PriceDefinition2.cs" />
+    <Compile Include="Model\PriceDefinition11.cs" />
+    <Compile Include="Model\PriceDefinition.cs" />
+    <Compile Include="Model\Product.cs" />
+    <Compile Include="Model\ProductDayPart.cs" />
+    <Compile Include="Model\Reporting\ComputationResult.cs" />
+    <Compile Include="Model\Reporting\PredefinedReports.cs" />
+    <Compile Include="Model\Reporting\Reporter.cs" />
+    <Compile Include="Model\Sample.cs" />
+    <Compile Include="Model\SampleMatch.cs" />
+    <Compile Include="Model\Song.cs" />
+    <Compile Include="Model\WebPlayerData.cs" />
+    <Compile Include="Modules\dpoc\Dpoc.cs" />
+    <Compile Include="Modules\Monitor\Monitor.cs" />
+    <Compile Include="Modules\WebPlayer\FakeThumbs.ashx.cs">
+      <DependentUpon>FakeThumbs.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="Services\SongHelper.cs" />
+    <Compile Include="Services\SpotUpload.cs" />
+    <Compile Include="Model\TaggerAttribute.cs" />
+    <Compile Include="Model\TaggerCompany.cs" />
+    <Compile Include="Model\TaggerBrand.cs" />
+    <Compile Include="Model\TaggerTag.cs" />
+    <Compile Include="Model\TaggerCategory.cs" />
+    <Compile Include="Model\TaggerIndustry.cs" />
+    <Compile Include="Model\TaggerMergeLog.cs" />
+    <Compile Include="Model\TaggerSong.cs" />
+    <Compile Include="Model\TaggerUser.cs" />
+    <Compile Include="Model\TaggerVote.cs" />
+    <Compile Include="Model\Transcript.cs" />
+    <Compile Include="Model\TranscriptConcurrency.cs" />
+    <Compile Include="Model\WebUtility.cs" />
+    <Compile Include="Model\WordCut.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Service References\SpotUploadService\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
+    <Compile Include="Service.asmx.cs">
+      <DependentUpon>Service.asmx</DependentUpon>
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Services\App.cs" />
+    <Compile Include="Services\PkConnector.cs" />
+    <Compile Include="SpotUpload.ashx.cs">
+      <DependentUpon>SpotUpload.ashx</DependentUpon>
+    </Compile>
+    <Compile Include="TaggerLabExport.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+    <Service Include="{82A7F48D-3B50-4B1E-B82E-3ADA8210C358}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
+    <Content Include="fonts\glyphicons-halflings-regular.woff" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="css\fs-grid.less" />
+    <Content Include="packages.config" />
+    <Content Include="NLog.config">
+      <SubType>Designer</SubType>
+    </Content>
+    <Content Include="SpotUpload.ashx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dokaznice\Dashboard\" />
+    <Folder Include="spots_upload\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\SpotUploadService\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DatabaseCommon\DatabaseCommon.csproj">
+      <Project>{664b9046-18f5-4ed2-a773-50e022e475fd}</Project>
+      <Name>DatabaseCommon</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DatabaseCommon\DatabaseCommon.csproj">
+      <Project>{664b9046-18f5-4ed2-a773-50e022e475fd}</Project>
+      <Name>DatabaseCommon</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <PropertyGroup>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(VSToolsPath)\WebApplications\Microsoft.WebApplication.targets" Condition="'$(VSToolsPath)' != ''" />
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" Condition="false" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>True</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>52494</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:52494/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+    <MonoDevelop>
+      <Properties>
+        <XspParameters Port="8080" Address="127.0.0.1" SslMode="None" SslProtocol="Default" KeyType="None" CertFile="" KeyFile="" PasswordOptions="None" Password="" Verbose="True" />
+      </Properties>
+    </MonoDevelop>
+  </ProjectExtensions>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+  </Target>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it.
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

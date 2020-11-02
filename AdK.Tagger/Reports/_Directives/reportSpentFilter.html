@@ -1,0 +1,17 @@
+<div class="filter-box">
+  <label>Spent</label>
+  <div class="btn-group" role="group">
+    <button type="button" class="btn btn-default" style="width:80px;" ng-click="toggleLesThen()">
+      <span ng-show="lessthan">Less than</span>
+      <span ng-hide="lessthan">More than</span>
+    </button>
+    <div class="btn-group" dropdown style="width: 160px;">
+      <button class="btn btn-primary dropdown-toggle" style="width:100%;" dropdown-toggle>
+        {{selectedValue.Name | toLocalString}} <span class="caret"></span>
+      </button>
+      <ul class="dropdown-menu" role="menu" style="width:100%;">
+        <li role="menuitem" ng-repeat="spent in dropDownValues"><a ng-click="changeValue(spent)">{{spent.Name | toLocalString}}</a></li>
+      </ul>
+    </div>
+  </div>
+</div>

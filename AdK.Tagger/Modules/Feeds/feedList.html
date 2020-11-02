@@ -1,0 +1,156 @@
+<div class="rows-spaced">
+    <div class="col-sm-12">
+        <h3> Ad Alert List </h3>
+        <hr />
+    </div>
+    <div class="col-sm-12 form-group">
+        <a class="btn btn-primary" ng-href="#/client-feeds/new">Create New Alert</a>
+    </div>
+    <div class="col-sm-12" ng-if="!feedList.length">
+        <div class="alert alert-info big-icon">
+            <i class="fa fa-info-circle" aria-hidden="true"></i> No alerts
+        </div>
+    </div>
+    <div class="col-sm-12" ng-if="feedList.length">
+		<table class="table table-condensed table-bordered table-hover fs-grid report-table">
+			<thead ng-if="master">
+				<tr>
+					<th colspan="8">Master ad alert</th>
+				</tr>
+			</thead>
+			<tbody ng-if="master">
+				<tr>
+					<td>
+						{{ master.Client }}
+					</td>
+					<td>
+						{{ master.Market + ' ' + master.Domain }}
+					</td>
+					<td class="date">
+						{{ master.EmailSent | userDate }} <br />
+						{{ master.EmailSent | date:'HH:mm:ss' }}
+					</td>
+					<td class="date">
+						{{ master.LastTimestamp | userDate }} <br />
+						{{ master.LastTimestamp | date:'HH:mm:ss' }}
+					</td>
+					<td class="text-center">
+						<!--<a class="btn btn-default" ng-if="item.Id > 0" ng-href="{{'#/client-feeds/edit/' + master.Id}}">Edit</a>-->
+					</td>
+					<td class="text-center">
+						<!--<a class="btn btn-default" ng-if="item.Id > 0" ng-click="deleteFeed(item)">Delete</a>-->
+					</td>
+					<td class="text-center">
+						<a class="btn btn-default" ng-click="showFeed(master)">Run</a>
+					</td>
+					<td style="vertical-align:middle" class="text-center">
+						<img src="/img/newresults.gif" title="new matches" ng-show="master.NewMatchCount>0" />
+						<!--<span class="glyphicon-ok glyphicon" style="color:green" ng-show="item.NewMatchCount<=0"></span>-->
+					</td>
+				</tr>
+			</tbody>
+			<thead ng-if="master">
+				<tr>
+					<th colspan="8">Alerts</th>
+				</tr>
+			</thead>
+			<thead>
+				<tr>
+					<th ng-click="sortBy(sort.Client)">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Name
+								<sort-icon ascending="sort.Direction == 'ASC'" show="sort.Current === sort.Client" />
+							</div>
+						</div>
+					</th>
+					<th ng-click="sortBy(sort.RegMarket)">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Country / Market
+								<sort-icon ascending="sort.Direction == 'ASC'" show="sort.Current === sort.RegMarket" />
+							</div>
+						</div>
+					</th>
+					<th ng-click="sortBy(sort.Email)">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								E-mail Sent
+								<sort-icon ascending="sort.Direction == 'ASC'" show="sort.Current === sort.Email" />
+							</div>
+						</div>
+					</th>
+					<th ng-click="sortBy(sort.LastTimestamp)">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Last Timestamp
+								<sort-icon ascending="sort.Direction == 'ASC'" show="sort.Current === sort.LastTimestamp" />
+							</div>
+						</div>
+					</th>
+					<th class="button-column">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Edit
+							</div>
+						</div>
+					</th>
+					<th class="button-column">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Delete
+							</div>
+						</div>
+					</th>
+					<th class="button-column">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Run
+							</div>
+						</div>
+					</th>
+					<th style="width:30px">
+						New
+					</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in feedList | orderBy:rowComparator | skip:pager.skip | take:pager.size" ng-class="feedRowClass(item)">
+                    <td>
+						<span ng-class="feedRowTextClass(item)">{{ item.Client }}</span> <span ng-if="item.expired" style="font-weight: bold">(Expired)</span>
+                    </td>
+                    <td>
+						<span ng-class="feedRowTextClass(item)">{{ item.Market + ' ' + item.Domain }}</span>
+                    </td>
+                    <td class="date">
+                        {{ item.EmailSent | userDate }} <br />
+                        {{ item.EmailSent | date:'HH:mm:ss' }}
+                    </td>
+                    <td class="date">
+                        {{ item.LastTimestamp | userDate }} <br/>                        
+                        {{ item.LastTimestamp | date:'HH:mm:ss' }}
+                    </td>
+                    <td class="text-center">
+                        <a class="btn btn-default" ng-href="{{'#/client-feeds/edit/' + item.Id}}">Edit</a>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn btn-default" ng-click="deleteFeed(item)">Delete</a>
+                    </td>
+                    <td class="text-center">
+                        <a class="btn btn-default" ng-click="showFeed(item)" ng-disabled="item.expired">Run</a>
+                    </td>
+					<td style="vertical-align:middle" class="text-center">
+						<img src="/img/newresults.gif" title="new matches"  ng-show="item.NewMatchCount>0" />
+						<!--<img src="/img/loadspinner.gif" title="working"  ng-show="item.NewMatchCount==null" />
+						<img src="/img/white-question-mark.png" style="width:32px" title="cannot be determined"  ng-show="item.NewMatchCount<0" />-->
+						<!--<span class="glyphicon-ok glyphicon" style="color:green" ng-show="item.NewMatchCount<=0"></span>-->
+					</td>
+					
+				</tr>
+			</tbody>
+		</table>
+        <div class="pager">
+            <table-pager manager="pager"></table-pager>
+        </div>
+    </div>
+</div>

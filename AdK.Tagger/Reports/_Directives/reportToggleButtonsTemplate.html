@@ -1,0 +1,9 @@
+<div class="filter-box">
+    <label>{{filterName}}</label>
+    <div class="btn-group">
+        <label ng-repeat="value in toggleValues" class="btn btn-primary" ng-model="selectedValue"
+            btn-radio="value" ng-click="changeValue(value)">
+            {{ value.Name }}
+        </label>
+    </div>
+</div>

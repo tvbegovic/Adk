@@ -1,0 +1,28 @@
+{
+  "extends": [
+    "eslint:recommended"
+  ],
+  "env": {
+    "browser": true,
+    "jasmine": true
+  },
+  "ecmaFeatures": {
+    "blockBindings": true,
+    "templateStrings": true
+  },
+  "globals": {
+    "angular": true,
+    "_": true,
+    "d3": true,
+    "moment": true,
+    "soundManager": true
+  },
+  "rules": {
+    "no-console": 1,
+    "quotes": [1, "single"],
+    "eol-last": 1,
+    "space-before-blocks": [1, "always"],
+    "semi": [1, "always"],
+    "curly": 1
+  }
+}

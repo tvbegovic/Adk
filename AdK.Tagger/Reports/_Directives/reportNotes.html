@@ -1,0 +1,27 @@
+<span class="report-notes-buttons hide-on-print">
+  <i class="btn btn-default" ng-class="{'have-note': noteType.notes.haveNotes}" ng-click="openNoteModal(noteType.notes.key)" title="Click to access report notes"> N </i>
+  <i class="btn btn-default" ng-class="{'have-note': noteType.questions.haveNotes}" ng-click="openNoteModal(noteType.questions.key)" title="Click to access report questions"> ? </i>
+</span>
+
+
+<script type="text/ng-template" id="notesModal.html">
+  <div class="markets-page toggle-markets-visibility-modal">
+      <div class="modal-header warning">
+        <h4 style="margin:0;">
+          Notes <span class="small"> ({{note.DateModifiedString}})</span>
+        </h4>
+      </div>
+      <div class="modal-body" >
+        <div class="form-group">
+          <text-angular class="report-text-editor" ng-model="note.Content" name="report-node-editor"></text-angular>
+        </div>
+
+        <report-message template="Error" ng-if="showErrorMsg"></report-message>
+      </div>
+      <div class="modal-footer">
+					<ajax-inline-indicator show-spinner="loading" show-success="successUpdate"></ajax-inline-indicator>
+          <button class="btn btn-primary" ng-click="updateNote()">Update</button>
+          <button class="btn btn-danger" ng-click="close()">Close</button>
+      </div>
+  </div>
+</script>

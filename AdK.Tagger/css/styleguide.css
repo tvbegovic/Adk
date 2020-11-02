@@ -1,0 +1,168 @@
+/* General
+---------------------------------------------------------------------------- */
+
+.alert.big-icon {
+  position: relative;
+  padding-left: 50px;
+}
+
+.alert.big-icon .fa {
+  font-size: 24px;
+  position: absolute;
+  left: 15px;
+}
+
+.alert-warning a {
+  color: cadetblue;
+}
+
+
+/* Fonts
+---------------------------------------------------------------------------- */
+
+.chart-label, .report-section {
+  font-weight: bold;
+  color: #555;
+}
+
+.chart-label {
+  display: block;
+  font-size: 15px;
+  text-align: center;
+  margin: 0;
+}
+
+.report-section {
+  border-bottom: 1px solid lightgray;
+  line-height: 35px;
+  margin-bottom: 30px;
+  text-shadow: 0 1px lightgray;
+}
+
+
+/* Charts
+---------------------------------------------------------------------------- */
+
+.small-chart-wrapper {
+  width: 425px;
+  height: 325px;
+  padding-left: 25px;
+  padding-bottom: 25px;
+  position: relative;
+  overflow: hidden;
+}
+
+.small-chart-wrapper svg {
+  margin: 0 auto;
+  overflow: visible;
+}
+
+.floated-charts-wrapper {
+  max-width: 1350px;
+}
+
+.floated-charts-wrapper .small-chart-wrapper {
+  float: left;
+  margin-bottom: 20px;
+}
+
+.pie-chart-placeholder, .donut-chart-placeholder, .bar-chart-placeholder {
+  display: block;
+  background-color: #eee;
+  text-align: center;
+  font-size: 14px;
+  font-weight: bold;
+  color: #333;
+  position: relative;
+}
+
+.pie-chart-placeholder, .donut-chart-placeholder {
+  width: 232px;
+  height: 232px;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+}
+
+.bar-chart-placeholder {
+  border-left: 1px solid black;
+  height: 140px;
+  width: 330px;
+  line-height: 153px;
+}
+
+
+.pie-chart-placeholder {
+  line-height: 232px;
+}
+
+.donut-chart-placeholder span {
+  position: absolute;
+  bottom: 27px;
+  left: 50%;
+  margin-left: -23px;
+}
+
+.donut-chart-placeholder .inner-circle {
+  width: 100px;
+  height: 100px;
+  background-color: white;
+  border: 1px solid #ddd;
+  border-radius: 50%;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin-top: -50px;
+  margin-left: -50px;
+}
+
+.small-chart-wrapper .pie-chart-placeholder,
+.small-chart-wrapper .donut-chart-placeholder {
+  margin: 37px auto 0 auto;
+}
+
+.small-chart-wrapper .bar-chart-placeholder {
+  margin: 60px 0 0 60px;
+}
+
+
+/* Tables
+---------------------------------------------------------------------------- */
+
+.report-table th {
+  text-align: center;
+}
+
+.report-table th.text-right {
+  text-align: right;
+}
+.report-table th.text-left {
+  text-align: left;
+}
+
+.report-table .text {
+  text-align: left;
+}
+
+.report-table .number, .report-table .date {
+  text-align: right;
+}
+
+.report-table.xs-table {
+  max-width: 500px;
+}
+
+.report-table.small-table {
+  max-width: 700px;
+}
+
+.report-table.medium-table {
+  max-width: 900px;
+}
+
+.report-table.large-table {
+  max-width: 1100px;
+}
+
+.report-table.xxl-table {
+  max-width: 1300px;
+}

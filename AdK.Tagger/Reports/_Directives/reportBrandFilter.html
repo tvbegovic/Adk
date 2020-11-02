@@ -1,0 +1,17 @@
+<div class="filter-box">
+  <label>Brand</label>
+  <div class="filter-inline autocomplete-wrapper">
+    <input type="text"
+      ng-model="selectedBrand"
+      ng-blur="validateSelection($event)"
+      placeholder="Select brand"
+      typeahead="brand as brand.Name for brand in getBrandSuggestions($viewValue) | filter:$viewValue"
+      typeahead-loading="loadingBrands"
+      typeahead-min-length="2"
+      typeahead-wait-ms="300"
+      typeahead-on-select="onSelected($model);"
+      class="inline autocomplete-input form-control" />
+    <i class="fa fa-times" aria-hidden="true" ng-show="selectedBrand" ng-click="clearBrand()"></i>
+  </div>
+</div>
+<i class="glyphicon glyphicon-refresh visible-lg-inline-block" ng-show="loadingBrands"></i>

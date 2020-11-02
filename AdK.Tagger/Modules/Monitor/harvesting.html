@@ -1,0 +1,31 @@
+﻿<div>
+    <h3>Harvesting <small>last 7 dates harvested</small></h3>
+
+    <p><a href="/#/monitor" class="btn btn-primary btn-sm">Go Back to Monitor</a></p>
+
+    <table class="table table-bordered table-condensed" style="width:auto">
+        <thead>
+            <tr>
+                <th>Channel</th>
+                <th ng-repeat="date in harvested.dates">{{date}}</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="c in harvested.channelStats">
+                <td>{{c.channel}}</td>
+                <td ng-repeat="d in c.dateStats" ng-class="{
+                    'active' : maxDelay(d.harvesters)<0, 
+                    'success' : maxDelay(d.harvesters)==1 || maxDelay(d.harvesters)==0, 
+                    'warning' : maxDelay(d.harvesters)==2, 
+                    'dpoc-error' : maxDelay(d.harvesters)>2
+                    }">
+                    <div ng-repeat="data in d.harvesters">
+                        <div class="pull-left">{{data.clips}} {{data.harvester}}</div>
+                        <div class="pull-right">{{data.delay}}d</div>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+</div>

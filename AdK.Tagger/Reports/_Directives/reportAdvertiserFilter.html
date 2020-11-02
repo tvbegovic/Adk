@@ -1,0 +1,17 @@
+<div class="filter-box">
+  <label>Advertiser</label>
+  <div class="filter-inline autocomplete-wrapper">
+    <input type="text"
+      ng-model="selectedAdvertiser"
+      ng-blur="validateSelection($event)"
+      placeholder="Select advertiser"
+      typeahead="advertiser as advertiser.Name for advertiser in getAdvertiserSuggestions($viewValue) | filter:$viewValue"
+      typeahead-loading="loadingAdvertisers"
+      typeahead-min-length="2"
+      typeahead-wait-ms="300"
+      typeahead-on-select="onSelected($model);"
+      class="inline autocomplete-input form-control" />
+    <i class="fa fa-times" aria-hidden="true" ng-show="selectedAdvertiser" ng-click="clearAdvertiser()"></i>
+  </div>
+</div>
+<i class="glyphicon glyphicon-refresh visible-lg-inline-block" ng-show="loadingAdvertisers"></i>

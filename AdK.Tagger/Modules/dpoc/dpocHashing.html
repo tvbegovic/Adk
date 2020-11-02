@@ -1,0 +1,79 @@
+﻿<div class="rows-spaced">
+    <div class="row">
+        <tabset class="col-sm-12">
+            <tab heading="Hrvatska">
+                <h3>Hashing <small>Last hour (20 min delay) </small></h3>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <p>Excluded: Radio S (RS Stream)</p>
+
+                <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Channel</td>
+                            <td>Domain</td>
+                            <td>External ID</td>
+                            <td>Recordings</td>
+                            <td>Duration</td>
+                            <td>Missing</td>
+                            <td>Last Recording</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="channel in hashingDetailsHr">
+                            <td>{{channel.channel}}</td>
+                            <td>{{channel.domain}}</td>
+                            <td>{{channel.externalId}}</td>
+                            <td class="text-right">{{channel.recordings}}</td>
+                            <td class="text-right">{{channel.duration}}</td>
+                            <td class="text-right">{{channel.missing}}</td>
+                            <td class="text-right">{{channel.lastRecording}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+            </tab>
+
+            <tab heading="Trinidad">
+                <h3>Hashing <small>Last hour (20 min delay) </small></h3>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <p>Excluded: Parliament Channel (TT Cable), 097.3 FM Radio Saint Lucia (LC Stream), ACTS (TT Cable), 105.5 FM CSS (GD Stream), 100.1 FM Sun FM (AG Stream), USA (TT Cable), 096.7 FM Nice Radio (VC Stream)</p>
+
+                <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Channel</td>
+                            <td>Domain</td>
+                            <td>External ID</td>
+                            <td>Media Sub-type</td>
+                            <td>Recordings</td>
+                            <td>Duration</td>
+                            <td>Missing</td>
+                            <td>Last Recording</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="channel in hashingDetailsMis">
+                            <td>{{channel.channel}}</td>
+                            <td>{{channel.domain}}</td>
+                            <td>{{channel.externalId}}</td>
+                            <td>{{channel.mediaSubType}}</td>
+                            <td class="text-right">{{channel.recordings}}</td>
+                            <td class="text-right">{{channel.duration}}</td>
+                            <td class="text-right">{{channel.missing}}</td>
+                            <td class="text-right">{{channel.lastRecording}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+            </tab>
+        </tabset>
+    </div>
+</div>

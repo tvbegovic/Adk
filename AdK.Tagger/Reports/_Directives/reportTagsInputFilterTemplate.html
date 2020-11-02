@@ -1,0 +1,21 @@
+<div class="tags-filter-box">
+  <label>{{filterName}}</label>
+  <div class="tags-input-wrapper">
+    <tags-input
+      ng-model="selectedTags"
+      add-from-autocomplete-only="true"
+      key-property="Id"
+      spellcheck="false"
+      placeholder="{{tagsPlaceholder}}"
+      on-tag-added="onTagAdded()"
+      on-tag-removed="onTagRemoved()"
+      display-property="Name">
+      <auto-complete source="getTagsAutocomplete($query)"
+        min-length="2"
+        debounce-delay="300"
+        load-on-down-arrow="true"
+        select-first-match="true"></auto-complete>
+    </tags-input>
+  </div>
+  <i class="fa fa-spinner fa-spin ajax-spinner" ng-show="loading"></i>
+</div>

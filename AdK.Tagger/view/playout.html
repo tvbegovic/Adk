@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Playout</title>
+	<meta charset="utf-8" />
+	<script src="js/angular.min.js"></script>
+	<script>angular.module('app', []);</script>
+	<script src="js/common.js"></script>
+</head>
+<body>
+	<div ng-app="playout" ng-controller="playoutCtrl">
+		<p>Cities: {{cities.length}}</p>
+		<p>Channels: {{channels.length}}</p>
+		<ul>
+			<li ng-repeat="playout in playouts">
+				{{channels[playout.ChannelId].name}} - {{playout.Performer}} - {{playout.Title}}
+			</li>
+		</ul>
+	</div>
+
+	<script>
+		angular.module('playout', ['app']).controller('playoutCtrl', function ($scope, Service) {
+			Service('GetCities', { countryCode: null }).then(function (cities) {
+				$scope.cities = cities;
+				getChannels();
+			});
+
+			function getChannels() {
+				Service('GetChannelsAndCityCount').then(function (channels) {
+					$scope.channels = channels;
+					getChannelCities();
+				});
+			}
+
+			function getChannelCities() {
+				Service('GetChannelsCities').then(function (channelCities) {
+					$scope.channelCities = channelCities.reduce(function (dic, cc) {
+						dic[cc.ChannelId] = cc.CityIds;
+						return dic;
+					}, {});
+					getPlayouts();
+				});
+			}
+
+			function getPlayouts() {
+				Service('GetCurrentPlayouts', { lastSeconds: 30 }).then(function (playouts) {
+					$scope.playouts = playouts;
+				});
+			}
+		});
+	</script>
+</body>
+</html>

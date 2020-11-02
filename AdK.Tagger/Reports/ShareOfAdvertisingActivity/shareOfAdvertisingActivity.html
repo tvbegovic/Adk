@@ -1,0 +1,40 @@
+<div ng-controller="shareOfAdvertisingActivityCtrl">
+    <div class="row" ng-show="channelsLoaded">
+        <div class="col-sm-12">
+            <div ng-show="haveChannels">
+                <div class="report-filters">
+                    <div class="filter-row main">
+                        <div class="date-wrapper-filter">
+                            <report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()" period-start="shareOfAdvActivity.PeriodStart"
+                                period-end="shareOfAdvActivity.PeriodEnd"></report-custom-period-filter>
+                        </div>
+                        <report-channel-including-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-including-filter>
+                        <report-day-of-week-filter on-init="onDirectivesInit()" on-change="load()"></report-day-of-week-filter>
+                        <report-day-part-filter on-init="onDirectivesInit()" on-change="load()"></report-day-part-filter>
+                        <report-toggle-value-filter on-init="onDirectivesInit()" on-change="load()"></report-toggle-value-filter>
+                        <report-display-type-filter on-init="onDirectivesInit()" on-change="onDisplayTypeChange()"></report-display-type-filter>
+                        <report-notes note-id="share_of_advertising_activity" ng-if="user.isAdmin" />
+                    </div>
+                    <div class="filter-row additional">
+                        <label class="filter-box">
+                            <input type="checkbox" ng-model="current.showPieCharts" ng-click="changePieChartDisplay()"> Show Pie Charts
+                        </label>
+                    </div>
+                </div>
+
+                <div class="report-data">
+                    <div class="floated-charts-wrapper clearfix">
+                        <div ng-repeat="chart in charts" class="small-chart-wrapper">
+                            <label class="chart-label">{{getChartName(chart)}}</label>
+                            <nvd3 options="chartOptions" data="chart.Data"></nvd3>
+                        </div>
+                    </div>
+                </div>
+
+                <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+            </div>
+            <report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+        </div>
+    </div>
+</div>

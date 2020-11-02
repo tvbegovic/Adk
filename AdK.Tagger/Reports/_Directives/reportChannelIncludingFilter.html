@@ -1,0 +1,26 @@
+<div class="filter-box">
+    <label class="filter-label">Focus</label>
+    <div class="btn-group" role="group">
+        <div class="btn-group" dropdown>
+            <button class="btn btn-primary dropdown-toggle" dropdown-toggle>
+                <div class="dropdown-selected">{{selectedChannel.Name}}</div> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li role="menuitem" ng-repeat="value in channels"><a ng-click="changeChannel(value)">
+                    {{value.Name}}</a> </li>
+            </ul>
+        </div>
+    </div>
+    <label class="text-center">And</label>
+    <div class="btn-group" role="group">
+        <div class="btn-group" dropdown>
+            <button class="btn btn-primary dropdown-toggle" dropdown-toggle>
+                <div class="dropdown-selected"> {{selectedIncludeValue.Name}} </div> <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li role="menuitem" ng-repeat="value in includeValues"><a ng-click="changeIncludeValue(value)">
+                    {{value.Name}}</a> </li>
+            </ul>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,209 @@
+﻿<div class="rows-spaced">
+    <div class="row">
+        <tabset class="col-sm-12">
+            <tab heading="Operations">
+
+                <h3>Capture <a href="/#/dpoc/capture" class="btn btn-primary btn-sm">Details</a></h3>
+
+                <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Total</td>
+                            <td>Dead</td>
+                            <td>Less than 99.5%</td>
+                            <td>Max Missing</td>
+                            <td>Reconnecting</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Hrvatska delay 5m</td>
+                            <td class="text-right">{{CaptureStatusHr.total}}</td>
+                            <td class="text-right" ng-class="{'dpoc-error': CaptureStatusHr.dead > 0}">{{CaptureStatusHr.dead}}</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': CaptureStatusHr.bad > 0}">{{CaptureStatusHr.bad}}</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': CaptureStatusHr.worst > 0.5}">{{CaptureStatusHr.worst | number : 1}}%</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': CaptureStatusHr.oscilating > 0}">{{CaptureStatusHr.oscilating}}</td>
+                        </tr>
+                        <tr>
+                            <td>Hrvatska delay 20m</td>
+                            <td class="text-right">{{CaptureStatusDelayHr.total}}</td>
+                            <td class="text-right" ng-class="{'dpoc-error': CaptureStatusDelayHr.dead > 0}">{{CaptureStatusDelayHr.dead}}</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': CaptureStatusDelayHr.bad > 0}">{{CaptureStatusDelayHr.bad}}</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': CaptureStatusDelayHr.worst > 0.5}">{{CaptureStatusDelayHr.worst | number : 1}}%</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': CaptureStatusDelayHr.oscilating > 0}">{{CaptureStatusDelayHr.oscilating}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Hashing <a href="/#/dpoc/hashing" class="btn btn-primary btn-sm">Details</a></h3>
+
+                <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Total</td>
+                            <td>Dead</td>
+                            <td>Less than 99.5%</td>
+                            <td>Max Missing</td>
+                            <td>Oscilating</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Hrvatska delay 20m</td>
+                            <td class="text-right">{{HashingStatusHr.total}}</td>
+                            <td class="text-right" ng-class="{'dpoc-error': HashingStatusHr.dead > 0}">{{HashingStatusHr.dead}}</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': HashingStatusHr.bad > 0}">{{HashingStatusHr.bad}}</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': HashingStatusHr.worst > 5}">{{HashingStatusHr.worst | number : 1}}%</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': HashingStatusHr.oscilating > 0}">{{HashingStatusHr.oscilating}}</td>
+                        </tr>
+                        <tr>
+                            <td>Trinidad delay 20m</td>
+                            <td class="text-right">{{HashingStatusMis.total}}</td>
+                            <td class="text-right" ng-class="{'dpoc-error': HashingStatusMis.dead > 0}">{{HashingStatusMis.dead}}</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': HashingStatusMis.bad > 0}">{{HashingStatusMis.bad}}</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': HashingStatusMis.worst > 5}">{{HashingStatusMis.worst | number : 1}}%</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': HashingStatusMis.oscilating > 0}">{{HashingStatusMis.oscilating}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+
+                <h3>Duplicates <a href="/#/dpoc/duplicates" class="btn btn-primary btn-sm">Details</a></h3>
+
+                <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Running Late</td>
+                            <td>Time Running</td>
+                            <td>Finished Late</td>
+                            <td>Max Delay</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Trinidad</td>
+                            <td class="text-right" ng-class="{'dpoc-error': DuplicateStatusLate.runningLate > 0}">{{DuplicateStatusLate.runningLate}}</td>
+                            <td class="text-right" ng-class="{'dpoc-error': DuplicateStatusLate.nowRunning > 0}">{{DuplicateStatusLate.nowRunning}}</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': DuplicateStatusFinished.finishedLate > 0}">{{DuplicateStatusFinished.finishedLate}}</td>
+                            <td class="text-right" ng-class="{'dpoc-warn': DuplicateStatusFinished.maxDelay > '00:05'}">{{DuplicateStatusFinished.maxDelay}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                
+                <h3>Harvesting <a href="/#/dpoc/harvesting" class="btn btn-primary btn-sm">Details</a></h3>
+
+                <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td></td>
+                            <td>Date</td>
+                            <td>Clips</td>
+                            <td>Channels</td>
+                            <td>Taggers</td>
+                            <td>Max Delay</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="s in HarvestingStatusHr">
+                            <td>Hrvatska</td>
+                            <td class="text-right">{{s.harvestingDate}}</td>
+                            <td class="text-right">{{s.clips}}</td>
+                            <td class="text-right">{{s.channels}}</td>
+                            <td class="text-right">{{s.taggers}}</td>
+                            <td class="text-right">{{s.maxDelay}}hr</td>
+                        </tr>
+                        <tr ng-repeat="s in HarvestingStatusMis">
+                            <td>Trinidad</td>
+                            <td class="text-right">{{s.harvestingDate}}</td>
+                            <td class="text-right">{{s.clips}}</td>
+                            <td class="text-right">{{s.channels}}</td>
+                            <td class="text-right">{{s.taggers}}</td>
+                            <td class="text-right">{{s.maxDelay}}hr</td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <h3>Promotion <a href="/#/dpoc/notpromoted" class="btn btn-primary btn-sm">Details</a></h3>
+                <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Date</td>
+                            <td>Non-promoted Spots</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="promotingDate in PromotionQueue">
+                            <td class="text-right">{{promotingDate.datum}}</td>
+                            <td class="text-right">{{promotingDate.spotsCount}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                </tab>
+
+            <tab heading="Control">
+                <h3>
+                    Coverage: IPSOS 
+                    <small>10 channels with worst coverage</small>
+                    <a href="/#/channels" class="btn btn-primary btn-sm">Details</a>
+                </h3>
+                <p>Show coverage for <select class="form-control" style="width:auto; display:inline-block;" ng-init="data.numDays=1" ng-model="data.numDays" ng-options="x for x in daysOptions" ng-change="getCoverageWorst()"></select> days</p>
+                <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Channel</td>
+                            <td>Country</td>
+                            <td>Coverage %</td>
+                            <td>Missing Hrs</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="channelCoverage in CoverageWorst">
+                            <td>{{channelCoverage.channel}}</td>
+                            <td>{{channelCoverage.country}}</td>
+                            <td class="text-right">{{channelCoverage.coverage | number : 2}}</td>
+                            <td class="text-right">{{channelCoverage.missing | secToHours}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </tab>
+
+                <tab heading="Statistics">
+                    <h3>Missing Coverage <small>Total missing coverage for all channels</small></h3>
+                    <table class="table table-bordered table-condensed table-striped" style="width:auto">
+                        <thead>
+                            <tr>
+                                <td></td>
+                                <td>90 Days</td>
+                                <td>30 Days</td>
+                                <td>7 Days</td>
+                                <td>Yesterday</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Missing coverage: all channels %</td>
+                                <td class="text-right">{{missingCoverage90 | number : 2}}</td>
+                                <td class="text-right">{{missingCoverage30 | number : 2}}</td>
+                                <td class="text-right">{{missingCoverage7 | number : 2}}</td>
+                                <td class="text-right">{{missingCoverage1 | number : 2}}</td>
+                            </tr>
+                            <tr>
+                                <td>Num.channels with coverage < 99%</td>
+                                <td class="text-right">{{badCoverage90}}</td>
+                                <td class="text-right">{{badCoverage30}}</td>
+                                <td class="text-right">{{badCoverage7}}</td>
+                                <td class="text-right">{{badCoverage1}}</td>
+                            </tr>
+                        </tbody>
+                    </table>
+               </tab>
+
+            </tabset>
+        </div>
+    </div>

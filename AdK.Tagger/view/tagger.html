@@ -1,0 +1,62 @@
+﻿<div>
+	<div class="row">
+		<div class="col-sm-12">
+			<span class="pull-right text-right" ng-if="statistics">
+				Statistics<br />
+				<span class="label label-success" title="Tagged">{{statistics.Tagged}}</span>
+				<span class="label label-warning" title="Skipped">{{statistics.Skipped}}</span>
+				<span class="label label-danger" title="Remaining">{{statistics.Remaining}}</span>
+			</span>
+			<h2>
+				Tagger
+				<button type="button" class="btn" ng-class="{'btn-primary': filter.active}" btn-checkbox ng-model="filter.visible">
+					<i class="glyphicon glyphicon-filter"></i>
+					<span ng-if="filter.active">{{filter.titleFilter}}</span>
+				</button>
+			</h2>
+			<div ng-if="filter.visible" class="well">
+				<div class="row">
+					<div class="col-sm-4 form-group">
+						<label>Filter</label>
+						<input type="text" class="form-control" ng-model="filter.titleFilter" placeholder="Filter" />
+					</div>
+					<div class="col-sm-4">
+						<label>Vezani tagovi</label>
+						<multi-select items="filter.tags" loading="loadingTags" suggest-service="getTag" editable="true" editing="editing.tag" filter="filter.tagFilter"></multi-select>
+					</div>
+					<div class="col-sm-4 form-group">
+						<label>Aktivacija</label><br />
+						<button type="button" class="btn" ng-class="{'btn-primary': filter.active}" btn-checkbox ng-model="filter.active"><span ng-if="filter.active">Iskljući</span><span ng-if="!filter.active">Aktiviraj</span></button>
+					</div>
+				</div>
+				<div class="row" ng-if="filter.searchResults">
+					<div class="col-sm-12 form-group">
+						<label>Primjeri</label>
+						<div class="ellipsis" ng-repeat="result in filter.searchResults">{{result}}</div>
+					</div>
+				</div>
+			</div>
+			<h4>{{song.Name}}</h4>
+			<p>
+				<button type="button" class="btn btn-xs btn-info" ng-click="play()">Play</button>
+				<button type="button" class="btn btn-xs btn-info" ng-click="stop()">Stop</button>
+			</p>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-sm-3">
+			<multi-select name="tagSearch" items="song.Tags" placeholder="Search for a tag" loading="loadingTags" suggest-service="getTag" editable="true" editing="editing.tag" filter="editing.tagFilter"></multi-select>
+		</div>
+	</div>
+	<p></p>
+	<div class="row">
+		<div class="col-sm-12">
+			<button type="submit" class="btn btn-sm btn-warning" ng-click="submit()">Submit</button>
+			<button type="button" class="btn btn-sm btn-warning pull-right" ng-click="skip()">Skip</button>
+		</div>
+	</div>
+	<div ng-if="false">
+		<button type="button" class="btn btn-default" ng-click="getNewEntities()">Get New Entities</button>
+		<div ng-if="gotNew">Loaded new {{gotNew.industries}} industries, {{gotNew.companies}} companies, {{gotNew.tags}} tags, {{gotNew.categories}} categories.</div>
+	</div>
+</div>

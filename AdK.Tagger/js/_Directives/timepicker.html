@@ -1,0 +1,28 @@
+﻿<table>
+	<tbody>
+		
+		<tr>
+			<td class="form-group" ng-class="{'has-error': invalidHours}">
+				<input style="width:50px;" type="text" ng-model="hours" ng-change="updateHours()" class="form-control text-center" ng-readonly="::readonlyInput" maxlength="2" tabindex="{{::tabindex}}">
+			</td>
+			<td>
+				<div ng-show="::showSpinners" style="padding-left: 2px">
+					<a style="display:block" ng-click="incrementHours()" ng-class="{disabled: noIncrementHours()}" class="btn btn-link" ng-disabled="noIncrementHours()" tabindex="{{::tabindex}}"><span class="glyphicon glyphicon-chevron-up"></span></a>
+					<a style="display:block" ng-click="decrementHours()" ng-class="{disabled: noDecrementHours()}" class="btn btn-link" ng-disabled="noDecrementHours()" tabindex="{{::tabindex}}"><span class="glyphicon glyphicon-chevron-down"></span></a>									
+				</div>
+			</td>
+			<td>:</td>
+			<td class="form-group" ng-class="{'has-error': invalidMinutes}">
+				<input style="width:50px;" type="text" ng-model="minutes" ng-change="updateMinutes()" class="form-control text-center" ng-readonly="::readonlyInput" maxlength="2" tabindex="{{::tabindex}}">
+			</td>
+			<td>
+				<div ng-show="::showSpinners" style="padding-left: 2px">
+					<a style="display:block" ng-click="incrementMinutes()" ng-class="{disabled: noIncrementMinutes()}" class="btn btn-link" ng-disabled="noIncrementMinutes()" tabindex="{{::tabindex}}"><span class="glyphicon glyphicon-chevron-up"></span></a>
+					<a style="display:block" ng-click="decrementMinutes()" ng-class="{disabled: noDecrementMinutes()}" class="btn btn-link" ng-disabled="noDecrementMinutes()" tabindex="{{::tabindex}}"><span class="glyphicon glyphicon-chevron-down"></span></a>
+				</div>
+			</td>
+			<td ng-show="showMeridian"><button type="button" ng-class="{disabled: noToggleMeridian()}" class="btn btn-default text-center" ng-click="toggleMeridian()" ng-disabled="noToggleMeridian()" tabindex="{{::tabindex}}">{{meridian}}</button></td>
+		</tr>
+		
+	</tbody>
+</table>

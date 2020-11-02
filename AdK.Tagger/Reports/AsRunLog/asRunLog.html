@@ -1,0 +1,93 @@
+﻿<div ng-controller="asRunLogCtrl" class="as-run-log-report">
+    <!--<span class="label label-danger">nije za komentiranje</span>-->
+    <div class="row" ng-show="channelsLoaded">
+        <div class="col-sm-12">
+            <div ng-show="haveChannels">
+                <div class="report-filters">
+                    <div class="filter-row main">
+                        <div class="date-wrapper-filter">
+                            <report-custom-date-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()"></report-custom-date-filter>
+						</div>
+                        <span ng-switch="reportModule">
+                            <report-channel-including-filter ng-switch-when="mediahouse-reports" on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-including-filter>
+                            <report-channel-filter ng-switch-default on-init="onChannelsLoad(channels)" on-change="load()" ignore-includes="true" ></report-channel-filter>
+                        </span>
+                        <report-brand-or-advertiser-filter on-init="onDirectivesInit()" on-change="load()"></report-brand-or-advertiser-filter>
+                        <report-brand-filter on-change="brandFilterChange" ng-if="current.brandOrAdvertiser.Id == 'Brand'"></report-brand-filter>
+                        <report-advertiser-filter on-change="advertiserFilterChange" ng-if="current.brandOrAdvertiser.Id == 'Advertiser'"></report-advertiser-filter>
+                        <report-notes note-id="as_run_log" ng-if="user.isAdmin" />
+                    </div>
+                    <div class="filter-row additional">
+                        <label>
+                            <input type="checkbox" ng-model="current.showDuplicates" ng-click="load()"> Show Duplicates
+                        </label>
+                    </div>
+                    <div class="filter-row clearfix">
+                        <div class="col-sm-3" ng-show="asRunLog.length">
+                            <player-widget player="player"></player-widget>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-12">
+                    <div ng-hide="report.message" ng-repeat="channel in asRunLog">
+                        <h4><strong>{{channel.ChannelName}}</strong></h4>
+                        <table class="report-table table table-striped table-hover">
+                            <thead>
+                                <tr class="normal">
+                                    <th class="text" style="min-width: 15px;">Date</th>
+                                    <th class="text">Time</th>
+                                    <th class="text" ng-if="current.brandOrAdvertiser.Id == 'Brand'">Brand</th>
+                                    <th class="text" ng-if="current.brandOrAdvertiser.Id == 'Advertiser'">Advertiser</th>
+                                    <th class="text">Spot Title</th>
+                                    <th class="number">Ad Count</th>
+                                    <th class="number">Est.Spend</th>
+                                    <th class="number">Total Air Time</th>
+                                    <th>Play</th>
+                                </tr>
+                            </thead>
+                            <tbody class="table-bordered">
+                                <tr ng-repeat="detail in channel.AsRunDetailData" ng-class="{'active': detail.IsLeadRow == true, 'havy': detail.IsLeadRow == true}">
+                                    <td class="text">{{detail.PlayDate | userDate}}</td>
+                                    <td class="text">{{detail.PlayTime}}</td>
+                                    <td class="text">{{detail.BrandvertiserName}}</td>
+                                    <td class="text">{{detail.SongTitle | truncateToLimitFilter:true:150}}</td>
+                                    <td class="number" ng-if="detail.AdCount > 0">{{detail.AdCount | toLocalString}}</td>
+                                    <td class="number" ng-if="detail.AdCount == 0"></td>
+                                    <td class="number">
+                                        <div ng-class="{ higlight: displayWarningTooltip(detail)} " popover-popup-delay="200" popover-trigger="mouseenter" popover="{{getWarningTooltip(detail)}}">
+                                            {{ detail.EstimateSpend | toLocalString }}
+                                        </div>
+                                    </td>
+                                    <td class="number">{{detail.TotalAirTime | secondsToTimeFilter}}</td>
+                                    <td class="text-center">
+                                        <div ng-if="detail.SongId && detail.SongDuration">
+                                            <button type="button" class="btn btn-xs btn-info" ng-click="playPauseSong(detail, $index)">
+                                                <i class="glyphicon" ng-class="{true: 'glyphicon-pause', false: 'glyphicon-play'}[$index === player.playingInfo.uiIndentifier && player.playingInfo.isPlaying]"></i>
+                                            </button>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr class="havy">
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td class="text-left">CHANNEL TOTAL</td>
+                                    <td class="text-right">{{channel.AdCount | toLocalString }}</td>
+                                    <td class="text-right">{{channel.EstimateSpend | toLocalString}}</td>
+                                    <td class="text-right">{{channel.TotalAirTime | secondsToTimeFilter}}</td>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                    <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+                </div>
+            </div>
+            <report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+        </div>
+    </div>
+</div>

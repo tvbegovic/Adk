@@ -1,0 +1,30 @@
+<label>Date Range</label>
+<span class="inline-datepicker">
+    <input type="text" class="form-control"
+           datepicker-popup="{{dateOptions.format}}"
+           is-open="dateOptions.dp1Opened"
+           max="dateOptions.maxDate"
+           ng-model="dateFrom"
+           ng-required="true"
+           close-text="Close"
+           ng-disabled="disabled"
+           alt-input-formats="altInputFormats" />
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-disabled="disabled" ng-click="openDp1()"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+</span>
+<label>To</label>
+<span class="inline-datepicker">
+    <input type="text" class="form-control"
+           datepicker-popup="{{dateOptions.format}}"
+           ng-model="dateTo"
+           max="dateOptions.maxDate"
+           is-open="dateOptions.dp2Opened"
+           ng-required="true"
+           close-text="Close"
+           ng-disabled="disabled"
+           alt-input-formats="altInputFormats" />
+    <span class="input-group-btn">
+        <button type="button" class="btn btn-default" ng-disabled="disabled" ng-click="openDp2()"><i class="glyphicon glyphicon-calendar"></i></button>
+    </span>
+</span>

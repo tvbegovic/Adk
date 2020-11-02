@@ -1,0 +1,111 @@
+<div class="markets-page rows-spaced">
+  <div class="col-sm-12" style="padding-top: 20px">
+    <div ng-show="markets.length && channels.length && !displayNoMarktesMessage">
+
+      <div id="tables-wrapper" class="allow-overflow">
+        <div class="markets-table" ng-style="{width: (getVisibleMarkets().length * 250 + 320) + 'px'}">
+          <div class="header clearfix">
+            <div class="column control placeholder"></div>
+            <div id="control-column" class="column control fixed" click-anywhere-but-here="clearNewMarketInput()">
+              <div>
+                <input type="text" class="channel-filter" ng-model="filter.channelName" placeholder="Filter Channels">
+                <i class="glyphicon glyphicon-filter filter-market" ng-class="{'active': haveFilteredMarkets()}" ng-click="openMarketsFilterModal()"
+                  title="Toggle markets visibility"></i>
+              </div>
+              <div>
+                <input type="text" ng-model="newMarket.name" on-enter="addMarket()" placeholder="New market">
+                <i class="glyphicon glyphicon-plus add-market" ng-click="addMarket()" ng-class="{'active' : newMarket.name}" title="Click to add new market"></i>
+              </div>
+            </div>
+            <div class="column market text-center" ng-class="{'edit-mode': market._editMode}" ng-repeat="market in getVisibleMarkets()"
+              ng-click="setEditMode(market)" click-anywhere-but-here="updateMarket(market)">
+              <span>
+                <input type="text" id="market-input-{{market.Id}}"
+                  ng-model="market.Name"
+                  on-enter="updateMarket(market)"
+                  ng-blur="cancelMarketEdit(market)"
+                  ng-disabled="!market._editMode"
+                  >
+                <i class="glyphicon glyphicon-pencil edit-market" ng-if="!market._editMode" title="Click to edit"></i>
+
+                <span class="edit-controls"  ng-class="{collaps: !market._editMode}">
+                  <i class="glyphicon glyphicon-ok save-market" title="Click to save" ng-click="updateMarket(market)"></i>
+                  <i class="glyphicon glyphicon-remove cancel-market-update" title="Click to discard changes" ng-click="cancelMarketEdit(market)"></i>
+                  <i class="glyphicon glyphicon-trash delete-market" title="Click to delete" ng-click="deleteMarket(market.Id)"></i>
+                </span>
+              </span>
+            </div>
+          </div>
+          <div class="body allow-overflow" style="max-height: 600px;">
+            <div class="table-row clearfix" ng-repeat="channel in channels | filter: {Name: filter.channelName}">
+              <div class="column channel placeholder">
+                <span>{{channel.Name}}</span>
+              </div>
+              <div class="column channel fixed">
+                <span>{{channel.Name}}</span>
+              </div>
+              <div class="column text-center" ng-repeat="market in getVisibleMarkets()">
+                <i class="glyphicon" ng-class="isChannelInMarket(market.Id, channel.Id) ? 'glyphicon-check' : 'glyphicon-unchecked inactive'"
+                  ng-click="toggleChannelMarket(channel.Id, market.Id)"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="no-markets-message" ng-if="displayNoMarktesMessage" style="padding-top: 100px;">
+      <div class="text-center" style="max-width: 860px; margin: 0 auto;">
+        <h2>You don't have markets created. To start going use below input to create your first market. <br>
+          <small>PS - don't worry you can always modify it later.</small>
+        </h2>
+
+        <div class="input-group" style="margin-top: 25px;">
+          <input type="text" class="form-control input-lg" ng-model="newMarket.name" on-enter="addMarket()" placeholder="Market name">
+          <span class="btn btn-primary input-group-addon" ng-click="addMarket()"> Add Market </span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+<!--CONFIRM DELETE MODAL-->
+<script type="text/ng-template" id="marketDeleteConfirmationModal.html">
+  <div class="markets-page">
+    <div class="modal-header warning">
+      <h4 style="margin:0;"> Delete Confirmation </h4>
+    </div>
+    <div class="modal-body" >
+      Are you sure you want to delete <b>{{market.Name}}</b>? This action cannot be undone.
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-default" ng-click="cancel()">Cancel</button>
+        <button class="btn btn-danger" ng-click="ok()">Delete</button>
+    </div>
+  </div>
+</script>
+
+
+<!--MARKET FILTERS MODAL -->
+<script type="text/ng-template" id="marketTogleMarketsVisibility.html">
+  <div class="markets-page toggle-markets-visibility-modal">
+      <div class="modal-header warning">
+        <h4 style="margin:0;"> Toggle Markets Visibility </h4>
+      </div>
+      <div class="modal-body" >
+        <ul>
+          <li ng-repeat="market in markets">
+            <i class="glyphicon" ng-class="market._isHidden ? 'glyphicon-unchecked inactive' : 'glyphicon-check' "
+                    ng-click="toggleMarketVisibility(market)"></i>
+            <span class="market-name">{{market.Name}}</span>
+          </li>
+        </ul>
+      </div>
+      <div class="modal-footer">
+          <button class="btn btn-primary" ng-click="done()">Done</button>
+      </div>
+  </div>
+</script>

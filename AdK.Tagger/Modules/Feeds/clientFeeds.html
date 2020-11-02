@@ -1,0 +1,12 @@
+﻿<!--<div class="alert alert-info big-icon">
+ <i class="fa fa-info-circle" aria-hidden="true"></i> Add feeds - under construction
+</div>-->
+<div ng-if="displayType == displayTypeList">
+    <feed-list show-feed="showFeed"></feed-list>
+</div>
+<div ng-if="displayType == displayTypeFeed">
+    <feed-results
+			data-feed-filter-id="{{selectedFeed.id}}"
+			data-client-name="{{selectedFeed.name}}"
+			back-button="backButton"></feed-results>
+</div>

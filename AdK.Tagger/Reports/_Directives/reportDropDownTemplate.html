@@ -1,0 +1,16 @@
+<div class="filter-box">
+<label>{{filterName}}</label>
+<div class="btn-group" role="group">
+  <div class="btn-group" dropdown>
+    <button class="btn btn-primary dropdown-toggle" dropdown-toggle>
+        <div class="dropdown-selected">{{selectedValue.Name}}</div> <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" role="menu">
+      <li role="menuitem" ng-repeat="value in dropDownValues">
+        <a ng-click="changeValue(value)">{{value.Name}}</a>
+      </li>
+    </ul>
+  </div>
+</div>
+</div>
+

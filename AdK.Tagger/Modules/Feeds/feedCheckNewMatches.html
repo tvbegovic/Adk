@@ -1,0 +1,23 @@
+﻿<div class="row">
+	<div class="col-sm-6">
+		<table class="table table-striped">
+			<thead>
+				<tr>
+					<th>FeedFilterId</th>
+					<th>Cutoff date</th>
+					<th>Match count</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="r in results">
+					<td>{{r.feedFilterId}}</td>
+					<td>
+						{{ r.cutOffDate | userDate }} 
+						{{ r.cutOffDate | date:'HH:mm:ss' }}
+					</td>
+					<td>{{r.matchCount}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

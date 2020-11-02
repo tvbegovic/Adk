@@ -1,0 +1,30 @@
+﻿<div>
+
+    <h3>Duplicate Processing: Carribean<small>Delay within 5hrs</small></h3>
+
+    <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+    <table class="table table-bordered table-condensed" style="width:auto">
+        <thead>
+            <tr>
+                <td>PKSID</td>
+                <td>Harvester</td>
+                <td>Export Time</td>
+                <td>Matched Time</td>
+                <td>Delay</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="duplicateDelay in duplicateDelays" ng-class="{'dpoc-error': duplicateDelay.delay>'00:02:45', 'info': duplicateDelay.delay <= '00:02:45' && duplicateDelay.color}">
+                <td>{{duplicateDelay.pksid}}</td>
+                <td>{{duplicateDelay.tagger}}</td>
+                <td class="text-right">{{duplicateDelay.exportTime}}</td>
+                <td class="text-right">{{duplicateDelay.matchedTime}}</td>
+                <td class="text-right">{{duplicateDelay.delay}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+</div>

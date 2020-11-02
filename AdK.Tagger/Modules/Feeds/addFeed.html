@@ -1,0 +1,7 @@
+<!--<div class="alert alert-info big-icon">
+ <i class="fa fa-info-circle" aria-hidden="true"></i> Client feeds - under construction
+</div>-->
+<alert type="danger" ng-show="errorMessage" ng-bind-html="errorMessage"></alert>
+<user-feeds ng-if="!reportId && feeds.length > 1"></user-feeds>
+
+<feed-results ng-if="reportId || feeds.length ==1" back-button="backButton" load-for-current-user="true"></feed-results>

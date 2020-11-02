@@ -1,0 +1,33 @@
+<div ng-if="template === 'Error'" class="alert alert-danger big-icon">
+  <i class="fa fa-frown-o" aria-hidden="true"></i> Unexpected error occurred while processing your request. Please try again
+  or contact administrator.
+</div>
+
+<div ng-if="template === 'WorkInProgress'" class="alert alert-warning big-icon">
+  <i class="fa fa-wrench" aria-hidden="true"></i> Work in progress. Not for use or review.
+</div>
+
+<div ng-if="template === 'NoMediaHouse'" class="alert alert-warning big-icon" role="alert">
+  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No Media House. Please select a Holding as 'Mine' with some
+  Media Houses. <a href="#media-house">Go to media house</a>
+</div>
+
+<div ng-if="template === 'NoChannelsInGroup'" class="alert alert-warning big-icon">
+  <i class="fa fa-exclamation-triangle" aria-hidden="true"></i> No Channels added to group. Please add channels to group. <a href="#media-house"> Go to media house </a>
+</div>
+
+<div ng-if="template === 'NoData'" class="alert alert-info big-icon">
+  <i class="fa fa-info-circle" aria-hidden="true"></i> No data available. Try to expand your filter range.
+</div>
+
+<div ng-if="template === 'NoDayParts'" class="alert alert-info big-icon">
+    <i class="fa fa-info-circle" aria-hidden="true"></i> You don't have day parts created. Please create your day parts. <a href="#media-house">Go to media house </a>
+</div>
+
+<div ng-if="template === 'NoKeyAccounts'" class="alert alert-info big-icon">
+ <i class="fa fa-info-circle" aria-hidden="true"></i> You don't have key accounts. Please select some key accounts. <a href="#media-house">Go to media house </a>
+</div>
+
+<div ng-if="template === 'CustomInfo'" class="alert alert-info big-icon">
+ <i class="fa fa-info-circle" aria-hidden="true"></i> {{text}}
+</div>

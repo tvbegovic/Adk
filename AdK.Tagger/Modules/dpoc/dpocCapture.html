@@ -1,0 +1,256 @@
+﻿<div class="rows-spaced">
+    <div class="row">
+        <tabset class="col-sm-12">
+            <tab heading="PlayKontrol.eu">
+
+                <h3>Dead Channels <small>15 minute delay</small></h3>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <table class="table table-bordered table-condensed table-striped table-hover" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Domain</td>
+                            <td>Station Name</td>
+                            <td>External ID</td>
+                            <td>Server</td>
+                            <td>Dead For</td>
+                            <td>Action</td>
+                            <td>Action Timestamp</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="c in deadChannelsHr">
+                            <td>{{c.domain}}</td>
+                            <td><a href="pk/{{c.channel}}">{{c.channel}}</a></td>
+                            <td>{{c.externalId}}</td>
+                            <td>{{c.server}}</td>
+                            <td class="text-right">{{c.silence}}</td>
+                            <td>
+                                {{actionName(c.action)}}
+                                <button class="btn btn-xs pull-right" style="margin-left:5px" ng-click="updateAction(c.id, 0, $index)"><span class="glyphicon glyphicon-ok"></span></button>
+                                <button class="btn btn-xs pull-right" style="margin-left:5px" ng-click="updateAction(c.id, 2, $index)"><span class="glyphicon glyphicon-link" /></button>
+                                <button class="btn btn-xs pull-right" style="margin-left:5px" ng-click="updateAction(c.id, 1, $index)"><span class="glyphicon glyphicon-off" /></button>
+                            </td>
+                            <td class="text-right">{{c.actionTimestamp}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <h3>Missing Recordings <small>Last hour (5 min delay) </small></h3>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <table class="table table-bordered table-condensed table-striped table-hover" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Channel</td>
+                            <td>Domain</td>
+                            <td>External ID</td>
+                            <td>Recordings</td>
+                            <td>Duration</td>
+                            <td>Missing</td>
+                            <td>Last Recording</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="c in captureDetailsHr | orderBy:'-missing'" ng-click="go('pk/' + c.id)">
+                            <td>{{c.channel}}</td>
+                            <td>{{c.domain}}</td>
+                            <td>{{c.externalId}}</td>
+                            <td class="text-right">{{c.recordings}}</td>
+                            <td class="text-right">{{c.duration}}</td>
+                            <td class="text-right">{{c.missing}}</td>
+                            <td class="text-right">{{c.lastRecording}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+</tab>
+
+            <tab heading="Media-Insite">
+
+                <h3>Dead Channels <small>15 minute delay</small></h3>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <table class="table table-bordered table-condensed table-striped table-hover" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Domain</td>
+                            <td>Station Name</td>
+                            <td>External ID</td>
+                            <td>Server</td>
+                            <td>Dead For</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="c in deadChannelsMis" ng-click="go('mis/' + c.id)">
+                            <td>{{c.domain}}</td>
+                            <td>{{c.channel}}</td>
+                            <td>{{c.externalId}}</td>
+                            <td>{{c.server}}</td>
+                            <td class="text-right">{{c.silence}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Missing recordings <small>Last hour (5 min delay) </small></h3>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <table class="table table-bordered table-condensed table-striped table-hover" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Channel</td>
+                            <td>Domain</td>
+                            <td>External ID</td>
+                            <td>Recordings</td>
+                            <td>Duration</td>
+                            <td>Missing</td>
+                            <td>Last Recording</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="c in captureDetailsMis | orderBy:'-missing'" ng-click="go('mis/' + c.id)">
+                            <td>{{c.channel}}</td>
+                            <td>{{c.domain}}</td>
+                            <td>{{c.externalId}}</td>
+                            <td class="text-right">{{c.recordings}}</td>
+                            <td class="text-right">{{c.duration}}</td>
+                            <td class="text-right">{{c.missing}}</td>
+                            <td class="text-right">{{c.lastRecording}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+            </tab>
+
+            <tab heading="Commradar (Cyprus)">
+
+                <h3>Dead Channels <small>15 minute delay</small></h3>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <table class="table table-bordered table-condensed table-striped table-hover" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Domain</td>
+                            <td>Station Name</td>
+                            <td>External ID</td>
+                            <td>Server</td>
+                            <td>Dead For</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="c in deadChannelsCy" ng-click="go('cy/' + c.id)">
+                            <td>{{c.domain}}</td>
+                            <td>{{c.channel}}</td>
+                            <td>{{c.externalId}}</td>
+                            <td>{{c.server}}</td>
+                            <td class="text-right">{{c.silence}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Missing recordings <small>Last hour (5 min delay) </small></h3>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <table class="table table-bordered table-condensed table-striped table-hover" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Channel</td>
+                            <td>Domain</td>
+                            <td>External ID</td>
+                            <td>Recordings</td>
+                            <td>Duration</td>
+                            <td>Missing</td>
+                            <td>Last Recording</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="c in captureDetailsCy | orderBy:'-missing'" ng-click="go('cy/' + c.id)">
+                            <td>{{c.channel}}</td>
+                            <td>{{c.domain}}</td>
+                            <td>{{c.externalId}}</td>
+                            <td class="text-right">{{c.recordings}}</td>
+                            <td class="text-right">{{c.duration}}</td>
+                            <td class="text-right">{{c.missing}}</td>
+                            <td class="text-right">{{c.lastRecording}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+            </tab>
+
+            <tab heading="ROI Africa">
+
+                <h3>Dead Channels <small>15 minute delay</small></h3>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <table class="table table-bordered table-condensed table-striped table-hover" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Domain</td>
+                            <td>Station Name</td>
+                            <td>External ID</td>
+                            <td>Server</td>
+                            <td>Dead For</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="c in deadChannelsRoi" ng-click="go('roi/' + c.id)">
+                            <td>{{c.domain}}</td>
+                            <td>{{c.channel}}</td>
+                            <td>{{c.externalId}}</td>
+                            <td>{{c.server}}</td>
+                            <td class="text-right">{{c.silence}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <h3>Missing recordings <small>Last hour (5 min delay) </small></h3>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+                <table class="table table-bordered table-condensed table-striped table-hover" style="width:auto">
+                    <thead>
+                        <tr>
+                            <td>Channel</td>
+                            <td>Domain</td>
+                            <td>External ID</td>
+                            <td>Recordings</td>
+                            <td>Duration</td>
+                            <td>Missing</td>
+                            <td>Last Recording</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="c in captureDetailsRoi | orderBy:'-missing'" ng-click="go('roi/' + c.id)">
+                            <td>{{c.channel}}</td>
+                            <td>{{c.domain}}</td>
+                            <td>{{c.externalId}}</td>
+                            <td class="text-right">{{c.recordings}}</td>
+                            <td class="text-right">{{c.duration}}</td>
+                            <td class="text-right">{{c.missing}}</td>
+                            <td class="text-right">{{c.lastRecording}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <p><a href="/#/dpoc" class="btn btn-primary">Go Back to Dashboard</a></p>
+
+            </tab>
+
+        </tabset>
+    </div>
+</div>

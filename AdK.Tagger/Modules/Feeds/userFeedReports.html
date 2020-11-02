@@ -1,0 +1,60 @@
+<div class="row">
+	<div class="col-sm-12">
+		<h3>
+			<button class="btn btn-primary inline" ng-if="backButton" ng-click="backButton()">Back to my alerts list</button>
+			{{clientName}} Alert Report list 
+		</h3>		
+		<h4>Country/Market:{{countryMarket}}</h4>
+		<hr />
+	</div>	
+</div>
+<div class="row">
+	<div class="col-sm-6">
+		<table class="table table-condensed table-bordered table-hover fs-grid report-table">
+			<thead>
+				<tr>
+					<th ng-click="sortBy(sort.DateSent)">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Date sent
+								<sort-icon ascending="!sort.reverse" show="sort.Current === sort.DateSent" />
+							</div>
+						</div>
+					</th>
+					<th ng-click="sortBy(sort.ItemCount)">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Number of ads
+								<sort-icon ascending="!sort.reverse" show="sort.Current === sort.ItemCount" />
+							</div>
+						</div>
+					</th>
+					<th class="button-column">
+						<div column="column" class="ng-isolate-scope">
+							<div class="col-label">
+								Open&nbsp;report
+							</div>
+						</div>
+					</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="item in reportList | orderBy:rowComparator:sort.reverse | skip:pager.skip | take:pager.size">
+					<td class="text-left">
+						{{ item.TimeInserted | userDate }}
+						{{ item.TimeInserted | date:'HH:mm:ss' }}
+					</td>
+					<td class="text-right">
+						{{item.ItemCount}}
+					</td>
+					<td class="text-center">
+						<a class="btn btn-default" ng-click="openUserReport(item, $parent.clientName)">Open report</a>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<div class="pager">
+			<table-pager manager="pager"></table-pager>
+		</div>
+	</div>
+</div>

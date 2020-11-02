@@ -1,0 +1,57 @@
+angular.module('app')
+  .controller('keyAccountsCtrl', ['$scope', 'Brandvertiser', 'Paged', 'debounce', function($scope, Brandvertiser, Paged, debounce) {
+    $scope.filter = '';
+    $scope.brandOrAdvertiser = 3;
+    $scope.current = {
+      brandvertiser: null,
+      keyAccount: null
+    };
+
+    $scope.brandvertisers = [null];
+
+    function getPage(pageNum) {
+      return Brandvertiser.getPage($scope.brandOrAdvertiser === 1 || $scope.brandOrAdvertiser == 3, $scope.brandOrAdvertiser === 2 || $scope.brandOrAdvertiser == 3, pageNum, $scope.filter).then(function(page) {
+        return {
+          TotalCount: page.TotalCount,
+          Items: page.Brandvertisers
+        };
+      });
+    }
+
+    function filterChanged() {
+      var paged = new Paged(Brandvertiser.pageSize, getPage);
+      $scope.brandvertisers = paged.items;
+      $scope.getIndexed = paged.need;
+      paged.need(0);
+    }
+    $scope.filterChanged = debounce(500, filterChanged);
+
+    $scope.addKeyAccount = function() {
+      if ($scope.current.brandvertiser) {
+        Brandvertiser.addKeyAccount($scope.current.brandvertiser);
+        $scope.keyAccounts.push($scope.current.brandvertiser);
+        $scope.current.keyAccount = $scope.current.brandvertiser;
+        $scope.current.brandvertiser = null;
+      }
+    };
+    $scope.removeKeyAccount = function() {
+      if ($scope.current.keyAccount) {
+        Brandvertiser.removeKeyAccount($scope.current.keyAccount);
+        _.remove($scope.keyAccounts, $scope.current.keyAccount);
+        $scope.current.brandvertiser = $scope.current.keyAccount;
+        $scope.current.keyAccount = null;
+      }
+    };
+    $scope.canAdd = function() {
+      return $scope.current.brandvertiser && !_.some($scope.keyAccounts, 'Id', $scope.current.brandvertiser.Id);
+    };
+    $scope.canRemove = function() {
+      return $scope.current.keyAccount;
+    };
+
+    Brandvertiser.getKeyAccounts().then(function(keyAccounts) {
+      $scope.keyAccounts = keyAccounts;
+    });
+
+    filterChanged();
+  }])

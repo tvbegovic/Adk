@@ -1,0 +1,86 @@
+﻿<div>
+    <div class="row form-group">
+        <div class="col-sm-12">
+            <a class="btn btn-primary" ng-click="createOrUpdateGroup(null, false)">Add Filter Group</a>
+            <a class="btn btn-primary" ng-click="createOrUpdateGroup(null, true)">Add Exclude Filters</a>
+        </div>
+    </div>
+    <div ng-if="!feed.filterGroups.length">
+        <div class="alert alert-info big-icon">
+            <i class="fa fa-info-circle" aria-hidden="true"></i> No filter groups.
+        </div>
+    </div>
+    <div ng-if="feed.filterGroups.length">
+        <table class="table table-condensed table-bordered table-hover fs-grid">
+            <thead>
+                <tr>
+                    <th>
+                        <div column="column" class="ng-isolate-scope">
+                            <div class="col-label">
+                                <div>
+                                    Country / Market
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                    <th>
+                        <div column="column" class="ng-isolate-scope">
+                            <div class="col-label">
+                                <div>
+                                    Filters
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                    <th class="button-column">
+                        <div column="column" class="ng-isolate-scope">
+                            <div class="col-label">
+                                Edit
+                            </div>
+                        </div>
+                    </th>
+                    <th class="button-column">
+                        <div column="column" class="ng-isolate-scope">
+                            <div class="col-label">
+                                Delete
+                            </div>
+                        </div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in feed.filterGroups">
+                    <td>
+                        {{ getDisplay(item.FeedFilterRulesMarkets) }}
+                        <br ng-if="item.FeedFilterRulesMarkets.length" />
+                        {{ getDisplay(item.FeedFilterRulesDomains) }}
+                    </td>
+                    <td>
+                        <div ng-if="item.Exclude">
+                            EXCLUDE: {{ getDisplay(item.FeedFilterRulesCategories) }}
+                        </div>
+                        <div ng-if="item.FeedFilterRulesCategories && item.FeedFilterRulesCategories.length">
+                            Categories: {{ getDisplay(item.FeedFilterRulesCategories) }}
+                        </div>
+                        <div ng-if="item.FeedFilterRulesAdvertisers.length">
+                            Advertisers: {{ getDisplay(item.FeedFilterRulesAdvertisers) }}
+                        </div>
+                        <div ng-if="item.FeedFilterRulesBrands.length">
+                            Brands: {{ getDisplay(item.FeedFilterRulesBrands) }}
+                        </div>
+                        <div ng-if="item.FeedFilterRulesIndustries.length">
+                            Industries: {{ getDisplay(item.FeedFilterRulesIndustries) }}
+                        </div>
+                    </td>
+                    <td>
+                        <a class="btn btn-default" ng-click="createOrUpdateGroup(item)">Edit</a>
+                    </td>
+                    <td>
+                        <a class="btn btn-default" ng-click="deleteGroup(item)">Delete</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+

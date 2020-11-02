@@ -1,0 +1,76 @@
+﻿<div ng-controller="advertisingActivityTrendCtrl">
+    <div class="row" ng-show="channelsLoaded">
+        <div class="col-sm-12">
+            <div ng-show="haveChannels">
+                <div class="report-filters">
+                    <div class="filter-row main">
+                        <div class="date-wrapper-filter">
+                            <report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()" period-start="activityTrend.PeriodStart"
+                                period-end="activityTrend.PeriodEnd"></report-custom-period-filter>
+						</div>
+
+                        <report-channel-including-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-including-filter>
+                        <report-time-span-filter on-init="onDirectivesInit()" on-change="load()"></report-time-span-filter>
+                        <report-toggle-value-filter on-init="onDirectivesInit()" on-change="load()"></report-toggle-value-filter>
+                        <report-notes note-id="advertising_activity_trend" ng-if="user.isAdmin" />
+                    </div>
+                    <div class="filter-row additional">
+                        <div class="filter-box">
+                            <label>Chart:</label>
+                            <div class="btn-group">
+                                <label class="btn btn-primary" ng-model="chart" btn-radio="0" ng-click="changeChartType(0)">
+                                    Stacked</label>
+                                <label class="btn btn-primary" ng-model="chart" btn-radio="1" ng-click="changeChartType(1)">
+                                    Grouped</label>
+                                <label class="btn btn-primary" ng-model="chart" btn-radio="2" ng-click="changeChartType(2)">
+                                    Line</label>
+                            </div>
+                        </div>
+                        <label class="filter-box">
+                            <input type="checkbox" ng-model="current.showChartLabels" ng-click="toggleChartLabels()">
+                            Show Labels
+                        </label>
+                    </div>
+                </div>
+                <div class="report-data" >
+                     <div class="btn-group pull-right view-data-toggle"  ng-hide="message.show">
+                        <label class="btn view-data-icon" ng-model="displayTable" btn-radio="false" ng-click="toggleChartLabels()">
+                             <img src="img/chart_icon.gif"></img>
+                        </label>
+                        <label class="btn view-data-icon" ng-model="displayTable" btn-radio="true">
+                            <img src="img/table_icon.png"></img>
+                        </label>
+                    </div>
+                    <div style="clear: both;"></div>
+                    <div ng-if="!message.show && !displayTable">
+                        <nvd3 options="chartOptions" data="AdvertisingActivities"></nvd3>
+                    </div>
+                    <div ng-show="displayTable && tableData.Data.length && !message.show">
+                        <table class="report-table table table-striped table-hover table-bordered">
+                            <tr>
+                                <th>Date</th>
+                                <th ng-repeat="ch in tableData.Data[0].Values">{{  ch.ChannelName }}</th>
+                                <th>TOTAL</th>
+                            </tr>
+                            <tr ng-repeat="row in tableData.Data | skip:pager.skip | take:pager.size">
+                                <td class="date">{{ row.Date }}</td>
+                                <td class="number" ng-repeat="val in row.Values">{{  val.Value }}</td>
+                                <td class="number">{{ row.Total }}</td>
+                            </tr>
+                             <tr>
+                                <th>TOTAL</th>
+                                <td class="number" ng-repeat="val in tableData.TotalRow.Values track by $index">{{  val }}</td>
+                                <td class="number">{{ tableData.TotalRow.Total }}</td>
+                            </tr>
+                       <table>
+                       <div class="pager">
+						<table-pager manager="pager"></table-pager>
+					</div>
+                </div>
+                <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+            </div>
+            <report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+        </div>
+    </div>
+</div>
+

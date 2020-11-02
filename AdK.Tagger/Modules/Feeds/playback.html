@@ -1,0 +1,90 @@
+<div class="rows-spaced">
+    <div class="col-sm-12">
+        <div class="row">
+            <div class="col-sm-12">
+				<img ng-src="{{logo}}" ng-show="logo" />
+                <h3>
+                    <button class="btn btn-primary inline" ng-if="showBackButton" ng-click="goBack()">Back</button>
+                    <span ng-show="showTitle">Playback</span> 
+                </h3>
+                <hr />
+                <label>{{songInfo.Title}}</label><br /><br />
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+                <div>
+                    <div ng-show="!songInfo.VideoUrl">
+                        <player-widget player="player"></player-widget>
+                    </div>
+                    <div ng-show="songInfo.VideoUrl">
+                        <video-js id="playbackVideo" class="video-js vjs-default-skin" preload="auto" controls style="width:640px;height:480px">
+                           
+                        </video-js>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-6">
+				<table class="playback-details-table">
+					<tr>
+						<td class="col-sm-3">Advertiser: </td>
+						<td class="col-sm-9">{{songInfo.Advertiser}}</td>
+					</tr>
+					<tr>
+						<td class="col-sm-3">Brand: </td>
+						<td class="col-sm-9">{{songInfo.Brand}}</td>
+					</tr>
+					<tr>
+						<td class="col-sm-3">Industry: </td>
+						<td class="col-sm-9">{{songInfo.Industry}}</td>
+					</tr>
+					<tr>
+						<td class="col-sm-3">Category: </td>
+						<td class="col-sm-9">{{songInfo.Category}}</td>
+					</tr>
+					<tr ng-if="showFirstAiringsInfo">
+						<td class="col-sm-3">Region: </td>
+						<td class="col-sm-9">{{songInfo.Region}}</td>
+					</tr>
+					<tr ng-if="showFirstAiringsInfo">
+						<td class="col-sm-3">Market: </td>
+						<td class="col-sm-9">{{songInfo.Market}}</td>
+					</tr>
+					<tr>
+						<td class="col-sm-3">Created: </td>
+						<td class="col-sm-9">{{songInfo.Created | userDate}} {{songInfo.Created | date: 'HH:mm:ss'}}</td>
+					</tr>
+					<tr>
+						<td class="col-sm-3">Full Transcript: </td>
+						<td class="col-sm-9">
+							{{songInfo.FullTranscript}}
+							<span ng-show="!songInfo.FullTranscript">Ad transcript not available yet</span>
+						</td>
+					</tr>
+					<tr ng-if="showFirstAiringsInfo">
+						<td class="col-sm-3">First Airing: </td>
+						<td class="col-sm-9">
+							<table>
+								<tr ng-repeat="item in songInfo.Channels">
+									<td class="col-sm-5">{{item.Name}}</td>
+									<td class="col-sm-7">{{item.FirstAiring | userDate}} {{item.FirstAiring | date: 'HH:mm:ss'}}</td>
+								</tr>
+							</table>
+						</td>
+					</tr>
+					
+					<tr>
+						<td class="col-sm-3"> </td>
+						<td class="col-sm-9">
+							<a ng-show="songInfo.Mp3Url" ng-href="{{songInfo.Mp3Url}}" download>Download link</a>
+							<a ng-show="songInfo.VideoUrl" ng-href="{{songInfo.VideoUrl}}" download>Download link</a>
+						</td>
+					</tr>
+				</table>
+            </div>
+        </div>
+
+    </div>
+</div>

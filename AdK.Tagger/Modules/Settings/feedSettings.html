@@ -1,0 +1,32 @@
+<div>
+	<alert-message type="Error" ng-if="showError"></alert-message>
+	<h3> Ad Alert Email </h3>
+	<div style="padding: 10px;">
+		<button class="btn btn-primary" ng-click="editFeedEmail()">Edit notification e-mail</button>
+	</div>
+	<h4>Ad alert recipients</h4>
+	<div class="form-group">
+		<label>Bcc</label>
+		<input type="text" class="form-control" ng-model="feedSettings.FeedMailBcc" />
+	</div>
+	<h3>No Alerts Message</h3>
+	<div style="padding: 10px;">
+		<div>Click button to edit message displayed when user has no assigned ad alerts</div>
+		<button class="btn btn-primary" ng-click="editAdFeedMessage()">Edit ad alert message</button>
+	</div>
+	<h3>Ad Alert: Products</h3>
+	<div class="tags-input-wrapper">
+		<tags-input ng-model="feedSettings.FeedProducts" add-from-autocomplete-only="true" key-property="Id" spellcheck="false" placeholder="Add a product"
+					display-property="DisplayName" replace-spaces-with-dashes="false">
+			<auto-complete source="getProducts($query)" min-length="2" debounce-delay="300" load-on-down-arrow="true" select-first-match="true"
+						   max-results-to-show="999"></auto-complete>
+		</tags-input>
+		<i class="fa fa-spinner fa-spin ajax-spinner" ng-show="loadingSwitches[keyChain.products].loading"></i>
+	</div>
+	<h4>First airing channels</h4>
+	<div class="form-group">
+		<label>No of channels</label>
+		<input type="text" class="form-control" ng-model="feedSettings.FirstAiringChannels" />
+	</div>
+	<button class="btn btn-primary" ng-click="saveSettings()" style="margin-top:5px">Save</button>
+</div>

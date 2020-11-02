@@ -1,0 +1,46 @@
+﻿<div>
+    <h3>Recordings for {{ channelName }} ({{ channelDomain }})</h3>
+
+    <p><a href="/#/dpoc/capture" class="btn btn-primary">Go Back to Capture Status</a></p>
+
+    <h3>Missing <small>gaps in recordings</small></h3>
+    <table class="table table-bordered table-condensed table-striped" style="width:auto">
+        <thead>
+            <tr>
+                <td>Gap Begins</td>
+                <td>Gap Ends</td>
+                <td>Missing</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="hole in captureHolesChannel">
+                <td class="text-right">{{hole.starts}}</td>
+                <td class="text-right">{{hole.ends}}</td>
+                <td class="text-right">{{hole.missing}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h3>Recordings <small>last 100 recordings</small></h3>
+
+    <p><a href="/#/dpoc/capture" class="btn btn-primary">Go Back to Capture Status</a></p>
+
+    <table class="table table-bordered table-condensed table-striped" style="width:auto">
+        <thead>
+            <tr>
+                <td>Recording Start</td>
+                <td>Duration</td>
+                <td>File Saved</td>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="rec in captureChannel">
+                <td class="text-right" ng-class="{'dpoc-warn': isOffSchedule(rec.start)}">{{rec.start}}</td>
+                <td class="text-right" ng-class="{'dpoc-warn': isOffSchedule(rec.start)}">{{rec.duration | number:3}}</td>
+                <td class="text-right" ng-class="{'dpoc-warn': isOffSchedule(rec.start)}">{{rec.fileSaved}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><a href="/#/dpoc/capture" class="btn btn-primary">Go Back to Capture Status</a></p>
+</div>

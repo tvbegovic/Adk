@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+  <title>SoundManager auto paly POC</title>
+  <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no, width=device-width">
+  <link href="../../css/dist/tagger-bundle_r4483.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css">
+  <script src="../../js/vendor/angular/angular.js"></script>
+  <script src="../../js/vendor/ui-bootstrap-tpls-0.13.4.js"></script>
+  <script src="../../js/vendor/soundmanager2/soundmanager2.js"></script>
+  <script src="app.js"></script>
+</head>
+
+<body ng-app="poc-app" ng-controller="soundmanagerPocCtrl" ng-cloak>
+
+  <div style="max-width: 400px; padding: 20px;">
+    <span class="pull-left">
+        <button type="button" class="btn btn-xs btn-info" ng-click="togglePause()">
+            <i class="glyphicon glyphicon-play"  ng-class="{true: 'glyphicon-pause', false: 'glyphicon-play'}[player.playingInfo.isPlaying]" ></i>
+        </button>&nbsp;
+    </span>
+    <span class="pull-right position-indicator">
+        {{player.playingInfo.songPosition/1000 | number:1}} / {{player.playingInfo.songDuration/1000 | number:1}}
+    </span>
+
+    <div class="progress" progress-seek on-seek="playerSeek(pos)">
+      <div class="progress-bar" role="progressbar" ng-style="{ width: player.playingInfo.getCompletePercentage()+ '%' }"></div>
+    </div>
+  </div>
+
+  <button ng-click="goToEnd()">Go To Last 10 seconds</button>
+  <button ng-click="removeSeconds()"> - 5s </button>
+  <button ng-click="addSeconds()">+ 5s </button>
+
+
+  <br><br>
+  <div>
+    <p>Status:</p>
+    <ol>
+      <li ng-repeat="status in statuses"> {{status.name}} </li>
+    </ol>
+  </div>
+</body>
+
+</html>

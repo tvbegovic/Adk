@@ -1,0 +1,84 @@
+﻿<div ng-controller="topChartCtrl">
+	<div class="row" ng-show="channelsLoaded">
+		<div class="col-sm-12">
+			<div ng-show="haveChannels">
+				<div class="report-filters">
+					<div class="filter-row main">
+						<div class="date-wrapper-filter">
+							<report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()" period-start="topChart.PeriodStart"
+								period-end="topChart.PeriodEnd" compare="true" previous-start="topChart.PreviousStart" previous-end="topChart.PreviousEnd"></report-custom-period-filter>
+						</div>
+						<report-channel-including-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-including-filter>
+						<report-toggle-value-filter on-init="onDirectivesInit()" on-change="load()"></report-toggle-value-filter>
+						<report-advertiser-filter on-change="advertiserFilterChange"></report-advertiser-filter>
+						<report-notes note-id="top_chart" ng-if="user.isAdmin" />
+					</div>
+				</div>
+
+				<div class="row" ng-hide="message.show || loading">
+					<div class="col-md-12">
+						<table class="report-table table table-striped table-hover table-bordered">
+							<thead>
+								<tr>
+									<th></th>
+									<th class="text-center" colspan="2">Advertiser Rank</th>
+									<th class="text-center">Change</th>
+									<th class="text-center" colspan="2">Total</th>
+									<th class="text-center" colspan="{{topChart.Channels.length}}">Spot {{current.value.Name}} Current Period</th>
+								</tr>
+								<tr>
+									<th class="text" ng-click="sortBy(sort.column.advertiser)">
+										Advertiser
+										<sort-icon ascending="sort.ascending" show="sort.current === sort.column.advertiser" />
+									</th>
+									<th class="number" ng-click="sortBy(sort.column.currentRank)">
+										Current
+										<sort-icon ascending="sort.ascending" show="sort.current === sort.column.currentRank" />
+									</th>
+									<th class="number" ng-click="sortBy(sort.column.previousRank)">
+										Previous
+										<sort-icon ascending="sort.ascending" show="sort.current === sort.column.previousRank" />
+									</th>
+									<th class="number" ng-click="sortBy(sort.column.change)">
+										+ / -
+										<sort-icon ascending="sort.ascending" show="sort.current === sort.column.change" />
+									</th>
+									<th class="number" ng-click="sortBy(sort.column.currentTotal)">
+										Current
+										<sort-icon ascending="sort.ascending" show="sort.current === sort.column.currentTotal" />
+									</th>
+									<th class="number" ng-click="sortBy(sort.column.previousTotal)">
+										Previous
+										<sort-icon ascending="sort.ascending" show="sort.current === sort.column.previousTotal" />
+									</th>
+									<th class="number" ng-repeat="channel in topChart.Channels" ng-click="sortBy(channel.Name, $index)">
+										{{channel.Name}}
+										<sort-icon ascending="sort.ascending" show="sort.current === channel.Name" />
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="row in topChart.Rows | filter:filterAdvertisers | skip:pager.skip | take:pager.size" ng-class="{warning: row.IsKeyAccount}">
+									<td class="text">{{row.AdvertiserName}}</td>
+									<td class="number"><span ng-if="row.CurrentRank">{{row.CurrentRank}}</span></td>
+									<td class="number"><span ng-if="row.PreviousRank">{{row.PreviousRank}}</span></td>
+									<td class="number"><span ng-if="row.ChangeInRank">{{row.ChangeInRank}}</span></td>
+									<td class="number">{{getValue(row.CurrentTotal)}}</td>
+									<td class="number">{{getValue(row.PreviousTotal)}}</td>
+									<td class="number" ng-repeat="channelValue in row.ChannelValues track by $index">{{getValue(channelValue.Total)}}</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="pager">
+							<table-pager manager="pager"></table-pager>
+						</div>
+					</div>
+				</div>
+
+				<report-message template="{{message.template}}" ng-show="message.show"></report-message>
+
+			</div>
+			<report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+		</div>
+	</div>
+</div>

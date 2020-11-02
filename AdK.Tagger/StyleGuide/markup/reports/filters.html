@@ -1,0 +1,42 @@
+<h2 class="sg-h2 title">Filters</h2>
+
+<h3>General styles</h3>
+<ul>
+  <li>Wrapp filters with div element that have class <b>"report-filters"</b> </li>
+</ul>
+
+<br>
+<h3>Available filter directives</h3>
+
+<ul>
+  <li>report-channel-filter</li>
+  <li>report-includes-filter</li>
+  <li>report-value-filter</li>
+  <li>report-brand-or-advertiser-filter</li>
+  <li>report-time-span-filter</li>
+  <li>report-date-range-filter</li>
+  <li>report-day-of-week-filter</li>
+  <li>report-period-filter</li>
+  <li>report-day-part-filter</li>
+</ul>
+
+<p>Example:</p>
+<div class="sg-source sg-source-active">
+  <pre class="line-numbers">
+    <code class="language-markup">
+      <span class="token tag">
+        <span class="token punctuation">&lt;</span>div class="report-filters"<span class="token punctuation">&gt;</span>
+          <span class="token punctuation">&lt;</span>report-channel-filter on-init="onChannelsLoad(channels)" on-change="load()"<span class="token punctuation">&gt;</span><span class="token punctuation">&lt;</span>/report-channel-filter <span class="token punctuation">&gt;</span>
+          <span class="token punctuation">&lt;</span>report-includes-filter on-change="load()" on-init="onDirectivesInit()"<span class="token punctuation">&gt;</span><span class="token punctuation">&lt;</span>/report-includes-filter <span class="token punctuation">&gt;</span>
+          <span class="token punctuation">&lt;</span>report-value-filter on-change="load()" on-init="onDirectivesInit()"<span class="token punctuation">&gt;</span><span class="token punctuation">&lt;</span>/report-value-filter <span class="token punctuation">&gt;</span>
+          <span class="token punctuation">&lt;</span>report-brand-or-advertiser-filter on-init="onDirectivesInit()" on-change="load()"<span class="token punctuation">&gt;</span><span class="token punctuation">&lt;</span>/report-brand-or-advertiser-filter <span class="token punctuation">&gt;</span>
+          <span class="token punctuation">&lt;</span>report-time-span-filter on-init="onDirectivesInit()" on-change="load()"<span class="token punctuation">&gt;</span><span class="token punctuation">&lt;</span>/report-time-span-filter <span class="token punctuation">&gt;</span>
+          <span class="token punctuation">&lt;</span>report-date-range-filter on-change="load()" on-init="onDirectivesInit()"<span class="token punctuation">&gt;</span><span class="token punctuation">&lt;</span>/report-date-range-filter <span class="token punctuation">&gt;</span>
+          <span class="token punctuation">&lt;</span>report-day-of-week-filter on-init="onDirectivesInit()" on-change="load()"<span class="token punctuation">&gt;</span><span class="token punctuation">&lt;</span>/report-day-of-week-filter <span class="token punctuation">&gt;</span>
+          <span class="token punctuation">&lt;</span>report-period-filter on-init="onDirectivesInit()" on-change="load()"<span class="token punctuation">&gt;</span><span class="token punctuation">&lt;</span>/report-period-filter<span class="token punctuation">&gt;</span>
+          <span class="token punctuation">&lt;</span>report-day-part-filter on-init="onDirectivesInit()" on-change="load()"<span class="token punctuation">&gt;</span><span class="token punctuation">&lt;</span>/report-day-part-filter<span class="token punctuation">&gt;</span>
+        <span class="token punctuation">&lt;</span>/div<span class="token punctuation">&gt;</span>
+      </span>
+    </code>
+  </pre>
+</div>

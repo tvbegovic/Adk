@@ -1,0 +1,219 @@
+<div>
+  <h2 class="sg-h2 title">Tables</h2>
+
+  <h4>General styles</h4>
+  <ul>
+    <li> Text should be left aligned. Text <b>td</b> should have class <b>"text"</b></li>
+    <li> Dates should be right aligned. Date <b>td</b> should have class <b>"date"</b></li>
+    <li> Numbers should be right aligned. Numbers <b>td</b> should have class <b>"number"</b></li>
+    <li> Header should be bolded. In case of more headers all headers should be bolded </li>
+    <li>In case of multiple header first header text should be centered and second header should be align based on data type</li>
+    <li> Table should have following classe <b>"report-table table table-striped table-hover table-bordered"</b></li>
+    <li> In all grids with focus filter, channel that is currently focused should be first (or leftmost) in the channel list</li>
+  </ul>
+
+  <br><br>
+
+  <!--SIMPLE TABLE EXAMPLE-->
+  <h4>Simple table example</h4>
+  <table class="report-table small-table table table-striped table-hover table-bordered">
+    <thead>
+      <tr>
+        <th class="text"> Channel </th>
+        <th class="number"> Count </th>
+        <th class="number"> Spend </th>
+        <th class="number"> Duration </th>
+        <th class="date">Play Date</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text">Antena Zagreb </td>
+        <td class="number">88 </td>
+        <td class="number">37,457 </td>
+        <td class="number">00:28:22 </td>
+        <td class="date">2016-06-01</td>
+      </tr>
+      <tr>
+        <td class="text">HR - Radio Sljeme </td>
+        <td class="number">66 </td>
+        <td class="number">26,131</td>
+        <td class="number">00:21:59 </td>
+        <td class="date">2016-06-01</td>
+      </tr>
+      <tr>
+        <td class="text">Otvoreni Radio </td>
+        <td class="number">43 </td>
+        <td class="number">14,706 </td>
+        <td class="number">00:10:21 </td>
+        <td class="date">2016-06-01</td>
+      </tr>
+      <tr>
+        <td class="text">Total</td>
+        <td class="number">197</td>
+        <td class="number">78,294 </td>
+        <td class="number">01:00:43 </td>
+        <td class="date">2016-06-01</td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <!--TWO HEADER EXAMPLE EXAMPLE-->
+  <h4>Two header example</h4>
+  <table class="report-table small-table table table-striped table-hover table-bordered">
+    <thead>
+      <tr>
+        <th> </th>
+        <th> First Day Part </th>
+        <th> Second Day Part </th>
+        <th class="number"> </th>
+      </tr>
+      <tr>
+        <th class="text"> Channel </th>
+        <th class="number"> 9-17h </th>
+        <th class="number"> 17-21 </th>
+        <th class="number"> Total </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text">Antena Zagreb </td>
+        <td class="number">88 </td>
+        <td class="number">37,457 </td>
+        <td class="number">00:28:22 </td>
+      </tr>
+      <tr>
+        <td class="text">HR - Radio Sljeme </td>
+        <td class="number">66 </td>
+        <td class="number">26,131 </td>
+        <td class="number">00:21:59 </td>
+      </tr>
+      <tr>
+        <td class="text">Otvoreni Radio </td>
+        <td class="number">43 </td>
+        <td class="number">14,706</td>
+        <td class="number">00:10:21 </td>
+      </tr>
+      <tr>
+        <td class="text">Total</td>
+        <td class="number">197</td>
+        <td class="number">78,294 </td>
+        <td class="number">01:00:43 </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <br><br>
+  <h4>Table sizes</h4>
+  We can append special classes to table that dictates max size for a table
+  <ul>
+    <li>"xs-table" >> max width 500px </li>
+    <li>"small-table" >> max width 700px </li>
+    <li>"medium-table" >> max width 900px </li>
+    <li>"large-table" >> max width 1100px </li>
+    <li>"xxl-table" >> max width 1300px </li>
+    <li>If there is no class appended table will take all width of parent element</li>
+  </ul>
+
+  <br><br>
+  <h4>XS table 'xs-table'</h4>
+  <table class="report-table xs-table table table-striped table-hover table-bordered">
+    <thead>
+      <tr>
+        <th class="text"> Channel </th>
+        <th class="number"> Count </th>
+        <th class="number"> Spend </th>
+        <th class="number"> Duration </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text">Antena Zagreb </td>
+        <td class="number">88 </td>
+        <td class="number">37,457 </td>
+        <td class="number">00:28:22 </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Small table 'small-table'</h4>
+  <table class="report-table small-table table table-striped table-hover table-bordered">
+    <thead>
+      <tr>
+        <th class="text"> Channel </th>
+        <th class="number"> Count </th>
+        <th class="number"> Spend </th>
+        <th class="number"> Duration </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text">Antena Zagreb </td>
+        <td class="number">88 </td>
+        <td class="number">37,457 </td>
+        <td class="number">00:28:22 </td>
+      </tr>
+    </tbody>
+  </table>
+
+
+  <h4>Medium table 'medium-table'</h4>
+  <table class="report-table medium-table table table-striped table-hover table-bordered">
+    <thead>
+      <tr>
+        <th class="text"> Channel </th>
+        <th class="number"> Count </th>
+        <th class="number"> Spend </th>
+        <th class="number"> Duration </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text">Antena Zagreb </td>
+        <td class="number">88 </td>
+        <td class="number">37,457 </td>
+        <td class="number">00:28:22 </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>Large table 'large-table'</h4>
+  <table class="report-table large-table table table-striped table-hover table-bordered">
+    <thead>
+      <tr>
+        <th class="text"> Channel </th>
+        <th class="number"> Count </th>
+        <th class="number"> Spend </th>
+        <th class="number"> Duration </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text">Antena Zagreb </td>
+        <td class="number">88 </td>
+        <td class="number">37,457 </td>
+        <td class="number">00:28:22 </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h4>XXL table 'xxl-table'</h4>
+  <table class="report-table xxl-table table table-striped table-hover table-bordered">
+    <thead>
+      <tr>
+        <th class="text"> Channel </th>
+        <th class="number"> Count </th>
+        <th class="number"> Spend </th>
+        <th class="number"> Duration </th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="text">Antena Zagreb </td>
+        <td class="number">88 </td>
+        <td class="number">37,457 </td>
+        <td class="number">00:28:22 </td>
+      </tr>
+    </tbody>
+  </table>

@@ -1,0 +1,37 @@
+<div ng-controller="keyAccountActivityCtrl">
+    <div class="row" ng-show="channelsLoaded">
+        <div class="col-sm-12">
+            <div ng-show="haveChannels">
+                <div class="report-filters">
+                    <div class="filter-row main">
+                        <div class="date-wrapper-filter">
+                            <report-custom-period-filter class="report-period-picker" on-init="onDirectivesInit()" on-change="load()" period-start="kaa.PeriodStart"
+                                period-end="kaa.PeriodEnd"></report-custom-period-filter>
+                        </div>
+
+                        <report-channel-including-filter on-init="onChannelsLoad(channels)" on-change="load()"></report-channel-including-filter>
+                        <report-toggle-value-filter on-init="onDirectivesInit()" on-change="load()"></report-toggle-value-filter>
+                        <report-display-type-filter on-init="onDirectivesInit()" on-change="onDisplayTypeChange()"></report-display-type-filter>
+                        <report-notes note-id="key_account_activity" ng-if="user.isAdmin" />
+                    </div>
+                    <div class="filter-row additional">
+                        <label>
+                            <input type="checkbox" ng-model="current.showAllAccounts" ng-click="load()"> Show All Accounts
+                        </label>
+                        <label>
+                            <input type="checkbox" ng-model="current.showChartLabels" ng-click="toggleChartLabels()"> Show Labels
+                        </label>
+                    </div>
+                </div>
+
+                <div class="clearfix">
+                    <div class="horizontal-barchart-graph" ng-hide="message.show">
+                        <nvd3 options="nvd3Options" data="keyAccountActivity"></nvd3>
+                    </div>
+                    <report-message template="{{message.template}}" ng-show="message.show"></report-message>
+                </div>
+            </div>
+            <report-message ng-hide="haveChannels" template="NoMediaHouse"></report-message>
+        </div>
+    </div>
+</div>

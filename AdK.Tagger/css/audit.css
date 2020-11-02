@@ -1,0 +1,86 @@
+.audit-log {
+	padding-top: 15px;
+}
+
+.audit-log .partial-color {
+	color: #800000;
+}
+
+.audit-log td.delete-audit-box {
+	background: white;
+	width: 40px;
+	text-align: center;
+	vertical-align: middle!important;
+}
+
+.audit-log .delete-audit-box:hover {
+	color: red
+}
+
+.audit-log .date-column {
+	width: 132px;
+}
+
+.audit-log .delete-icon {
+	font-size: 15px;
+}
+
+.audit-log tags-input[disabled='disabled'] .remove-button, .tags > input:disabled {
+	display: none;
+}
+
+.audit-log .buttons-right {
+	display: inline;
+}
+
+.audit-log .buttons-right > button {
+	margin-right: 5px;
+}
+
+.audit-log .partials-cb {
+	border: 2px solid white;
+	margin: 0!important;
+	padding: 5px;
+	border-bottom: none;
+	position: relative;
+	z-index: 1;
+}
+
+.audit-log .partials-cb.extended {
+	border-color: #ccc;
+	background: white;
+}
+
+.audit-log .partials-slide-in {
+	position: relative;
+	top: -2px;
+	padding: 5px 10px 10px 10px;
+	border: 2px solid #ccc;
+	margin-bottom: 15px;
+	max-height: 0;
+	max-width: 600px;
+	overflow: hidden;
+	display: none;
+}
+
+.audit-log .partials-slide-in.extended {
+	max-height: 9999px;
+	display: block;
+}
+
+.audit-log .partials-slide-in p {
+	color: #555;
+}
+
+.audit-log .partials-slide-in .update-threshold {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+.audit-log .threshold-input {
+	display: inline-block;
+	width: 80px;
+	height: 30px;
+	margin-left: 15px;
+}

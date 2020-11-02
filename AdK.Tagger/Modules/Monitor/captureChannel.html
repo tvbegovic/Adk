@@ -1,0 +1,13 @@
+﻿<div>
+    <h3>Recordings for {{ channel.station_name }} ({{ channel.domain }})</h3>
+    <p><button class="btn btn-primary btn-sm" ng-click="goback()">Go Back</button></p>
+
+    <h3>Missing <small>recordings gaps (from hashes)</small></h3>
+    <generic-table tabledata="recordingGapsChannel"></generic-table>
+
+    <h3>Recordings <small>last 300 recordings</small></h3>
+    <p><button class="btn btn-primary btn-sm" ng-click="goback()">Go Back</button></p>
+    <generic-table tabledata="captureChannel"></generic-table>
+
+    <p><button class="btn btn-primary btn-sm" ng-click="goback()">Go Back</button></p>
+</div>
